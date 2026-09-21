@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import { APICONFIG } from "./config/apiConfig";
 import { tracks } from "./interfaces/data/track/track";
+import { Track } from "./interfaces/track/track";
 
 const port: number = 3000;
 
@@ -13,11 +14,20 @@ app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda per
 
 
 app.get("/tracks", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    return res.json(JSON.stringify(APICONFIG));
+    return res.status(200).json(tracks);
 });
 
 
-
+app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
+    const idTrack: string = req.params.id as string;
+    const track: Track[] = tracks.filter(
+        (t: Track) => { return t.id === idTrack }
+    );
+    if (track.length === 0) {
+        return res.status(404)
+    }
+    return res.status(200).json(track);
+});
 
 
 
