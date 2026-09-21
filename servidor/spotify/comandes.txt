@@ -1,0 +1,10 @@
+mkdir nom_carpeta
+npm install express
+npm install -D typescript tsx @types/node @types/express
+npm install-scripts approve --all
+npx tsc --i
+ npx tsc --init
+mkdir src
+npm pkg set scripts.dev="tsx src/index.ts"
+npm pkg set scripts.build="tsc"
+npm pkg set scripts.start="node dist/index.js"
