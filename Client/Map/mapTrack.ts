@@ -4,10 +4,14 @@ interface Canco {
     artista: string;
     durada: number;
 }
+interface Temps {
+    minuts: number;
+    seconds: number;
+}
 
 interface Track {
     title: string;
-    duration: number
+    duration: Temps;
 }
 
 
@@ -30,9 +34,13 @@ const cancons: Canco[] = [
 
 const tracks: Track[] = cancons.map(
     (c: Canco) => {
+        const temps: Temps = {
+            minuts: Math.floor(c.durada / 60),
+            seconds: c.durada % 60
+        };
         return {
             title: c.titol,
-            duration: c.durada
+            duration: temps
         }
     }
 )
