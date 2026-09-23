@@ -1,9 +1,15 @@
 import './style.css'
-import { Canco } from './interface/track'
 import { cancons } from './data/track'
+import { createRowSong } from './view/rowView';
 
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<h1> Spotify</h1>
-<p>${cancons[0].titol}</p>
-`
+const appObj: HTMLElement = document.querySelector<HTMLDivElement>('#app')!;
+const titol: HTMLHeadElement = document.createElement("h1");
+const table: HTMLTableElement = document.createElement("table");
+const rowSong: HTMLTableRowElement = createRowSong(cancons[0]);
+titol.textContent = "Spotify";
+
+appObj.appendChild(titol);
+table.appendChild(rowSong);
+
+appObj.appendChild(table);
