@@ -24,7 +24,7 @@ app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició r
         (t: Track) => { return t.id === idTrack }
     );
     if (track.length === 0) {
-        return res.status(404)
+        return res.status(404).json({ message:'Track ${idTrack} not found'})
     }
     return res.status(200).json(track);
 });
