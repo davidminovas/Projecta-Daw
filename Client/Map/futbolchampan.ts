@@ -61,16 +61,24 @@ const match: Equip[] = [
     }
 ]
 
+const nomEquip = 'Trampus FC';
+
+
 function alineacioTitular(
-    titular: boolean,
-    titulars: Equip[]
-): Equip[] {
-    return titulars.map(equip => ({
-        ...equip,
-        players: equip.players.filter(
-            jugador => jugador.titular === titular
+    titulars: Equip[],
+    equip: string
+): Player[] {
+    const equipSeleccionat = titulars.find(
+        e => e.name === equip
+    );
+
+    return equipSeleccionat
+        ? equipSeleccionat.players.filter(
+            jugador => jugador.titular === true
         )
-    }));
+        : [];
 }
-const resultat = alineacioTitular(true, match);
-console.log(resultat);
+
+const JugadorsTitulars: Player[] = alineacioTitular(match, nomEquip);
+
+console.log(JugadorsTitulars);
