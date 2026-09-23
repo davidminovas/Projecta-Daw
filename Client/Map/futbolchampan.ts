@@ -64,10 +64,7 @@ const match: Equip[] = [
 const nomEquip = 'Trampus FC';
 
 
-function alineacioTitular(
-    titulars: Equip[],
-    equip: string
-): Player[] {
+function alineacioTitular(titulars: Equip[], equip: string): Player[] {
     const equipSeleccionat = titulars.find(
         e => e.name === equip
     );
