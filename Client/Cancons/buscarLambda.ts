@@ -11,20 +11,7 @@ const cancoBuscar: Canco = {
     durada: 300
 };
 
-const cancons: Canco[] = [
-    {
-        id: "2B-CA",
-        titol: "Antes de que cuente diez",
-        artista: "Fito",
-        durada: 300
-    },
-    {
-        id: "3E-DF",
-        titol: "Mustafa",
-        artista: "Bull",
-        durada: 249
-    }
-]
+
 
 let titol: string = "Antes de que quente diez";
 
