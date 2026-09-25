@@ -13,7 +13,7 @@ app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda per
 
 
 
-app.get("/tracks", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
+app.get("/tracks/:id", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
     return res.status(200).json(tracks);
 });
 
@@ -35,3 +35,33 @@ app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició r
 app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
 });
+
+/**
+ * Saber totes les llistes de reproduccio d'un usuari:
+ * 
+ * /usuari/:id/playlists
+ * 
+ * Les ultimes cançons que ha escoltat un usuari:
+ * /usuari/:id/song/latest
+ * /usuari/:id/historial
+ * 
+ * Les ulitimes cançons que s'han carregat a l'aplicatiu:
+ * /songs/uploaded/latest
+ * 
+ * Totes les cançons d'una playlist d'un usuari:
+ * /usuaris/:id/playlist/:idPlaylist/songs
+ * 
+ * El meu perfil
+ * /usuaris/profile(me)
+ * 
+ * El perfil d'un altre usuari
+ * /usuaris/:id/profile
+ *
+ * Musica mes reproduida
+ * /songs/popular
+ * 
+ * Musica mes reproduida d'un artista
+ * 
+ * /artist/:id/songs/popular
+ * 
+ */
