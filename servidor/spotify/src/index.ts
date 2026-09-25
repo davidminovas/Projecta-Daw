@@ -4,6 +4,8 @@ import { tracks } from "./interfaces/data/track/track";
 import { TrackBD } from "./interfaces/track/trackBD";
 import { Track } from "./interfaces/track/track";
 import { isValidTrack } from "./validators/track.validator";
+import { randomUUID } from "crypto";
+
 
 
 
@@ -67,8 +69,21 @@ app.post("/tracks", (req: Request, res: Response) => {
     const track: Track = req.body;
     if (!isValidTrack(track)) {
         return res.status(400).json({ message: " Invalid data" });
-}
-    return res.status(201).json(track)
+    }
+    const uuid: string = randomUUID();
+    
+    const trackRecord: TrackBD = {
+        id: uuid,
+        title: track.title.trim().replace(/\s+/g, " "),
+        artist: track.artist.trim().replace(/\s+/g, " "),
+        duration: track.duration
+    };
+
+
+
+
+
+    return res.status(201).json(trackRecord)
 });
 
 
