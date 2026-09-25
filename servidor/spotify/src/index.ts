@@ -2,6 +2,8 @@ import express, { Express, Request, Response } from "express";
 import { APICONFIG } from "./config/apiConfig";
 import { tracks } from "./interfaces/data/track/track";
 import { TrackBD } from "./interfaces/track/trackBD";
+import { Track } from "./interfaces/track/track";
+import { isValidTrack } from "./validators/track.validator";
 
 
 
@@ -62,8 +64,13 @@ app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició r
  */
 
 app.post("/tracks", (req: Request, res: Response) => {
-    return res.status(201).json(req.body)
+    const track: Track = req.body;
+    if (!isValidTrack(track)) {
+        return res.status(400).json({ message: " Invalid data" });
+}
+    return res.status(201).json(track)
 });
+
 
 app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
