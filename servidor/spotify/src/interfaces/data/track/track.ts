@@ -1,5 +1,5 @@
-import { Track } from "../../track/track";
-export const tracks: Track[] = [
+import { TrackBD } from "../../track/trackBD";
+export const tracks: TrackBD[] = [
     {
         id: "3456-abd1-cd21-ef12",
         title: "Rattle and hume",
