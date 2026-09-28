@@ -7,7 +7,6 @@ export function crearTableSong(
     tbody: HTMLTableSectionElement,
 ): HTMLTableElement {
 
-
     const table: HTMLTableElement = document.createElement("table");
     table.appendChild(createTableHead());
 

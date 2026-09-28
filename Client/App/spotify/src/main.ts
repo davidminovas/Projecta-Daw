@@ -9,7 +9,12 @@ import { llistaCancons } from './view/tableSongs/llistaCancons';
 
 const appObj: HTMLElement = document.querySelector<HTMLDivElement>('#app')!;
 const tbody: HTMLTableSectionElement = document.createElement("tbody");
-const cardTrack: HTMLDivElement = document.createElement("div");
+const cardTrack: (id: string) => void = (id: string) => {
+    const track: Canco[] = cancons.filter(
+        (t: Canco) => { return t.id }
+    );
+
+}  
 
 const cercar: (textABuscar: string) => void = (textABuscar: string) => {
     const llistaTracks: Canco[] = cancons.filter(
@@ -26,4 +31,6 @@ appObj.appendChild(crearTitol());
 appObj.appendChild(crearCerca(cercar));
 appObj.appendChild(crearTableSong(tbody));
 appObj.appendChild(cardTrack);
+
+
 
