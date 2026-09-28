@@ -9,6 +9,7 @@ export function createTableHead(): HTMLTableSectionElement {
 
     thTitol.textContent = "Títol";
     thDurada.textContent = "Durada";
+    
     trHead.appendChild(thTitol);
     trHead.appendChild(thDurada);
     thead.appendChild(trHead);

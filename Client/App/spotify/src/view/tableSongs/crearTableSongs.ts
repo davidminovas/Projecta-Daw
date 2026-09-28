@@ -3,7 +3,9 @@ import { createTableHead } from "./createTableHead";
 import { llistaCancons } from "./llistaCancons";
 
 
-export function crearTableSong(tbody: HTMLTableSectionElement): HTMLTableElement {
+export function crearTableSong(
+    tbody: HTMLTableSectionElement,
+): HTMLTableElement {
 
 
     const table: HTMLTableElement = document.createElement("table");

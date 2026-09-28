@@ -13,11 +13,10 @@ const tbody: HTMLTableSectionElement = document.createElement("tbody");
 
 const cercar: (textABuscar: string) => void = (textABuscar: string) => {
     const llistaTracks: Canco[] = cancons.filter(
-        (t: Canco) => { return t.titol.trim() === textABuscar }
+        (t: Canco) => { return t.titol.toLowerCase().includes(textABuscar.trim().toLowerCase()) }
     );
-    tbody.innerHTML = "";
-    llistaCancons(llistaTracks, tbody);
-} 
+    tbody.innerHTML = "";    llistaCancons(llistaTracks, tbody);    llistaCancons(llistaTracks, tbody);
+}
 
 
 
