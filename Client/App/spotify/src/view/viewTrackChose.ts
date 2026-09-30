@@ -9,12 +9,12 @@ export function createTrackChose(canco: Canco): HTMLDivElement {
     const artist: HTMLDivElement = document.createElement("p");
     artist.textContent = "Artista: " + canco.artista;
 
-    const xdiv: HTMLDivElement = document.createElement("div");
-    xdiv.textContent = "X"
+    const buttonClose: HTMLDivElement = document.createElement("div");
+    buttonClose.textContent = "X"
     card.appendChild(title);
     card.appendChild(artist);
-    card.appendChild(xdiv);
-    xdiv.addEventListener("click", () => {
+    card.appendChild(buttonClose);
+    buttonClose.addEventListener("click", () => {
         card.innerHTML = " ";
     })
     return card;
