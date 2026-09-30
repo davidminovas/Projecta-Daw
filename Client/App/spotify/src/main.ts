@@ -12,7 +12,8 @@ const appObj: HTMLElement = document.querySelector<HTMLDivElement>('#app')!;
 const tbody: HTMLTableSectionElement = document.createElement("tbody");
 const cardTrack: HTMLDivElement = document.createElement("div");
 
-export function getIdCanco(id: string): void {
+const getIdCanco: (id: string) => void = (id: string)=>
+{
     cardTrack.replaceChildren(viewCancoTriada(id));
 }
 
@@ -22,10 +23,6 @@ const cercar: (textABuscar: string) => void = (textABuscar: string) => {
     );
     tbody.innerHTML = ""; llistaCancons(llistaTracks, tbody, getIdCanco);
 }
-
-
-
-
 
 appObj.appendChild(crearTitol());
 appObj.appendChild(crearCerca(cercar));
