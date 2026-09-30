@@ -1,5 +1,5 @@
 import type { Canco } from "../interface/track";
-export function createRowSong(track: Canco): HTMLTableRowElement {
+export function createRowSong(track: Canco, getIdCanco: (id: string) => void): HTMLTableRowElement {
 
     const tr: HTMLTableRowElement = document.createElement("tr");
     const titleTd: HTMLTableCellElement = document.createElement("td");
@@ -15,20 +15,20 @@ export function createRowSong(track: Canco): HTMLTableRowElement {
 
     titleTd.addEventListener("click",
         () => {
-
-            console.log(getIdTrack(track));
+            getIdTrack(track);
+            getIdCanco(track.id);
         }
     )
     durationTd.addEventListener("click",
         () => {
-
-            console.log(getIdTrack(track));
+            getIdTrack(track);
+            getIdCanco(track.id);
         }
     )
 
     return tr;
 }
 
-function getIdTrack(track:Canco):string {
+function getIdTrack(track: Canco): string {
     return track.id
 }

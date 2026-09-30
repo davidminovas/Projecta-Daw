@@ -3,9 +3,8 @@ import { createRowSong } from "../rowView"
 
 export function llistaCancons(
     tracks: Canco[],
-    tbody: HTMLTableSectionElement,
-): void {
+    tbody: HTMLTableSectionElement, getIdCanco: (id: string) => void): void {
     tracks.forEach(
-        (t: Canco) => { tbody.appendChild(createRowSong(t)) }
+        (t: Canco) => { tbody.appendChild(createRowSong(t, getIdCanco)) }
     )
 }
