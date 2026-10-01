@@ -13,11 +13,11 @@ export function createTableHead(): HTMLTableSectionElement {
     thDurada.textContent = "Durada";
     thReproduccio.textContent = "Reproducions";
     thPlay.textContent = "Reproduint"
-    
+
     trHead.appendChild(thTitol);
     trHead.appendChild(thDurada);
-    trHead.appendChild(thReproduccio);
     trHead.appendChild(thPlay);
+    trHead.appendChild(thReproduccio);
     thead.appendChild(trHead);
     return thead
 }

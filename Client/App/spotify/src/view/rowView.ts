@@ -1,4 +1,5 @@
 import type { Canco } from "../interface/track";
+import { crearBotoPlay } from "./bottonPlay/createBottonPlay";
 export function createRowSong(track: Canco, getIdCanco: (id: string) => void): HTMLTableRowElement {
 
     const tr: HTMLTableRowElement = document.createElement("tr");
@@ -8,10 +9,13 @@ export function createRowSong(track: Canco, getIdCanco: (id: string) => void): H
     const durationTd: HTMLTableCellElement = document.createElement("td");
     durationTd.textContent = track.durada.toString();
 
+    const botoRepTd: HTMLButtonElement = crearBotoPlay();
+
     const artistTd: HTMLTableCellElement = document.createElement("td");
     artistTd.textContent = track.artista;
     tr.appendChild(titleTd);
     tr.appendChild(durationTd);
+    tr.appendChild(botoRepTd);
 
     titleTd.addEventListener("click",
         () => {
