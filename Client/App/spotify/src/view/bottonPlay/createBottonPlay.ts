@@ -1,22 +1,24 @@
-export function crearBotoPlay() {
+import type { Canco } from "../../interface/track";
+import { reproductionPlus } from "./reproductionPlus";
 
-    let reproduccions: number = 0;
+export function crearBotoPlay(track: Canco, reproduccions: HTMLTableCellElement) {
+
+
     const button: HTMLButtonElement = document.createElement("button");
     button.type = "button";
     button.textContent = "Play";
-    let click: boolean = false;
+    let playing: boolean = false;
     button.addEventListener("click", () => {
     
-        if (click === false) {
-            reproduccions++;
+        if (playing === false) {
+            track.reproduction = reproductionPlus(track.reproduction);
+            reproduccions.textContent = track.reproduction.toString();
             button.textContent = "Playing"
-            click = true;
+            playing = true;
         } else {
             button.textContent = "Play"
-            click = false;
+            playing = false;
         }
-
-
     });
     return button
 }
