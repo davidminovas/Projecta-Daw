@@ -8,7 +8,7 @@ import { randomUUID } from "crypto";
 import { Artist } from "./interfaces/artist/artist";
 import { validatorArtistCountry } from "./validators/artists.validator";
 import { ArtistBD } from "./interfaces/artist/artistBD";
-import { artists } from "./interfaces/data/track/artists.sata";
+import { artists } from "./interfaces/data/track/artists.data";
 
 
 
@@ -125,3 +125,53 @@ app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
 });
 
+app.put("/tracks/:id", (req: Request, res: Response) => {
+    const track: Track = req.body;
+    if (!isValidTrack(track)) {
+        return res.status(400).json({ message: " Invalid data" });
+    }
+    const idTrack: string = req.params.id as string;
+    const index: number = tracks.findIndex(
+        (t: TrackBD) => { return t.id === idTrack; }
+    );
+    if (index === -1) {
+        return res.status(404).json({ message: 'Track ${idTrack} not found' })
+    }
+
+
+    tracks[index] = {
+        id: idTrack,
+        title: track.title.trim().replace(/\s+/g, " "),
+        artist: {
+            artisticName: track.artist.artisticName.trim().replace(/\s+/g, " "),
+            name: track.artist.name.trim().replace(/\s+/g, " "),
+            country: track.artist.country.trim().replace(/\s+/g, " "),
+        },
+        duration: track.duration
+    };
+
+    return res.status(201).json(tracks[index])
+});
+
+
+
+
+
+
+
+app.delete("/tracks/:id", (req: Request, res: Response) => {
+
+    const idTrack: string = req.params.id as string;
+    const index: number = tracks.findIndex((t: TrackBD) => { return t.id === idTrack; }
+    );
+    if (index === -1) {
+        return res.status(404).json({ message: 'Track not found' })
+    }
+
+
+    tracks.splice(index, 1)
+
+
+
+    return res.status(204).json({ message: 'Track delete' })
+});
