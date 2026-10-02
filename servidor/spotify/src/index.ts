@@ -5,8 +5,10 @@ import { TrackBD } from "./interfaces/track/trackBD";
 import { Track } from "./interfaces/track/track";
 import { isValidTrack } from "./validators/track.validator";
 import { randomUUID } from "crypto";
-import { Artist } from "./interfaces/track/artist";
+import { Artist } from "./interfaces/artist/artist";
 import { validatorArtistCountry } from "./validators/artists.validator";
+import { ArtistBD } from "./interfaces/artist/artistBD";
+import { artists } from "./interfaces/data/track/artists.sata";
 
 
 
@@ -92,22 +94,28 @@ app.post("/tracks", (req: Request, res: Response) => {
     return res.status(201).json(trackRecord)
 });
 
-app.post("artista", (req: Request, res: Response) => {
+
+app.get("/artists/:id", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
+    return res.status(200).json(artists);
+});
+
+
+app.post("/artista", (req: Request, res: Response) => {
     const artist: Artist = req.body;
     if (!validatorArtistCountry(artist)) {
         return res.status(400).json({ message: " Invalid data" });
     }
 
 
-    const artisRecord: Artist = {
+    const artisRecord: ArtistBD = {
 
         artisticName: artist.artisticName.trim().replace(/\s+/g, " "),
         name: artist.name.trim().replace(/\s+/g, " "),
-        country: artist.country.trim().replace(/\s+/g, " "),
+        country: artist.country,
 
     };
-    
-    artist.push(artisRecord);
+
+    artists.push(artisRecord);
 
     return res.status(201).json(artisRecord)
 });
