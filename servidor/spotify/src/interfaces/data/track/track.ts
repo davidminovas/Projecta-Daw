@@ -1,21 +1,26 @@
+import { partialDeepStrictEqual } from "assert";
 import { TrackBD } from "../../track/trackBD";
 export const tracks: TrackBD[] = [
     {
         id: "3456-abd1-cd21-ef12",
         title: "Rattle and hume",
-        artist: "U2",
-        duration: {
-            minuts: 2,
-            seconds: 45
-        }
+        artist: {
+            artisticName: "patata",
+            name: "lolo",
+            country: "Espanya",
+
+        },
+        duration: 400,
     },
     {
         id: "3499-cdde-cdab-efab",
         title: "Antes de que cuente diez",
-        artist: "fito i fitipaldis",
-        duration: {
-            minuts: 4,
-            seconds: 42
-        }
+        artist: {
+            artisticName: "Fito",
+            name: "Fitipandi",
+            country: "El vaticano",
+
+        },
+        duration: 400,
     }
 ];

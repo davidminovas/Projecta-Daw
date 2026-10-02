@@ -1,5 +1,7 @@
+import { Artist } from "./aartist";
+
 export interface Track {
     title: string;
-    artist: string;
+    artist: Artist;
     duration: number;
 }

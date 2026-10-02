@@ -4,6 +4,7 @@ import { createRowSong } from "../rowView"
 export function llistaCancons(
     tracks: Canco[],
     tbody: HTMLTableSectionElement, getIdCanco: (id: string) => void): void {
+        
     tracks.forEach(
         (t: Canco) => { tbody.appendChild(createRowSong(t, getIdCanco)) }
     )
