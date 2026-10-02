@@ -1,4 +1,4 @@
-import { Artist } from "./aartist";
+import { Artist } from "./artist";
 
 export interface Track {
     title: string;

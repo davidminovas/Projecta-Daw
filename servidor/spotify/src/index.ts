@@ -5,7 +5,7 @@ import { TrackBD } from "./interfaces/track/trackBD";
 import { Track } from "./interfaces/track/track";
 import { isValidTrack } from "./validators/track.validator";
 import { randomUUID } from "crypto";
-import { Artist } from "./interfaces/track/aartist";
+import { Artist } from "./interfaces/track/artist";
 import { validatorArtistCountry } from "./validators/artists.validator";
 
 
@@ -77,7 +77,11 @@ app.post("/tracks", (req: Request, res: Response) => {
     const trackRecord: TrackBD = {
         id: uuid,
         title: track.title.trim().replace(/\s+/g, " "),
-        artist: track.artist.name.trim().replace(/\s+/g, " "),
+        artist: {
+            artisticName: track.artist.artisticName.trim().replace(/\s+/g, " "),
+            name: track.artist.name.trim().replace(/\s+/g, " "),
+            country: track.artist.country.trim().replace(/\s+/g, " "),
+        },
         duration: track.duration
     };
 
@@ -93,19 +97,19 @@ app.post("artista", (req: Request, res: Response) => {
     if (!validatorArtistCountry(artist)) {
         return res.status(400).json({ message: " Invalid data" });
     }
-    
 
-    const trackRecord: Artist = {
+
+    const artisRecord: Artist = {
 
         artisticName: artist.artisticName.trim().replace(/\s+/g, " "),
         name: artist.name.trim().replace(/\s+/g, " "),
         country: artist.country.trim().replace(/\s+/g, " "),
 
     };
+    
+    artist.push(artisRecord);
 
-    tracks.push(trackRecord);
-
-    return res.status(201).json(trackRecord)
+    return res.status(201).json(artisRecord)
 });
 
 
