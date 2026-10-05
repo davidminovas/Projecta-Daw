@@ -187,7 +187,6 @@ app.post("/country", (req: Request, res: Response) => {
 });
 
 
-
 app.get("/country/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
     const idCountry: string = req.params.id as string;
     const country: CountryBD[] = Countrys.filter(
@@ -197,4 +196,26 @@ app.get("/country/:id", (req: Request, res: Response) => { // _req → petició 
         return res.status(404).json({ message: 'Track ${idTrack} not found' })
     }
     return res.status(200).json(country);
+});
+
+app.put("/country/:id", (req: Request, res: Response) => {
+    const country: Country = req.body;
+    if (!isValidCountry(country)) {
+        return res.status(400).json({ message: " Invalid data" });
+    }
+    const idCountry: string = req.params.id as string;
+    const index: number = Countrys.findIndex(
+        (t: CountryBD) => { return t.id === idCountry; }
+    );
+    if (index === -1) {
+        return res.status(404).json({ message: 'Track ${idCountry} not found' })
+    }
+
+
+    Countrys[index] = {
+        id: idCountry,
+        name: country.name.trim().replace(/\s+/g, " "),
+    };
+
+    return res.status(201).json(Countrys[index])
 });
