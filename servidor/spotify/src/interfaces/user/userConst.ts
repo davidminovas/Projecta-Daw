@@ -1,0 +1,1 @@
+export const MAXEMAIL: number = 60;

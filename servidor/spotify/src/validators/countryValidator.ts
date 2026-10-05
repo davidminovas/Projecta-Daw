@@ -1,5 +1,5 @@
-import { MAXCOUNTRY } from "./constCountry";
-import { Country } from "./country";
+import { MAXCOUNTRY } from "../interfaces/country/constCountry";
+import { Country } from "../interfaces/country/country";
 
 export function isValidCountry(country: Country): boolean {
 

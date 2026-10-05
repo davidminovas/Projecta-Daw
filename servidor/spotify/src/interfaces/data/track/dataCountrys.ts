@@ -1,4 +1,4 @@
-import { CountryBD } from "./countryBD";
+import { CountryBD } from "../../country/countryBD";
 
 export const Countrys: CountryBD[] = [
     {

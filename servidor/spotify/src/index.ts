@@ -11,9 +11,12 @@ import { ArtistBD } from "./interfaces/artist/artistBD";
 import { artists } from "./interfaces/data/track/artists.data";
 import { Country } from "./interfaces/country/country";
 import { CountryBD } from "./interfaces/country/countryBD";
-import { COUNTRYS } from "./interfaces/data/track/pais.data";
-import { Countrys } from "./interfaces/country/dataCountrys";
-import { isValidCountry } from "./interfaces/country/countryValidator";
+import { Countrys } from "./interfaces/data/track/dataCountrys";
+import { isValidCountry } from "./validators/countryValidator";
+import { User } from "./interfaces/user/user";
+import { UserBD } from "./interfaces/user/userBD";
+import { Users } from "./interfaces/user/dataUser";
+import { isValidUser } from "./interfaces/user/userValidator";
 
 
 
@@ -102,7 +105,7 @@ app.get("/artists/:id", (_req: Request, res: Response) => { // _req → petició
 });
 
 
-app.post("/artista", (req: Request, res: Response) => {
+app.post("/artistas", (req: Request, res: Response) => {
     const artist: Artist = req.body;
     if (!validatorArtistCountry(artist)) {
         return res.status(400).json({ message: " Invalid data" });
@@ -168,7 +171,7 @@ app.delete("/tracks/:id", (req: Request, res: Response) => {
 
 
 
-app.post("/country", (req: Request, res: Response) => {
+app.post("/countrys", (req: Request, res: Response) => {
     const country: Country = req.body;
     if (!isValidCountry(country)) {
         return res.status(400).json({ message: " Invalid data" });
@@ -187,7 +190,7 @@ app.post("/country", (req: Request, res: Response) => {
 });
 
 
-app.get("/country/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
+app.get("/countrys/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
     const idCountry: string = req.params.id as string;
     const country: CountryBD[] = Countrys.filter(
         (t: Country) => { return t.id === idCountry }
@@ -198,7 +201,7 @@ app.get("/country/:id", (req: Request, res: Response) => { // _req → petició 
     return res.status(200).json(country);
 });
 
-app.put("/country/:id", (req: Request, res: Response) => {
+app.put("/countrys/:id", (req: Request, res: Response) => {
     const country: Country = req.body;
     if (!isValidCountry(country)) {
         return res.status(400).json({ message: " Invalid data" });
@@ -218,4 +221,78 @@ app.put("/country/:id", (req: Request, res: Response) => {
     };
 
     return res.status(201).json(Countrys[index])
+});
+
+app.post("/users", (req: Request, res: Response) => {
+    const user: User = req.body;
+    if (!isValidUser(user)) {
+        return res.status(400).json({ message: " Invalid data" });
+    }
+    const uuid: string = randomUUID();
+
+    const userRecord: UserBD = {
+        id: uuid,
+        email: user.email.trim().replace(/\s+/g, " "),
+        country: {
+            id: uuid,
+            name: user.country.name.trim().replace(/\s+/g, " "),
+        }
+    };
+
+
+    Users.push(userRecord);
+
+    return res.status(201).json(userRecord)
+});
+
+app.get("/users/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
+    const idUser: string = req.params.id as string;
+    const user: UserBD[] = Users.filter(
+        (t: User) => { return t.id === idUser }
+    );
+    if (user.length === 0) {
+        return res.status(404).json({ message: 'Track ${idTrack} not found' })
+    }
+    return res.status(200).json(user);
+});
+
+app.put("/users/:id", (req: Request, res: Response) => {
+    const user: User = req.body;
+    if (!isValidUser(user)) {
+        return res.status(400).json({ message: " Invalid data" });
+    }
+    const idUser: string = req.params.id as string;
+    const index: number = Users.findIndex(
+        (t: UserBD) => { return t.id === idUser; }
+    );
+    if (index === -1) {
+        return res.status(404).json({ message: 'Track ${idCountry} not found' })
+    }
+
+
+    Users[index] = {
+        id: idUser,
+        email: user.email.trim().replace(/\s+/g, " "),
+        country: {
+            id: user.country.id,
+            name: user.country.name.trim().replace(/\s+/g, " "),
+        }
+
+    };
+
+    return res.status(201).json(Countrys[index])
+});
+
+
+app.delete("/users/:id", (req: Request, res: Response) => {
+
+    const isUser: string = req.params.id as string;
+    const index: number = Users.findIndex((t: UserBD) => { return t.id === isUser; }
+    );
+    if (index === -1) {
+        return res.status(404).json({ message: 'Track not found' })
+    }
+
+    Users.splice(index, 1)
+    return res.status(204).json({ message: 'Track delete' })
 });
