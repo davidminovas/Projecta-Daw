@@ -1,8 +1,7 @@
 import { Country } from "../country/country";
 
-export interface Artist {
+export interface User{
     id: string;
-    artisticName: string;
-    name: string;
+    email: string;
     country: Country; //FK
 }

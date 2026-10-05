@@ -155,10 +155,6 @@ app.put("/tracks/:id", (req: Request, res: Response) => {
 
 
 
-
-
-
-
 app.delete("/tracks/:id", (req: Request, res: Response) => {
 
     const idTrack: string = req.params.id as string;
@@ -168,10 +164,7 @@ app.delete("/tracks/:id", (req: Request, res: Response) => {
         return res.status(404).json({ message: 'Track not found' })
     }
 
-
     tracks.splice(index, 1)
-
-
 
     return res.status(204).json({ message: 'Track delete' })
 });

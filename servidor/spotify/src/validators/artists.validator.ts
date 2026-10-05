@@ -1,5 +1,5 @@
 import { Artist } from "../interfaces/artist/artist";
-import { MAXARTISTA, MAXCOUNTRY } from "../interfaces/artist/artist.constants";
+import { MAXARTISTA } from "../interfaces/artist/artist.constants";
 import { COUNTRYS } from "../interfaces/data/track/pais.data";
 
 
