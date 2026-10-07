@@ -17,6 +17,10 @@ import { User } from "./interfaces/user/user";
 import { UserBD } from "./interfaces/user/userBD";
 import { Users } from "./interfaces/data/user/dataUser";
 import { isValidUser } from "./validators/userValidator";
+import { createTrack, getAllTracks, getTrackById } from "./serveis/trackService";
+import { ErrorService } from "./interfaces/error/errorService";
+import { SuccessService } from "./interfaces/error/sucessServide";
+import e from "express";
 
 
 
@@ -30,19 +34,17 @@ app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda per
 
 
 app.get("/tracks/:id", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    return res.status(200).json(tracks);
+    return res.status(200).json(getAllTracks());
 });
 
 
 app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    const idTrack: string = req.params.id as string;
-    const track: TrackBD[] = tracks.filter(
-        (t: TrackBD) => { return t.id === idTrack }
-    );
-    if (track.length === 0) {
+    const findTrack: TrackBD | undefined = getTrackById(req.params.id as string)
+
+    if (findTrack) {
         return res.status(404).json({ message: 'Track ${idTrack} not found' })
     }
-    return res.status(200).json(track);
+    return res.status(200).json(findTrack);
 });
 
 
@@ -152,30 +154,14 @@ app.listen(APICONFIG.port, APICONFIG.host, () => {
 });
 
 app.post("/tracks", (req: Request, res: Response) => {
-    const track: Track = req.body;
-    if (!isValidTrack(track)) {
-        return res.status(400).json({ message: " Invalid data" });
+    const result: SuccessService<TrackBD> | ErrorService = createTrack(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({message: errorResult.message })
     }
-    const uuid: string = randomUUID();
 
-    const trackRecord: TrackBD = {
-        id: uuid,
-        title: track.title.trim().replace(/\s+/g, " "),
-        artist: {
-            id: track.artist.id,
-            artisticName: track.artist.artisticName.trim().replace(/\s+/g, " "),
-            name: track.artist.name.trim().replace(/\s+/g, " "),
-            country: track.artist.country,
-        },
-        duration: track.duration,
-
-    };
-
-
-
-    tracks.push(trackRecord);
-
-    return res.status(201).json(trackRecord)
+    return res.status(result.code).json(result)
 });
 
 app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
