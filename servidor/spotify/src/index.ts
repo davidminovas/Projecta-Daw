@@ -86,7 +86,12 @@ app.post("/tracks", (req: Request, res: Response) => {
     const trackRecord: TrackBD = {
         id: uuid,
         title: track.title.trim().replace(/\s+/g, " "),
-        artist: track.artist.trim().replace(/\s+/g, " "),
+        artist: {
+            id: track.artist.id,
+            artisticName: track.artist.artisticName.trim().replace(/\s+/g, " "),
+            name: track.artist.name.trim().replace(/\s+/g, " "),
+            country: track.artistartist.country,
+        },
         duration: track.duration,
 
     };
@@ -155,6 +160,19 @@ app.put("/artists/:id", (req: Request, res: Response) => {
     return res.status(201).json(artists[index])
 });
 
+app.delete("/artists/:id", (req: Request, res: Response) => {
+
+    const isArtist: string = req.params.id as string;
+    const index: number = artists.findIndex((t: ArtistBD) => { return t.id === isArtist; }
+    );
+    if (index === -1) {
+        return res.status(404).json({ message: 'Track not found' })
+    }
+
+    artists.splice(index, 1)
+    return res.status(204).json({ message: 'Track delete' })
+});
+
 
 app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
@@ -177,7 +195,12 @@ app.put("/tracks/:id", (req: Request, res: Response) => {
     tracks[index] = {
         id: idTrack,
         title: track.title.trim().replace(/\s+/g, " "),
-        artist: track.artist.trim().replace(/\s+/g, " "),
+        artist: {
+            id: track.artist.id,
+            artisticName: track.artist.artisticName.trim().replace(/\s+/g, " "),
+            name: track.artist.name.trim().replace(/\s+/g, " "),
+            country: track.artist.country
+        },
         duration: track.duration
     };
 
