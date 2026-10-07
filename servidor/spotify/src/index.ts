@@ -76,33 +76,6 @@ app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició r
  * 
  */
 
-app.post("/tracks", (req: Request, res: Response) => {
-    const track: Track = req.body;
-    if (!isValidTrack(track)) {
-        return res.status(400).json({ message: " Invalid data" });
-    }
-    const uuid: string = randomUUID();
-
-    const trackRecord: TrackBD = {
-        id: uuid,
-        title: track.title.trim().replace(/\s+/g, " "),
-        artist: {
-            id: track.artist.id,
-            artisticName: track.artist.artisticName.trim().replace(/\s+/g, " "),
-            name: track.artist.name.trim().replace(/\s+/g, " "),
-            country: track.artistartist.country,
-        },
-        duration: track.duration,
-
-    };
-
-
-
-    tracks.push(trackRecord);
-
-    return res.status(201).json(trackRecord)
-});
-
 
 app.get("/artists/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
     const idArtist: string = req.params.id as string;
@@ -177,6 +150,45 @@ app.delete("/artists/:id", (req: Request, res: Response) => {
 app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
 });
+
+app.post("/tracks", (req: Request, res: Response) => {
+    const track: Track = req.body;
+    if (!isValidTrack(track)) {
+        return res.status(400).json({ message: " Invalid data" });
+    }
+    const uuid: string = randomUUID();
+
+    const trackRecord: TrackBD = {
+        id: uuid,
+        title: track.title.trim().replace(/\s+/g, " "),
+        artist: {
+            id: track.artist.id,
+            artisticName: track.artist.artisticName.trim().replace(/\s+/g, " "),
+            name: track.artist.name.trim().replace(/\s+/g, " "),
+            country: track.artist.country,
+        },
+        duration: track.duration,
+
+    };
+
+
+
+    tracks.push(trackRecord);
+
+    return res.status(201).json(trackRecord)
+});
+
+app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
+    const idTracks: string = req.params.id as string;
+    const track: TrackBD[] = tracks.filter(
+        (t: TrackBD) => { return t.id === idTracks }
+    );
+    if (track.length === 0) {
+        return res.status(404).json({ message: 'Track ${idTrack} not found' })
+    }
+    return res.status(200).json(track);
+});
+
 
 app.put("/tracks/:id", (req: Request, res: Response) => {
     const track: Track = req.body;
