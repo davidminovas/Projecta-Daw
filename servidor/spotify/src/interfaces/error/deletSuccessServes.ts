@@ -1,7 +1,5 @@
-export interface PutSuccessService<T> {
+export interface DeletSuccessService {
     success: boolean;
     code: number;
     index: number;
-    data: T;
-    
 }
