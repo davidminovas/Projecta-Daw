@@ -17,10 +17,11 @@ import { User } from "./interfaces/user/user";
 import { UserBD } from "./interfaces/user/userBD";
 import { Users } from "./interfaces/data/user/dataUser";
 import { isValidUser } from "./validators/userValidator";
-import { createTrack, getAllTracks, getTrackById } from "./serveis/trackService";
+import { createTrack, getAllTracks, getTrackById, substitTrack } from "./serveis/trackService";
 import { ErrorService } from "./interfaces/error/errorService";
-import { SuccessService } from "./interfaces/error/sucessServide";
+import { CreateSuccessService } from "./interfaces/error/createSucessServide";
 import e from "express";
+import { PutSuccessService } from "./interfaces/error/putSucessServidee";
 
 
 
@@ -154,13 +155,13 @@ app.listen(APICONFIG.port, APICONFIG.host, () => {
 });
 
 app.post("/tracks", (req: Request, res: Response) => {
-    const result: SuccessService<TrackBD> | ErrorService = createTrack(req.body);
+    const result: CreateSuccessService<TrackBD> | ErrorService = createTrack(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
-        return res.status(result.code).json({message: errorResult.message })
+        return res.status(result.code).json({ message: errorResult.message })
     }
-
+    tracks.push((result as CreateSuccessService<TrackBD>).data);
     return res.status(result.code).json(result)
 });
 
@@ -177,32 +178,15 @@ app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició r
 
 
 app.put("/tracks/:id", (req: Request, res: Response) => {
-    const track: Track = req.body;
-    if (!isValidTrack(track)) {
-        return res.status(400).json({ message: " Invalid data" });
+    const result: CreateSuccessService<TrackBD> | ErrorService = createTrack(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message })
     }
-    const idTrack: string = req.params.id as string;
-    const index: number = tracks.findIndex(
-        (t: TrackBD) => { return t.id === idTrack; }
-    );
-    if (index === -1) {
-        return res.status(404).json({ message: 'Track ${idTrack} not found' })
-    }
+    const index: PutSuccessService<TrackBD> | ErrorService = substitTrack(req.body)
 
-
-    tracks[index] = {
-        id: idTrack,
-        title: track.title.trim().replace(/\s+/g, " "),
-        artist: {
-            id: track.artist.id,
-            artisticName: track.artist.artisticName.trim().replace(/\s+/g, " "),
-            name: track.artist.name.trim().replace(/\s+/g, " "),
-            country: track.artist.country
-        },
-        duration: track.duration
-    };
-
-    return res.status(201).json(tracks[index])
+    return res.status(index.code).json(index)
 });
 
 
