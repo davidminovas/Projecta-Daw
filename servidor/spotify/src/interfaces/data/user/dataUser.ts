@@ -1,4 +1,4 @@
-import { UserBD } from "./userBD";
+import { UserBD } from "../../user/userBD";
 
 export const Users: UserBD[] = [
     {

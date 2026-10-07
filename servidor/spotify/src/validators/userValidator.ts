@@ -1,5 +1,5 @@
-import { User } from "./user";
-import { MAXEMAIL } from "./userConst";
+import { User } from "../interfaces/user/user";
+import { MAXEMAIL } from "../interfaces/user/userConst";
 
 export function isValidUser(user: User): boolean {
 

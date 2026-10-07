@@ -11,13 +11,12 @@ import { ArtistBD } from "./interfaces/artist/artistBD";
 import { artists } from "./interfaces/data/track/artists.data";
 import { Country } from "./interfaces/country/country";
 import { CountryBD } from "./interfaces/country/countryBD";
-import { Countrys } from "./interfaces/data/track/dataCountrys";
+import { Countrys } from "./interfaces/data/country/dataCountrys";
 import { isValidCountry } from "./validators/countryValidator";
 import { User } from "./interfaces/user/user";
 import { UserBD } from "./interfaces/user/userBD";
-import { Users } from "./interfaces/user/dataUser";
-import { isValidUser } from "./interfaces/user/userValidator";
-
+import { Users } from "./interfaces/data/user/dataUser";
+import { isValidUser } from "./validators/userValidator";
 
 
 
@@ -100,8 +99,15 @@ app.post("/tracks", (req: Request, res: Response) => {
 });
 
 
-app.get("/artists/:id", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    return res.status(200).json(artists);
+app.get("/artists/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
+    const idArtist: string = req.params.id as string;
+    const artist: ArtistBD[] = artists.filter(
+        (t: ArtistBD) => { return t.id === idArtist }
+    );
+    if (artist.length === 0) {
+        return res.status(404).json({ message: 'Track ${idTrack} not found' })
+    }
+    return res.status(200).json(artist);
 });
 
 
@@ -122,6 +128,31 @@ app.post("/artistas", (req: Request, res: Response) => {
     artists.push(artisRecord);
 
     return res.status(201).json(artisRecord)
+});
+
+app.put("/artists/:id", (req: Request, res: Response) => {
+    const artist: Artist = req.body;
+    if (!validatorArtistCountry(artist)) {
+        return res.status(400).json({ message: " Invalid data" });
+    }
+    const idArtist: string = req.params.id as string;
+    const index: number = artists.findIndex(
+        (t: ArtistBD) => { return t.id === idArtist; }
+    );
+    if (index === -1) {
+        return res.status(404).json({ message: 'Track ${idCountry} not found' })
+    }
+
+
+    artists[index] = {
+        id: artist.id,
+        artisticName: artist.artisticName.trim().replace(/\s+/g, " "),
+        name: artist.name.trim().replace(/\s+/g, " "),
+        country: artist.country,
+
+    };
+
+    return res.status(201).json(artists[index])
 });
 
 
@@ -296,3 +327,4 @@ app.delete("/users/:id", (req: Request, res: Response) => {
     Users.splice(index, 1)
     return res.status(204).json({ message: 'Track delete' })
 });
+
