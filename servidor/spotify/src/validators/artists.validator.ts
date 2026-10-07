@@ -18,7 +18,7 @@ export function validatorArtistCountry(artist: Artist): boolean {
     if (longNickName === 0 || longNickName > MAXARTISTA) { return false }
 
     const paisTrobat: string|undefined = COUNTRYS.find(
-        (p: string) => { return p === artist.country.name.toUpperCase() }
+        (p: string) => { return p === artist.country.toUpperCase() }
     )
     if (!paisTrobat) { return false; }
     else { return true; }

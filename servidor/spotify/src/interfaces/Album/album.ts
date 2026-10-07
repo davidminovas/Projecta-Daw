@@ -1,7 +1,7 @@
-import { Artist } from "../artist/artist";
+
 
 export interface Album{
     id: string;
-    artist: Artist; //FK
+    artist: string; //FK
     data: Date;
 }
