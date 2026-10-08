@@ -24,6 +24,9 @@ import { createArtist, deleteArtist, getArtistById, substitArtist } from "./serv
 import { createCountry, getCountryById, substitCountry } from "./serveis/countryService";
 import { createUser, deleteUser, getUserById, substitUser } from "./serveis/userService";
 import { HistoryBD } from "./interfaces/history/historyBD";
+import { PlayListBd } from "./interfaces/playList/playListBD";
+import { PlayLists } from "./interfaces/data/playList/playLists";
+import { createPlayList, getPlayListById, substitPlayList } from "./serveis/playListService";
 
 
 
@@ -275,5 +278,53 @@ app.post("/historys", (req: Request, res: Response) => {
         return res.status(result.code).json({ message: errorResult.message })
     }
     Historys.push((result as CreateSuccessService<HistoryBD>).data);
+    return res.status(result.code).json(result)
+});
+
+
+
+
+
+
+
+
+
+
+
+
+app.post("/playLists", (req: Request, res: Response) => {
+
+    const result: CreateSuccessService<PlayListBd> | ErrorService = createPlayList(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message })
+    }
+    PlayLists.push((result as CreateSuccessService<PlayListBd>).data);
+    return res.status(result.code).json(result)
+});
+
+app.get("/playLists/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
+
+    const findPlayList: PlayListBd | undefined = getPlayListById(req.params.id as string)
+
+    if (findPlayList) {
+        return res.status(404).json({ message: 'Track ${idTrack} not found' })
+    }
+    return res.status(200).json(findPlayList);
+});
+
+app.put("/users/:id", (req: Request, res: Response) => {
+
+
+    const result: PutSuccessService<PlayListBd> | ErrorService = substitPlayList(req.body, req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
+    }
+    const index: number = (result as PutSuccessService<PlayListBd>).index;
+    PlayLists[index] = (result as PutSuccessService<PlayListBd>).data;
+
     return res.status(result.code).json(result)
 });
