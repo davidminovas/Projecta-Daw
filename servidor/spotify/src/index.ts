@@ -23,6 +23,7 @@ import { DeletSuccessService } from "./interfaces/error/deletSuccessServes";
 import { createArtist, deleteArtist, getArtistById, substitArtist } from "./serveis/artistService";
 import { createCountry, getCountryById, substitCountry } from "./serveis/countryService";
 import { createUser, deleteUser, getUserById, substitUser } from "./serveis/userService";
+import { HistoryBD } from "./interfaces/history/historyBD";
 
 
 
@@ -265,3 +266,14 @@ app.delete("/users/:id", (req: Request, res: Response) => {
     return res.status(result.code).json(result)
 });
 
+app.post("/historys", (req: Request, res: Response) => {
+
+    const result: CreateSuccessService<HistoryBD> | ErrorService = createHistory(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message })
+    }
+    Historys.push((result as CreateSuccessService<HistoryBD>).data);
+    return res.status(result.code).json(result)
+});
