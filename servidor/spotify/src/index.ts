@@ -22,6 +22,7 @@ import { PutSuccessService } from "./interfaces/error/putSucessServidee";
 import { DeletSuccessService } from "./interfaces/error/deletSuccessServes";
 import { createArtist, deleteArtist, getArtistById, substitArtist } from "./serveis/artistService";
 import { createCountry, getCountryById, substitCountry } from "./serveis/countryService";
+import { createUser, deleteUser, getUserById, substitUser } from "./serveis/userService";
 
 
 
@@ -212,69 +213,55 @@ app.put("/countrys/:id", (req: Request, res: Response) => {
 });
 
 app.post("/users", (req: Request, res: Response) => {
-    const user: User = req.body;
-    if (!isValidUser(user)) {
-        return res.status(400).json({ message: " Invalid data" });
+  
+    const result: CreateSuccessService<UserBD> | ErrorService = createUser(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message })
     }
-    const uuid: string = randomUUID();
-
-    const userRecord: UserBD = {
-        id: uuid,
-        email: user.email.trim().replace(/\s+/g, " "),
-        country: user.country.trim().replace(/\s+/g, " "), 
-    };
-
-
-    Users.push(userRecord);
-
-    return res.status(201).json(userRecord)
+    Users.push((result as CreateSuccessService<UserBD>).data);
+    return res.status(result.code).json(result)
 });
 
 app.get("/users/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    const idUser: string = req.params.id as string;
-    const user: UserBD[] = Users.filter(
-        (t: User) => { return t.id === idUser }
-    );
-    if (user.length === 0) {
+
+    const findUser: UserBD | undefined = getUserById(req.params.id as string)
+
+    if (findUser) {
         return res.status(404).json({ message: 'Track ${idTrack} not found' })
     }
-    return res.status(200).json(user);
+    return res.status(200).json(findUser);
 });
 
 app.put("/users/:id", (req: Request, res: Response) => {
-    const user: User = req.body;
-    if (!isValidUser(user)) {
-        return res.status(400).json({ message: " Invalid data" });
+
+
+    const result: PutSuccessService<UserBD> | ErrorService = substitUser(req.body, req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
     }
-    const idUser: string = req.params.id as string;
-    const index: number = Users.findIndex(
-        (t: UserBD) => { return t.id === idUser; }
-    );
-    if (index === -1) {
-        return res.status(404).json({ message: 'Track ${idCountry} not found' })
-    }
+    const index: number = (result as PutSuccessService<UserBD>).index;
+    Users[index] = (result as PutSuccessService<UserBD>).data;
 
-
-    Users[index] = {
-        id: idUser,
-        email: user.email.trim().replace(/\s+/g, " "),
-        country: user.country.trim().replace(/\s+/g, " "),
-    };
-
-    return res.status(201).json(Countrys[index])
+    return res.status(result.code).json(result)
 });
 
 
 app.delete("/users/:id", (req: Request, res: Response) => {
 
-    const isUser: string = req.params.id as string;
-    const index: number = Users.findIndex((t: UserBD) => { return t.id === isUser; }
-    );
-    if (index === -1) {
-        return res.status(404).json({ message: 'Track not found' })
-    }
+    const result: DeletSuccessService | ErrorService = deleteUser(req.params.id as string);
 
-    Users.splice(index, 1)
-    return res.status(204).json({ message: 'Track delete' })
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
+    }
+    const index: number = (result as DeletSuccessService).index;
+
+    tracks.splice(index, 1)
+
+    return res.status(result.code).json(result)
 });
 
