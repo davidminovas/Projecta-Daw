@@ -21,6 +21,7 @@ import { CreateSuccessService } from "./interfaces/error/createSucessServide";
 import { PutSuccessService } from "./interfaces/error/putSucessServidee";
 import { DeletSuccessService } from "./interfaces/error/deletSuccessServes";
 import { createArtist, deleteArtist, getArtistById, substitArtist } from "./serveis/artistService";
+import { createCountry, getCountryById, substitCountry } from "./serveis/countryService";
 
 
 
@@ -37,15 +38,6 @@ app.get("/tracks/:id", (_req: Request, res: Response) => { // _req → petició 
     return res.status(200).json(getAllTracks());
 });
 
-
-app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    const findTrack: TrackBD | undefined = getTrackById(req.params.id as string)
-
-    if (findTrack) {
-        return res.status(404).json({ message: 'Track ${idTrack} not found' })
-    }
-    return res.status(200).json(findTrack);
-});
 
 /**
  * Saber totes les llistes de reproduccio d'un usuari:
@@ -143,14 +135,12 @@ app.post("/tracks", (req: Request, res: Response) => {
 });
 
 app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    const idTracks: string = req.params.id as string;
-    const track: TrackBD[] = tracks.filter(
-        (t: TrackBD) => { return t.id === idTracks }
-    );
-    if (track.length === 0) {
+    const findTrack: TrackBD | undefined = getTrackById(req.params.id as string)
+
+    if (findTrack) {
         return res.status(404).json({ message: 'Track ${idTrack} not found' })
     }
-    return res.status(200).json(track);
+    return res.status(200).json(findTrack);
 });
 
 
@@ -185,55 +175,40 @@ app.delete("/tracks/:id", (req: Request, res: Response) => {
 
 
 app.post("/countrys", (req: Request, res: Response) => {
-    const country: Country = req.body;
-    if (!isValidCountry(country)) {
-        return res.status(400).json({ message: " Invalid data" });
+
+    const result: CreateSuccessService<CountryBD> | ErrorService = createCountry(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message })
     }
-    const uuid: string = randomUUID();
-
-    const countryRecord: CountryBD = {
-        id: uuid,
-        name: country.name.trim().replace(/\s+/g, " "),
-    };
-
-
-    Countrys.push(countryRecord);
-
-    return res.status(201).json(countryRecord)
+    Countrys.push((result as CreateSuccessService<CountryBD>).data);
+    return res.status(result.code).json(result)
 });
 
 
 app.get("/countrys/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    const idCountry: string = req.params.id as string;
-    const country: CountryBD[] = Countrys.filter(
-        (t: Country) => { return t.id === idCountry }
-    );
-    if (country.length === 0) {
+
+    const findCountry: CountryBD | undefined = getCountryById(req.params.id as string)
+
+    if (findCountry) {
         return res.status(404).json({ message: 'Track ${idTrack} not found' })
     }
-    return res.status(200).json(country);
+    return res.status(200).json(findCountry);
 });
 
 app.put("/countrys/:id", (req: Request, res: Response) => {
-    const country: Country = req.body;
-    if (!isValidCountry(country)) {
-        return res.status(400).json({ message: " Invalid data" });
+
+    const result: PutSuccessService<CountryBD> | ErrorService = substitCountry(req.body, req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
     }
-    const idCountry: string = req.params.id as string;
-    const index: number = Countrys.findIndex(
-        (t: CountryBD) => { return t.id === idCountry; }
-    );
-    if (index === -1) {
-        return res.status(404).json({ message: 'Track ${idCountry} not found' })
-    }
+    const index: number = (result as PutSuccessService<CountryBD>).index;
+    Countrys[index] = (result as PutSuccessService<CountryBD>).data;
 
-
-    Countrys[index] = {
-        id: idCountry,
-        name: country.name.trim().replace(/\s+/g, " "),
-    };
-
-    return res.status(201).json(Countrys[index])
+    return res.status(result.code).json(result)
 });
 
 app.post("/users", (req: Request, res: Response) => {
