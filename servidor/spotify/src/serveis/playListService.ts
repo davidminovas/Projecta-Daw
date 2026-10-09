@@ -6,6 +6,7 @@ import { PlayList } from "../interfaces/playList/playList";
 import { PlayListBd } from "../interfaces/playList/playListBD";
 import { isValidPlayList } from "../validators/playList.validator";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
+import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
 
 export function createPlayList(pL: PlayList): CreateSuccessService<PlayListBd> | ErrorService {
 
@@ -54,4 +55,15 @@ export function substitPlayList(pl: PlayList, idPlaylist:string): PutSuccessServ
     };
 
     return { success: true, code: 200, index: index, data: updateArtist };
+}
+
+export function deletePlayList(idPlaylist: string): DeletSuccessService | ErrorService{
+  
+    const index: number = PlayLists.findIndex((t: PlayListBd) => { return t.id === idPlaylist; }
+    );
+    if (index === -1) {
+        return { success: false, code: 404, message: "track not found" }
+    }
+
+    return { success: true, code: 204, index: index};
 }

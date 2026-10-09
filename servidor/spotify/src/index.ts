@@ -2,19 +2,12 @@ import express, { Express, Request, Response } from "express";
 import { APICONFIG } from "./config/apiConfig";
 import { tracks } from "./interfaces/data/track/tracks";
 import { TrackBD } from "./interfaces/track/trackBD";
-import { randomUUID } from "crypto";
-import { Artist } from "./interfaces/artist/artist";
-import { validatorArtistCountry } from "./validators/artists.validator";
 import { ArtistBD } from "./interfaces/artist/artistBD";
 import { artists } from "./interfaces/data/track/artists.data";
-import { Country } from "./interfaces/country/country";
 import { CountryBD } from "./interfaces/country/countryBD";
 import { Countrys } from "./interfaces/data/country/dataCountrys";
-import { isValidCountry } from "./validators/countryValidator";
-import { User } from "./interfaces/user/user";
 import { UserBD } from "./interfaces/user/userBD";
 import { Users } from "./interfaces/data/user/dataUser";
-import { isValidUser } from "./validators/userValidator";
 import { createTrack, deleteTrack, getAllTracks, getTrackById, substitTrack } from "./serveis/trackService";
 import { ErrorService } from "./interfaces/error/errorService";
 import { CreateSuccessService } from "./interfaces/error/createSucessServide";
@@ -26,7 +19,7 @@ import { createUser, deleteUser, getUserById, substitUser } from "./serveis/user
 import { HistoryBD } from "./interfaces/history/historyBD";
 import { PlayListBd } from "./interfaces/playList/playListBD";
 import { PlayLists } from "./interfaces/data/playList/playLists";
-import { createPlayList, getPlayListById, substitPlayList } from "./serveis/playListService";
+import { createPlayList, deletePlayList, getPlayListById, substitPlayList } from "./serveis/playListService";
 
 
 
@@ -314,7 +307,7 @@ app.get("/playLists/:id", (req: Request, res: Response) => { // _req â†’ peticiÃ
     return res.status(200).json(findPlayList);
 });
 
-app.put("/users/:id", (req: Request, res: Response) => {
+app.put("/playLists/:id", (req: Request, res: Response) => {
 
 
     const result: PutSuccessService<PlayListBd> | ErrorService = substitPlayList(req.body, req.params.id as string);
@@ -328,3 +321,18 @@ app.put("/users/:id", (req: Request, res: Response) => {
 
     return res.status(result.code).json(result)
 });
+app.delete("/playLists/:id", (req: Request, res: Response) => {
+
+    const result: DeletSuccessService | ErrorService = deletePlayList(req.params.id as string);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message });
+    }
+    const index: number = (result as DeletSuccessService).index;
+
+    PlayLists.splice(index, 1)
+
+    return res.status(result.code).json(result)
+});
+
