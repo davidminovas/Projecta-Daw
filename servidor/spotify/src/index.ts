@@ -20,6 +20,7 @@ import { HistoryBD } from "./interfaces/history/historyBD";
 import { PlayListBd } from "./interfaces/playList/playListBD";
 import { PlayLists } from "./interfaces/data/playList/playLists";
 import { createPlayList, deletePlayList, getPlayListById, substitPlayList } from "./serveis/playListService";
+import { deleteTrackByIdController, getAllTracksContriller, getTrackByIdController, postTrackByIdController, putTrackByIdController } from "./controllers/tracksController";
 
 
 
@@ -27,13 +28,13 @@ const app: Express = express();
 app.use(express.json());
 
 app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    return res.status(200).json(tracks);
+    return res.json(JSON.stringify(APICONFIG));
 });
 
 
 
 app.get("/tracks/:id", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    return res.status(200).json(getAllTracks());
+    return getAllTracksContriller(res);
 });
 
 
@@ -68,6 +69,7 @@ app.get("/tracks/:id", (_req: Request, res: Response) => { // _req → petició 
  */
 
 app.get("/artists/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
+    
     const findArtist: ArtistBD | undefined = getArtistById(req.params.id as string)
   
     if (findArtist) {
@@ -122,52 +124,22 @@ app.listen(APICONFIG.port, APICONFIG.host, () => {
 });
 
 app.post("/tracks", (req: Request, res: Response) => {
-    const result: CreateSuccessService<TrackBD> | ErrorService = createTrack(req.body);
+    return postTrackByIdController(req, res);
 
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message })
-    }
-    tracks.push((result as CreateSuccessService<TrackBD>).data);
-    return res.status(result.code).json(result)
 });
 
 app.get("/tracks/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-    const findTrack: TrackBD | undefined = getTrackById(req.params.id as string)
-
-    if (findTrack) {
-        return res.status(404).json({ message: 'Track ${idTrack} not found' })
-    }
-    return res.status(200).json(findTrack);
+    return getTrackByIdController(req, res);
 });
 
 
 app.put("/tracks/:id", (req: Request, res: Response) => {
-    const result: PutSuccessService<TrackBD> | ErrorService = substitTrack(req.body, req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-    const index: number = (result as PutSuccessService<TrackBD>).index;
-    tracks[index] = (result as PutSuccessService<TrackBD>).data;
-
-    return res.status(result.code).json(result)
+    return putTrackByIdController(req, res);
 });
 
 
 app.delete("/tracks/:id", (req: Request, res: Response) => {
-    const result: DeletSuccessService | ErrorService = deleteTrack(req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-    const index: number = (result as DeletSuccessService).index;
-
-    tracks.splice(index, 1)
-
-    return res.status(result.code).json(result)
+    return deleteTrackByIdController(req, res);
 });
 
 
