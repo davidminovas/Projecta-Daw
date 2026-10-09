@@ -8,7 +8,7 @@ import { createTrack, deleteTrack, getAllTracks, getTrackById, substitTrack } fr
 import { Response,Request } from "express";
 
 
-export function getAllTracksContriller(res: Response):Response{
+export function getAllTracksController(_req:Request,res: Response):Response{
     return res.status(200).json(getAllTracks());
 }
 export function getTrackByIdController(req: Request, res: Response):Response {
