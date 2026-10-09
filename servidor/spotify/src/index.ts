@@ -23,6 +23,7 @@ import { createPlayList, deletePlayList, getPlayListById, substitPlayList } from
 import { deleteTrackByIdController, getAllTracksController, getTrackByIdController, postTrackByIdController, putTrackByIdController } from "./controllers/tracksController";
 import { trackRouter } from "./rutes/trackRutes";
 import { artistRouter } from "./rutes/artistRutes";
+import { countryRouter } from "./rutes/countryRutes";
 
 
 
@@ -36,6 +37,7 @@ app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda per
 
 app.use("/tracks", trackRouter);
 app.use("/artists", artistRouter);
+app.use("/countrys", countryRouter);
 
 
 /**
@@ -75,42 +77,6 @@ app.listen(APICONFIG.port, APICONFIG.host, () => {
 
 
 
-app.post("/countrys", (req: Request, res: Response) => {
-
-    const result: CreateSuccessService<CountryBD> | ErrorService = createCountry(req.body);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message })
-    }
-    Countrys.push((result as CreateSuccessService<CountryBD>).data);
-    return res.status(result.code).json(result)
-});
-
-
-app.get("/countrys/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-
-    const findCountry: CountryBD | undefined = getCountryById(req.params.id as string)
-
-    if (findCountry) {
-        return res.status(404).json({ message: 'Track ${idTrack} not found' })
-    }
-    return res.status(200).json(findCountry);
-});
-
-app.put("/countrys/:id", (req: Request, res: Response) => {
-
-    const result: PutSuccessService<CountryBD> | ErrorService = substitCountry(req.body, req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-    const index: number = (result as PutSuccessService<CountryBD>).index;
-    Countrys[index] = (result as PutSuccessService<CountryBD>).data;
-
-    return res.status(result.code).json(result)
-});
 
 app.post("/users", (req: Request, res: Response) => {
   
