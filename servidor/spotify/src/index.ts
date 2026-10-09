@@ -24,7 +24,7 @@ import { deleteTrackByIdController, getAllTracksController, getTrackByIdControll
 import { trackRouter } from "./rutes/trackRutes";
 import { artistRouter } from "./rutes/artistRutes";
 import { countryRouter } from "./rutes/countryRutes";
-
+import { userRouter } from "./rutes/userRutes";
 
 
 const app: Express = express();
@@ -38,6 +38,7 @@ app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda per
 app.use("/tracks", trackRouter);
 app.use("/artists", artistRouter);
 app.use("/countrys", countryRouter);
+app.use("/users", userRouter);
 
 
 /**
@@ -75,61 +76,6 @@ app.listen(APICONFIG.port, APICONFIG.host, () => {
     console.log(`Servidor escoltant a ${APICONFIG.host}:${APICONFIG.port}`);
 });
 
-
-
-
-app.post("/users", (req: Request, res: Response) => {
-  
-    const result: CreateSuccessService<UserBD> | ErrorService = createUser(req.body);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message })
-    }
-    Users.push((result as CreateSuccessService<UserBD>).data);
-    return res.status(result.code).json(result)
-});
-
-app.get("/users/:id", (req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
-
-    const findUser: UserBD | undefined = getUserById(req.params.id as string)
-
-    if (findUser) {
-        return res.status(404).json({ message: 'Track ${idTrack} not found' })
-    }
-    return res.status(200).json(findUser);
-});
-
-app.put("/users/:id", (req: Request, res: Response) => {
-
-
-    const result: PutSuccessService<UserBD> | ErrorService = substitUser(req.body, req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-    const index: number = (result as PutSuccessService<UserBD>).index;
-    Users[index] = (result as PutSuccessService<UserBD>).data;
-
-    return res.status(result.code).json(result)
-});
-
-
-app.delete("/users/:id", (req: Request, res: Response) => {
-
-    const result: DeletSuccessService | ErrorService = deleteUser(req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-    const index: number = (result as DeletSuccessService).index;
-
-    tracks.splice(index, 1)
-
-    return res.status(result.code).json(result)
-});
 
 app.post("/historys", (req: Request, res: Response) => {
 
