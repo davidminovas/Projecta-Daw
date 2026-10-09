@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { Artist } from "../interfaces/artist/artist";
 import { ArtistBD } from "../interfaces/artist/artistBD";
-import { artists } from "../interfaces/data/track/artists.data";
+import { artists } from "../interfaces/data/artist/artists.data";
 import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { ErrorService } from "../interfaces/error/errorService";
 import { validatorArtistCountry } from "../validators/artists.validator";
@@ -39,8 +39,8 @@ export function createArtist(artist: Artist): CreateSuccessService<ArtistBD> | E
     return { success: true, code: 201, data: artisRecord }
 }
 
-export function substitArtist(artist: Artist, idArtist:string): PutSuccessService<ArtistBD> | ErrorService {
-  
+export function substitArtist(artist: Artist, idArtist: string): PutSuccessService<ArtistBD> | ErrorService {
+
 
     if (!validatorArtistCountry(artist)) {
         return { success: false, code: 400, message: "Invalid data" };
@@ -63,13 +63,13 @@ export function substitArtist(artist: Artist, idArtist:string): PutSuccessServic
     return { success: true, code: 200, index: index, data: updateArtist };
 }
 
-export function deleteArtist(idArtist: string): DeletSuccessService | ErrorService{
-  
+export function deleteArtist(idArtist: string): DeletSuccessService | ErrorService {
+
     const index: number = artists.findIndex((t: ArtistBD) => { return t.id === idArtist; }
     );
     if (index === -1) {
         return { success: false, code: 404, message: "track not found" }
     }
 
-    return { success: true, code: 204, index: index};
+    return { success: true, code: 204, index: index };
 }
