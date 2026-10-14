@@ -5,7 +5,7 @@ import { Countrys } from "../interfaces/data/country/dataCountrys";
 
 
 
-export function validatorArtistCountry(artist: Artist): boolean {
+export function validatorArtist(artist: Artist): boolean {
     if (!artist) {
         return false;
     }
@@ -25,7 +25,9 @@ export function validatorArtistCountry(artist: Artist): boolean {
 
 
     const countriOk: CountryBD | undefined = Countrys.find(
-        (c: CountryBD) => (c.id === artist.country)
+        (c: CountryBD) => {
+            return c.id === artist.country
+        }
     );
 
     if (!countriOk) {

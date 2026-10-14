@@ -4,7 +4,7 @@ import { ArtistBD } from "../interfaces/artist/artistBD";
 import { artists } from "../interfaces/data/artist/artists.data";
 import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { ErrorService } from "../interfaces/error/errorService";
-import { validatorArtistCountry } from "../validators/artists.validator";
+import { validatorArtist } from "../validators/artists.validator";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
 
@@ -22,7 +22,7 @@ export function getArtistById(idTrack: string): ArtistBD | undefined {
 
 export function createArtist(artist: Artist): CreateSuccessService<ArtistBD> | ErrorService {
 
-    if (!validatorArtistCountry(artist)) {
+    if (!validatorArtist(artist)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
     const uuid: string = randomUUID();
@@ -42,7 +42,7 @@ export function createArtist(artist: Artist): CreateSuccessService<ArtistBD> | E
 export function substitArtist(artist: Artist, idArtist: string): PutSuccessService<ArtistBD> | ErrorService {
 
 
-    if (!validatorArtistCountry(artist)) {
+    if (!validatorArtist(artist)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
 
