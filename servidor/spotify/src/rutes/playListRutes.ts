@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { deletePLByIdController, getPLByIdController, postPLByIdController, putPLByIdController } from "../controllers/playListController";
 
-export const playListRouter: Router = Router();
+export const playListRuter: Router = Router();
 
 
-playListRouter.get("/:id", getPLByIdController)
-playListRouter.post("/", postPLByIdController)
-playListRouter.put("/:id", putPLByIdController)
-playListRouter.delete("/:id", deletePLByIdController)
+playListRuter.get("/:id", getPLByIdController)
+playListRuter.post("/", postPLByIdController)
+playListRuter.put("/:id", putPLByIdController)
+playListRuter.delete("/:id", deletePLByIdController)

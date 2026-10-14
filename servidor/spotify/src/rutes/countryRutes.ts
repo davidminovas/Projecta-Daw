@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { getCountryByIdController, postCountryByIdController, putCountryByIdController } from "../controllers/countryController";
 
-export const countryRouter: Router = Router();
+export const countryRuter: Router = Router();
 
 
-countryRouter.get("/:id", getCountryByIdController)
-countryRouter.post("/", postCountryByIdController)
-countryRouter.put("/:id", putCountryByIdController)
+countryRuter.get("/:id", getCountryByIdController)
+countryRuter.post("/", postCountryByIdController)
+countryRuter.put("/:id", putCountryByIdController)

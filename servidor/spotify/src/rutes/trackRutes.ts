@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { deleteTrackByIdController, getAllTracksController, getTrackByIdController, postTrackByIdController, putTrackByIdController } from "../controllers/tracksController";
 
-export const trackRouter: Router = Router();
+export const trackRuter: Router = Router();
 
-trackRouter.get("/", getAllTracksController)
-trackRouter.get("/:id", getTrackByIdController)
-trackRouter.post("/", postTrackByIdController)
-trackRouter.put("/:id", putTrackByIdController)
-trackRouter.delete("/:id", deleteTrackByIdController)
+trackRuter.get("/", getAllTracksController)
+trackRuter.get("/:id", getTrackByIdController)
+trackRuter.post("/", postTrackByIdController)
+trackRuter.put("/:id", putTrackByIdController)
+trackRuter.delete("/:id", deleteTrackByIdController)

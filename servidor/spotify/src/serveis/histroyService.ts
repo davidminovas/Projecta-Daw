@@ -4,6 +4,7 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { HistoryBD } from "../interfaces/history/historyBD";
 import { isValidHistori } from "../validators/history.validator";
 import { History } from "../interfaces/history/history";
+import { randomUUID } from "crypto";
 
 export function getHistoryById(idHistory: string): HistoryBD | undefined {
 
@@ -20,15 +21,14 @@ export function createHistory(history: History): CreateSuccessService<HistoryBD>
     }
     const uuid: string = randomUUID();
 
-    const artisRecord: ArtistBD = {
+    const historyRecord: HistoryBD = {
         id: uuid,
-        artisticName: artist.artisticName.trim().replace(/\s+/g, " "),
-        name: artist.name.trim().replace(/\s+/g, " "),
-        country: artist.country,
+        user: history.user.trim().replace(/\s+/g, " "),
+        track: history.track.trim().replace(/\s+/g, " "),
+        data: new Date,
     };
 
-    artists.push(artisRecord);
+    Historys.push(historyRecord);
 
-    return { success: true, code: 201, data: artisRecord }
+    return { success: true, code: 201, data: historyRecord }
 }
-

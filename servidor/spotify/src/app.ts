@@ -1,10 +1,11 @@
 import express, { Express, Request, Response } from "express";
 import { APICONFIG } from "./config/apiConfig";
-import { trackRouter } from "./rutes/trackRutes";
-import { artistRouter } from "./rutes/artistRutes";
-import { countryRouter } from "./rutes/countryRutes";
-import { userRouter } from "./rutes/userRutes";
-import { playListRouter } from "./rutes/playListRutes";
+import { trackRuter } from "./rutes/trackRutes";
+import { artistRuter } from "./rutes/artistRutes";
+import { countryRuter } from "./rutes/countryRutes";
+import { userRuter } from "./rutes/userRutes";
+import { playListRuter } from "./rutes/playListRutes";
+import { historyRuter } from "./rutes/historyRutes";
 
 
 export const app: Express = express();
@@ -15,8 +16,9 @@ app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda per
 });
 
 
-app.use("/tracks", trackRouter);
-app.use("/artists", artistRouter);
-app.use("/countrys", countryRouter);
-app.use("/users", userRouter);
-app.use("/playList", playListRouter);
+app.use("/tracks", trackRuter);
+app.use("/artists", artistRuter);
+app.use("/countrys", countryRuter);
+app.use("/users", userRuter);
+app.use("/playList", playListRuter);
+app.use("/historys", historyRuter);
