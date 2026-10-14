@@ -1,0 +1,1 @@
+export const MAXARTIST: number = 15;

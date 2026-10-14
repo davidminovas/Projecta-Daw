@@ -7,6 +7,7 @@ import { userRuter } from "./rutes/userRutes";
 import { playListRuter } from "./rutes/playListRutes";
 import { historyRuter } from "./rutes/historyRutes";
 import { playListTrackRuter } from "./rutes/playListTracksRutes";
+import { albumRuter } from "./rutes/albumRutes";
 
 
 export const app: Express = express();
@@ -24,3 +25,4 @@ app.use("/users", userRuter);
 app.use("/playList", playListRuter);
 app.use("/historys", historyRuter);
 app.use("/playListTracks", playListTrackRuter);
+app.use("/albums", albumRuter);
