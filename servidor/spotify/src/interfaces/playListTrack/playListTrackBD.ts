@@ -1,5 +1,5 @@
-import { PlayListTracks } from "./playListTracks";
+import { PlayListTrack } from "./playListTracks";
 
-export interface PlayListTracksBd extends PlayListTracks {
+export interface PlayListTracksBd extends PlayListTrack {
 
 }

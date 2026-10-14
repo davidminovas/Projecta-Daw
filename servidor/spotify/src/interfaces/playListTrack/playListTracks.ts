@@ -1,8 +1,5 @@
-import { Track } from "../track/track";
-import { PlayList } from "./playList";
-
-export interface PlayListTracks{
+export interface PlayListTrack{
     id: string;
-    playList: PlayList;//FK
-    track: Track; //FK
+    playList: string;//FK
+    track: string; //FK
 }

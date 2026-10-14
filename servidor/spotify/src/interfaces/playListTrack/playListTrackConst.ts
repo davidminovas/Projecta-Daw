@@ -1,0 +1,1 @@
+export const MAXTRACK: number = 15;
