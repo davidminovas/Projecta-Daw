@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { getHistoryById } from "../serveis/histroyService";
+import { getHistoryByIdController, postHistoryByIdController } from "../controllers/historyController";
 
 export const historyRuter: Router = Router();
 
 
-historyRuter.get("/:id", getHistoryById)
-historyRuter.post("/", getHistoryById)
+historyRuter.get("/:id", getHistoryByIdController)
+historyRuter.post("/", postHistoryByIdController)
