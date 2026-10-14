@@ -8,12 +8,12 @@ import { createAlbum, deleteAlbum, getAlbumById, substitAlbum } from "../serveis
 import { Response, Request } from "express";
 
 export function getAlbumByIdController(req: Request, res: Response): Response {
-    const findArtist: AlbumBD | undefined = getAlbumById(req.params.id as string)
+    const findAlbum: AlbumBD | undefined = getAlbumById(req.params.id as string)
 
-    if (findArtist) {
+    if (findAlbum) {
         return res.status(404).json({ message: 'Track ${idTrack} not found' })
     }
-    return res.status(200).json(findArtist);
+    return res.status(200).json(findAlbum);
 };
 
 export function postAlbumByIdController(req: Request, res: Response): Response {
