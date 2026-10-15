@@ -1,5 +1,7 @@
+import { Users } from "../interfaces/data/user/dataUser";
 import { MAXTITLE, MAXUSER } from "../interfaces/playList/constPlayList";
 import { PlayList } from "../interfaces/playList/playList";
+import { UserBD } from "../interfaces/user/userBD";
 
 export function isValidPlayList(pl: PlayList): boolean {
 
@@ -13,5 +15,14 @@ export function isValidPlayList(pl: PlayList): boolean {
     if (longUser === 0 || longUser > MAXUSER) { return false }
     if (longTitol === 0 || longTitol > MAXTITLE) { return false }
 
-    return true;
+        const userOk: UserBD | undefined = Users.find(
+            (c: UserBD) => {
+                return c.id === pl.user
+            }
+        );
+    
+    if (!userOk) {
+            return false;
+        }
+        return true;
 }

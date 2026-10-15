@@ -1,7 +1,9 @@
 import { PlayLists } from "../interfaces/data/playList/playLists";
+import { tracks } from "../interfaces/data/track/tracks";
 import { PlayListBd } from "../interfaces/playList/playListBD";
 import { MAXTRACK } from "../interfaces/playListTrack/playListTrackConst";
 import { PlayListTrack } from "../interfaces/playListTrack/playListTracks";
+import { TrackBD } from "../interfaces/track/trackBD";
 
 export function isValidPlayListTrack(playListTracks: PlayListTrack): boolean {
 
@@ -19,10 +21,17 @@ export function isValidPlayListTrack(playListTracks: PlayListTrack): boolean {
        (c: PlayListBd) => {
                return c.id === playListTracks.playList
            }
-       );
+    );
+    
+    const TrackOk: TrackBD | undefined = tracks.find(
+        (c: TrackBD) => {
+            return c.id === playListTracks.track
+        }
+    );
    
-    if (!playListOk) {
+    if (!playListOk || !TrackOk) {
            return false;
-       }
+    }
+    
        return true;
 }
