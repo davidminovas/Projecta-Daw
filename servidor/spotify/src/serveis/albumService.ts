@@ -104,13 +104,25 @@ export async function substitAlbum(album: Album, idAlbum: string): Promise<PutSu
 
 
 
-export function deleteAlbum(idAlbum: string): DeletSuccessService | ErrorService {
+export async function deleteAlbum(idAlbum: string): Promise<DeletSuccessService | ErrorService> {
 
-    const index: number = Albums.findIndex((t: AlbumBD) => { return t.id === idAlbum; }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: "track not found" }
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Delete from ALBUM Where Album.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idAlbum);
+
+    const result: IResult<AlbumBD> = await request.query(queryText);
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found"
+        }
     }
 
-    return { success: true, code: 204, index: index };
+    return {
+        success: true,
+        code: 204,
+    }
 }

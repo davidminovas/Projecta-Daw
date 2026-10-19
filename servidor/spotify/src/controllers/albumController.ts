@@ -46,16 +46,13 @@ export async function putAlbumByIdController(req: Request, res: Response): Promi
 
 
 
-export function deleteAlbumByIdController(req: Request, res: Response): Response {
-    const result: DeletSuccessService | ErrorService = deleteAlbum(req.params.id as string);
+export async function deleteAlbumByIdController(req: Request, res: Response): Promise<Response> {
+    const result: DeletSuccessService | ErrorService = await deleteAlbum(req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
-    const index: number = (result as DeletSuccessService).index;
-
-    Albums.splice(index, 1)
 
     return res.status(result.code).json(result)
 }
