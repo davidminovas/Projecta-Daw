@@ -35,21 +35,23 @@ export async function getCountryById(idCountry: string): Promise<SelectSuccessSe
 
 };
 
-export function createCountry(country: Country): CreateSuccessService<CountryBD> | ErrorService {
+export async function createCountry(country: Country): Promise<CreateSuccessService<number> | ErrorService> {
 
     if (!isValidCountry(country)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
-    const uuid: string = randomUUID();
+    
+    const name: string = country.name.trim().replace(/\s+/g, " ");
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `Insert INTO COUNTRY(name)
+    VALUES(@name)
+    `;
+    request.input("name", sql.NVarChar, name);
+ 
+    const result: IResult<number> = await request.query(queryText);
 
-    const countryRecord: CountryBD = {
-        id: uuid,
-        name: country.name.trim().replace(/\s+/g, " "),
-    };
-
-    Countrys.push(countryRecord);
-
-    return { success: true, code: 201, data: countryRecord }
+    return { success: true, code: 201, data: result.rowsAffected[0] }
 }
 
 export function substitCountry(country: Country, idCountry:string): PutSuccessService<CountryBD> | ErrorService {

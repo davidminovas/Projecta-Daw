@@ -17,17 +17,18 @@ export async function getCountryByIdController(req: Request, res: Response): Pro
 };
 
 
-export function postCountryByIdController(req: Request, res: Response): Response { 
+export async function postCountryByIdController(req: Request, res: Response): Promise<Response> { 
 
-    const result: CreateSuccessService<CountryBD> | ErrorService = createCountry(req.body);
+    const result: CreateSuccessService<CountryBD> | ErrorService = await createCountry(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message })
     }
-    Countrys.push((result as CreateSuccessService<CountryBD>).data);
+
     return res.status(result.code).json(result)
 }
+
 
 export function putCountryByIdController(req: Request, res: Response): Response {
     const result: PutSuccessService<CountryBD> | ErrorService = substitCountry(req.body, req.params.id as string);
