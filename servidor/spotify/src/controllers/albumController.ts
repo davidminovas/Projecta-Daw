@@ -32,18 +32,19 @@ export async function postAlbumByIdController(req: Request, res: Response): Prom
 
 
 
-export function putAlbumByIdController(req: Request, res: Response): Response {
-    const result: PutSuccessService<AlbumBD> | ErrorService = substitAlbum(req.body, req.params.id as string);
+export async function putAlbumByIdController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService<AlbumBD> | ErrorService = await substitAlbum(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
-    const index: number = (result as PutSuccessService<AlbumBD>).index;
-    Albums[index] = (result as PutSuccessService<AlbumBD>).data;
+
 
     return res.status(result.code).json(result)
 }
+
+
 
 export function deleteAlbumByIdController(req: Request, res: Response): Response {
     const result: DeletSuccessService | ErrorService = deleteAlbum(req.params.id as string);

@@ -37,7 +37,7 @@ export async function getAlbumById(idAlbum: string): Promise<SelectSuccessServic
 
 
 
-export async function createAlbum(album: Album): Promise<CreateSuccessService<number> | ErrorService {
+export async function createAlbum(album: Album): Promise<CreateSuccessService<number> | ErrorService> {
 
     if (!validatorAlbum(album)) {
         return { success: false, code: 400, message: "Invalid data" };
@@ -62,38 +62,47 @@ export async function createAlbum(album: Album): Promise<CreateSuccessService<nu
 
 
 
-
-
-
-
-
-
-
-
-
-export function substitAlbum(album: Album, idAlbum: string): PutSuccessService<AlbumBD> | ErrorService {
+export async function substitAlbum(album: Album, idAlbum: string): Promise<PutSuccessService<number> | ErrorService>{
 
 
     if (!validatorAlbum(album)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
 
-    const index: number = Albums.findIndex(
-        (t: AlbumBD) => { return t.id === idAlbum; }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: "track not found" }
+    const title: string = album.title.trim().replace(/\s+/g, " ");
+
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `UPDATE ALBUM SET 
+    title(@title,artist_id=@artist_id,duration=@duration
+    where track.id=@id
+    `;
+    request.input("title", sql.NVarChar, title);
+    request.input("artist_id", sql.UniqueIdentifier, album.artist);
+    request.input("data", sql.Numeric, new Date);
+    request.input("id", sql.UniqueIdentifier, idAlbum);
+
+    const result: IResult<number> = await request.query(queryText);
+
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Album not found"
+        }
     }
 
-    const updateArtist: AlbumBD = {
-        id: idAlbum,
-        title: album.title.trim().replace(/\s+/g, " "),
-        artist: album.artist.trim().replace(/\s+/g, " "),
-        data: new Date,
-    };
+    return { success: true, code: 200, data: result.rowsAffected[0] }
 
-    return { success: true, code: 200, index: index, data: updateArtist };
 }
+
+
+
+
+
+
+
 
 export function deleteAlbum(idAlbum: string): DeletSuccessService | ErrorService {
 
