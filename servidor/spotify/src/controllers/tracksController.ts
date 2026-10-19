@@ -33,15 +33,13 @@ export async function postTrackByIdController(req: Request, res: Response):Promi
         return res.status(result.code).json(result)
 }
 
-export function putTrackByIdController(req: Request, res: Response): Response {
-    const result: PutSuccessService<TrackBD> | ErrorService = substitTrack(req.body, req.params.id as string);
+export async function putTrackByIdController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService<TrackBD> | ErrorService = await substitTrack(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
+        return res.status(result.code).json({ message: errorResult.message })
     }
-    const index: number = (result as PutSuccessService<TrackBD>).index;
-    tracks[index] = (result as PutSuccessService<TrackBD>).data;
 
     return res.status(result.code).json(result)
 }
