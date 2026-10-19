@@ -3,21 +3,23 @@ import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
+import { SelectSuccessService } from "../interfaces/error/selectSucessService";
 import { TrackBD } from "../interfaces/track/trackBD";
 import { createTrack, deleteTrack, getAllTracks, getTrackById, substitTrack } from "../serveis/trackService";
 import { Response,Request } from "express";
 
 
-export function getAllTracksController(_req:Request,res: Response):Response{
-    return res.status(200).json(getAllTracks());
+export async function getAllTracksController(_req: Request, res: Response): Promise<Response>{
+    const tracks: TrackBD[] = await getAllTracks();
+    return res.status(200).json(tracks);
 }
-export function getTrackByIdController(req: Request, res: Response):Response {
-    const findTrack: TrackBD | undefined = getTrackById(req.params.id as string)
+export async function getTrackByIdController(req: Request, res: Response):Promise<Response> {
+    const findTrack:SelectSuccessService< TrackBD> | ErrorService = await getTrackById(req.params.id as string)
 
-    if (findTrack) {
-        return res.status(404).json({ message: 'Track ${idTrack} not found' })
+    if (!findTrack.success) {
+        return res.status(findTrack.code).json({ message: (findTrack as ErrorService).message })
     }
-    return res.status(200).json(findTrack);
+    return res.status(findTrack.code).json(findTrack);
 };
 
 export function postTrackByIdController(req: Request, res: Response): Response { 

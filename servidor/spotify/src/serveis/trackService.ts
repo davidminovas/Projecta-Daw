@@ -7,16 +7,42 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
+import { ConnectionPool, IResult } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql";
+import { SelectSuccessService } from "../interfaces/error/selectSucessService";
 
-export function getAllTracks(): TrackBD[] {
-    return tracks;
+export async function getAllTracks(): Promise<TrackBD[]> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select * from Track`;
+    const result: IResult<TrackBD> = await request.query(queryText);
+    return result.recordset;
+
 }
 
-export function getTrackById(idTrack: string): TrackBD | undefined {
+export async function getTrackById(idTrack: string): Promise<SelectSuccessService<TrackBD> | ErrorService> {
 
-    return tracks.find(
-        (t: TrackBD) => { return t.id === idTrack }
-    );
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select * from Track Where Track.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idTrack);
+    const result: IResult<TrackBD> = await request.query(queryText);
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message:"Track not found"
+        }
+    }
+
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    }
 
 }
 
@@ -38,8 +64,8 @@ export function createTrack(track: Track): CreateSuccessService<TrackBD> | Error
     return { success: true, code: 201, data: trackRecord }
 }
 
-export function substitTrack(track: Track, idTrack:string): PutSuccessService<TrackBD> | ErrorService {
-  
+export function substitTrack(track: Track, idTrack: string): PutSuccessService<TrackBD> | ErrorService {
+
 
     if (!isValidTrack(track)) {
         return { success: false, code: 400, message: "Invalid data" };
@@ -62,13 +88,13 @@ export function substitTrack(track: Track, idTrack:string): PutSuccessService<Tr
     return { success: true, code: 200, index: index, data: updateTrack };
 }
 
-export function deleteTrack(idTrack: string): DeletSuccessService | ErrorService{
-  
+export function deleteTrack(idTrack: string): DeletSuccessService | ErrorService {
+
     const index: number = tracks.findIndex((t: TrackBD) => { return t.id === idTrack; }
     );
     if (index === -1) {
         return { success: false, code: 404, message: "track not found" }
     }
 
-    return { success: true, code: 204, index: index};
+    return { success: true, code: 204, index: index };
 }
