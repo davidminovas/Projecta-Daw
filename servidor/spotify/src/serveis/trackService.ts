@@ -98,16 +98,29 @@ export async function substitTrack(track: Track, idTrack: string):Promise< PutSu
         }
 }
 
-    return { success: true, code: 201, data: result.rowsAffected[0] }
+    return { success: true, code: 200, data: result.rowsAffected[0] }
 }
 
-export function deleteTrack(idTrack: string): DeletSuccessService | ErrorService {
+export async function deleteTrack(idTrack: string): Promise< DeletSuccessService | ErrorService> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
 
-    const index: number = tracks.findIndex((t: TrackBD) => { return t.id === idTrack; }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: "track not found" }
+    const queryText: string = `Delete from Track Where Track.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idTrack);
+
+    const result: IResult<TrackBD> = await request.query(queryText);
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found"
+        }
     }
 
-    return { success: true, code: 204, index: index };
+    return {
+        success: true,
+        code: 204,
+    }
+
+  
 }
