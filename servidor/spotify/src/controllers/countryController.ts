@@ -30,16 +30,13 @@ export async function postCountryByIdController(req: Request, res: Response): Pr
 }
 
 
-export function putCountryByIdController(req: Request, res: Response): Response {
-    const result: PutSuccessService<CountryBD> | ErrorService = substitCountry(req.body, req.params.id as string);
+export async function putCountryByIdController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService<CountryBD> | ErrorService = await substitCountry(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
-    const index: number = (result as PutSuccessService<CountryBD>).index;
-    Countrys[index] = (result as PutSuccessService<CountryBD>).data;
 
     return res.status(result.code).json(result)
 }
-

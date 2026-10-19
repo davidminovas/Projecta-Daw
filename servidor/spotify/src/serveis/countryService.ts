@@ -23,7 +23,7 @@ export async function getCountryById(idCountry: string): Promise<SelectSuccessSe
         return {
             success: false,
             code: 404,
-            message: "Track not found"
+            message: "Country not found"
         }
     }
 
@@ -54,24 +54,32 @@ export async function createCountry(country: Country): Promise<CreateSuccessServ
     return { success: true, code: 201, data: result.rowsAffected[0] }
 }
 
-export function substitCountry(country: Country, idCountry:string): PutSuccessService<CountryBD> | ErrorService {
+export async function substitCountry(country: Country, idCountry: string): Promise< PutSuccessService<CountryBD> | ErrorService> {
   
 
     if (!isValidCountry(country)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
+    const name: string = country.name.trim().replace(/\s+/g, " ");
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `UPDATE COUNTRY SET 
+    name=@name
+    where country.id=@id
+    `;
+    request.input("name", sql.NVarChar, name);
 
-    const index: number = Countrys.findIndex(
-        (t: CountryBD) => { return t.id === idCountry; }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: "track not found" }
+
+    const result: IResult<number> = await request.query(queryText);
+
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Country not found"
+        }
     }
 
-    const updateArtist: CountryBD = {
-        id: idCountry,
-        name: country.name.trim().replace(/\s+/g, " "),
-    };
-
-    return { success: true, code: 200, index: index, data: updateArtist };
+    return { success: true, code: 200, data: result.rowsAffected[0] }
 }
+
