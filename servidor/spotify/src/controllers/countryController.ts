@@ -5,15 +5,17 @@ import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { Response, Request } from "express";
 import { createCountry, getCountryById, substitCountry } from "../serveis/countryService";
 import { Countrys } from "../interfaces/data/country/dataCountrys";
+import { SelectSuccessService } from "../interfaces/error/selectSucessService";
 
-export function getCountryByIdController(req: Request, res: Response):Response {
-    const findCountry: CountryBD | undefined = getCountryById(req.params.id as string)
+export async function getCountryByIdController(req: Request, res: Response): Promise<Response> {
+    const findCountry: SelectSuccessService<CountryBD> | ErrorService = await getCountryById(req.params.id as string)
 
-    if (findCountry) {
-        return res.status(404).json({ message: 'Track ${idTrack} not found' })
+    if (!findCountry.success) {
+        return res.status(findCountry.code).json({ message: (findCountry as ErrorService).message })
     }
-    return res.status(200).json(findCountry);
+    return res.status(findCountry.code).json(findCountry);
 };
+
 
 export function postCountryByIdController(req: Request, res: Response): Response { 
 

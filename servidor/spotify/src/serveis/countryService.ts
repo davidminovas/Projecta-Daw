@@ -6,13 +6,32 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { isValidCountry } from "../validators/countryValidator";
 import { Countrys } from "../interfaces/data/country/dataCountrys";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
+import { SelectSuccessService } from "../interfaces/error/selectSucessService";
+import { ConnectionPool, IResult } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql";
 
+export async function getCountryById(idCountry: string): Promise<SelectSuccessService<CountryBD> | ErrorService> {
 
-export function getCountryById(idCountry: string): CountryBD | undefined {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
 
-    return Countrys.find(
-        (t: CountryBD) => { return t.id === idCountry }
-    );
+    const queryText: string = `Select * from Track Where Country.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idCountry);
+    const result: IResult<CountryBD> = await request.query(queryText);
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found"
+        }
+    }
+
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    }
 
 };
 
