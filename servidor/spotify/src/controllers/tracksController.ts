@@ -22,14 +22,14 @@ export async function getTrackByIdController(req: Request, res: Response):Promis
     return res.status(findTrack.code).json(findTrack);
 };
 
-export function postTrackByIdController(req: Request, res: Response): Response { 
-        const result: CreateSuccessService<TrackBD> | ErrorService = createTrack(req.body);
+export async function postTrackByIdController(req: Request, res: Response):Promise< Response> { 
+        const result: CreateSuccessService<TrackBD> | ErrorService = await createTrack(req.body);
     
         if (!result.success) {
             const errorResult = result as ErrorService;
             return res.status(result.code).json({ message: errorResult.message })
         }
-        tracks.push((result as CreateSuccessService<TrackBD>).data);
+
         return res.status(result.code).json(result)
 }
 
