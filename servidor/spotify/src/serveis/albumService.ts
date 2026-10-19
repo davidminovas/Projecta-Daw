@@ -37,24 +37,39 @@ export async function getAlbumById(idAlbum: string): Promise<SelectSuccessServic
 
 
 
-export function createAlbum(album: Album): CreateSuccessService<AlbumBD> | ErrorService {
+export async function createAlbum(album: Album): Promise<CreateSuccessService<number> | ErrorService {
 
     if (!validatorAlbum(album)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
-    const uuid: string = randomUUID();
+    const title: string = album.title.trim().replace(/\s+/g, " ");
 
-    const albumRecord: AlbumBD = {
-        id: uuid,
-        title: album.title.trim().replace(/\s+/g, " "),
-        artist: album.artist.trim().replace(/\s+/g, " "),
-        data: new Date,
-    };
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
 
-    Albums.push(albumRecord);
+    const queryText: string = `Insert INTO ALBUM(title,artist_id,data)
+    VALUES(@title,@artist_id,@data)
+    `;
+    request.input("title", sql.NVarChar, title);
+    request.input("artist_id", sql.UniqueIdentifier, album.artist);
+    request.input("data", sql.Numeric, new Date());
 
-    return { success: true, code: 201, data: albumRecord }
+    const result: IResult<number> = await request.query(queryText);
+
+    return { success: true, code: 201, data: result.rowsAffected[0] }
+
 }
+
+
+
+
+
+
+
+
+
+
+
 
 export function substitAlbum(album: Album, idAlbum: string): PutSuccessService<AlbumBD> | ErrorService {
 

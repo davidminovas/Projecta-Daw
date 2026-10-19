@@ -18,22 +18,19 @@ export async function getAlbumByIdController(req: Request, res: Response): Promi
 };
 
 
-
-
-
-
-
-export function postAlbumByIdController(req: Request, res: Response): Response {
-    const result: CreateSuccessService<AlbumBD> | ErrorService = createAlbum(req.body);
+export async function postAlbumByIdController(req: Request, res: Response): Promise<Response> {
+    const result: CreateSuccessService<AlbumBD> | ErrorService = await createAlbum(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message })
     }
-    Albums.push((result as CreateSuccessService<AlbumBD>).data);
     return res.status(result.code).json(result)
 
 }
+
+
+
 
 export function putAlbumByIdController(req: Request, res: Response): Response {
     const result: PutSuccessService<AlbumBD> | ErrorService = substitAlbum(req.body, req.params.id as string);
