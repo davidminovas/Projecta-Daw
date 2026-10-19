@@ -8,14 +8,34 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { validatorAlbum } from "../validators/albumValidator";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
+import { SelectSuccessService } from "../interfaces/error/selectSucessService";
+import { ConnectionPool, IResult } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql";
 
-export function getAlbumById(idAlbum: string): AlbumBD | undefined {
+export async function getAlbumById(idAlbum: string): Promise<SelectSuccessService<AlbumBD> | ErrorService> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `Select * from ALBUM Where Album.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idAlbum);
+    const result: IResult<AlbumBD> = await request.query(queryText);
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found"
+        }
+    }
 
-    return Albums.find(
-        (t: AlbumBD) => { return t.id === idAlbum }
-    );
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    }
 
 };
+
+
 
 export function createAlbum(album: Album): CreateSuccessService<AlbumBD> | ErrorService {
 
