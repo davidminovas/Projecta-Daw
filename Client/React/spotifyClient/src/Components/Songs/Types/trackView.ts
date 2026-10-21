@@ -1,0 +1,7 @@
+export interface trackView {
+
+    tittle: string;
+    artist: string;
+    duration: number;
+
+}

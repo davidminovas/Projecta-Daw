@@ -12,7 +12,7 @@ function App() {
   const track: Track = tracks[random];
   return (
     <>
-      <SongCerd tittle={track.tittle} artist={track.artist} duration={track.duration} />
+      <SongCerd trackInfo={track} />
     </>
   )
 }
