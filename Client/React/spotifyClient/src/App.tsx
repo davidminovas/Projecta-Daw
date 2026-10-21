@@ -1,5 +1,5 @@
 import './App.css'
-import SongCerd from './Components/Songs/SongCard'
+import SongCard from './Components/Songs/SongCard';
 import type { trackView } from './Components/Songs/Types/trackView';
 import { tracks } from './Data/track/tracks';
 import type { Track } from './Model/Track';
@@ -19,7 +19,8 @@ function App() {
   }
   return (
     <>
-      <SongCerd trackInfo={totalReproduction} />
+      <header />
+      <SongCard trackInfo={totalReproduction} />
     </>
   )
 }

@@ -1,7 +1,5 @@
 import type { SongCardProps } from "./Types/songCardProps"
 
-
-
 const SongCerd = (props:SongCardProps) => {
     return (
         <>
@@ -12,4 +10,5 @@ const SongCerd = (props:SongCardProps) => {
         </>
     )
 }
+
 export default SongCerd
