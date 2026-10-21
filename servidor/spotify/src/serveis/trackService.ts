@@ -78,7 +78,7 @@ export async function substitTrack(track: Track, idTrack: string):Promise< PutSu
     const request: sql.Request = pool.request();
 
     const queryText: string = `UPDATE TRACK SET 
-    title(@title,artist_id=@artist_id,duration=@duration
+    title=@title,artist_id=@artist_id,duration=@duration
     where track.id=@id
     `;
     request.input("title", sql.NVarChar, title);
