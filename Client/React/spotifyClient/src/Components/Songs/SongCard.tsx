@@ -1,24 +1,32 @@
 import { useState } from "react";
 import type { SongCardProps } from "./Types/songCardProps"
+import like from "../../assets/like.jpg"
+import dislike from "../../assets/dislike.jpg"
 
 const SongCerd = (props: SongCardProps) => {
 
-    const [totalReproduction, setTotalReproduccions] = useState < number >(0);
+    let [totalReproduction, setTotalReproduccions] = useState<number>(props.trackInfo.totalReproduction);
 
-    function handeleClickPlay() {
-        props.trackInfo.totalReproduction += 1;
+    function handeleClickPlay(numer:number) {
+        const tr = (prev: number) => { return prev + numer }
+        setTotalReproduccions(tr);
+        console.log(tr)
     }
+
 
 
     return (
         <>
             <h1> {props.trackInfo.tittle}</h1>
             <p>{props.trackInfo.artist}</p>
-            <p> duration: {  props.trackInfo.duration}</p>
-            <p> Total reproducio: {props.trackInfo.totalReproduction}</p>
-            <p><button onClick={handeleClickPlay}>Play</button></p>
+            <p> duration: {props.trackInfo.duration}</p>
+            <p> Total reproducio: {totalReproduction}</p>
+            <p><button onClick={() => handeleClickPlay(1)}>Play 1</button></p>
+            <p><button onClick={() => handeleClickPlay(5)}>Play 5</button></p>
+            <p><button onClick={() => handeleClickPlay(10)}>Play 10</button></p>
         </>
     )
 }
 
 export default SongCerd
+
