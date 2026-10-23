@@ -13,14 +13,14 @@ function App() {
   const track: Track = tracks[random];
 
 
-  const totalReproduction: trackView = {
+  const trackwr: trackView = {
     ...track,
     "totalReproduction": Math.floor(Math.random() * 100000),
   }
   return (
     <>
       <header />
-      <SongCard trackInfo={totalReproduction} />
+      <SongCard trackInfo={trackwr} />
     </>
   )
 }
