@@ -7,13 +7,13 @@ const SongCerd = (props: SongCardProps) => {
 
     let [totalReproduction, setTotalReproduccions] = useState<number>(props.trackInfo.totalReproduction);
 
-    function handeleClickPlay(numer:number) {
+    function handeleClickPlay(numer: number) {
         const tr = (prev: number) => { return prev + numer }
         setTotalReproduccions(tr);
         console.log(tr)
     }
 
-
+    const [isLiked, setIsLiked] = useState(false);;
 
     return (
         <>
@@ -21,6 +21,11 @@ const SongCerd = (props: SongCardProps) => {
             <p>{props.trackInfo.artist}</p>
             <p> duration: {props.trackInfo.duration}</p>
             <p> Total reproducio: {totalReproduction}</p>
+            <img
+                className="song-reaction-image"
+                src={isLiked ? like : dislike}
+                onClick={() => setIsLiked(previous => !previous)}
+            />
             <p><button onClick={() => handeleClickPlay(1)}>Play 1</button></p>
             <p><button onClick={() => handeleClickPlay(5)}>Play 5</button></p>
             <p><button onClick={() => handeleClickPlay(10)}>Play 10</button></p>
@@ -29,4 +34,3 @@ const SongCerd = (props: SongCardProps) => {
 }
 
 export default SongCerd
-
