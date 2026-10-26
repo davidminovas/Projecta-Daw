@@ -73,7 +73,7 @@ function App() {
           Canvia la cançó
         </button>
       </header>
-      <SongCard trackInfo={trackwr} />
+      <SongCard trackInfo={trackwr} play={()=>incrementReproduction()} />
     </>
   )
 }

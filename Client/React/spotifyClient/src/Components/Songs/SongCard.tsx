@@ -9,7 +9,7 @@ const SongCerd = (props: SongCardProps) => {
 
 
     function handeleClickPlay() {
-
+        props.play();
     }
 
     const [isLiked, setIsLiked] = useState<likeView>({
