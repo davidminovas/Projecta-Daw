@@ -17,8 +17,8 @@ function App() {
       likes: Math.floor(Math.random() * 100)
     }
   );
-    
-    
+
+
 
   const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [now, setNow] = useState(() => new Date());
@@ -42,8 +42,19 @@ function App() {
   const trackwr: trackView = {
     ...track,
     "totalReproduction": Math.floor(Math.random() * 100000),
-    likes:23,
+    likes: 23,
   }
+
+  function handleCklickRandom() {
+    const tr = (prev: trackView): trackView => {
+      return {
+        ...tracks[(Math.floor(Math.random() * tracks.length))],
+        totalReproduction: Math.floor(Math.random() * 100000),
+        likes: Math.floor(Math.random() * 100000),
+      }
+    }
+    setTrack(tr);
+  };
   return (
     <>
       <header>
@@ -57,7 +68,7 @@ function App() {
         </button>
         <button
           type="button"
-          onClick={() => setTrack(tracks[Math.floor(Math.random() * tracks.length)])}
+          onClick={handleCklickRandom}
         >
           Canvia la cançó
         </button>
