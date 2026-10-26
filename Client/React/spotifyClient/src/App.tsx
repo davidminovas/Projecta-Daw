@@ -10,7 +10,7 @@ function App() {
 
 
 
-  const [track] = useState(() => tracks[Math.floor(Math.random() * tracks.length)]);
+  const [track, setTrack] = useState(() => tracks[Math.floor(Math.random() * tracks.length)]);
   const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [now, setNow] = useState(() => new Date());;
 
@@ -32,6 +32,12 @@ function App() {
         </p>
         <button type="button" onClick={() => setNow(new Date())}>
           Actualitza la data
+        </button>
+        <button
+          type="button"
+          onClick={() => setTrack(tracks[Math.floor(Math.random() * tracks.length)])}
+        >
+          Canvia la cançó
         </button>
       </header>
       <SongCard trackInfo={trackwr} />
