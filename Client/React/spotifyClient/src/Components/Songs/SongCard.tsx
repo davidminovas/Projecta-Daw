@@ -8,8 +8,8 @@ const SongCerd = (props: SongCardProps) => {
 
     let [totalReproduction, setTotalReproduccions] = useState<number>(props.trackInfo.totalReproduction);
 
-    function handeleClickPlay(numer: number) {
-        const tr = (prev: number) => { return prev + numer }
+    function handeleClickPlay() {
+        const tr = (prev: number) => { return prev + 1 }
         setTotalReproduccions(tr);
     }
 
@@ -49,9 +49,7 @@ const SongCerd = (props: SongCardProps) => {
                 />
                 {isLiked.totalLikes}
             </p>
-            <p><button onClick={() => handeleClickPlay(1)}>Play 1</button></p>
-            <p><button onClick={() => handeleClickPlay(5)}>Play 5</button></p>
-            <p><button onClick={() => handeleClickPlay(10)}>Play 10</button></p>
+            <p><button onClick={() => handeleClickPlay()}>Play</button></p>
         </>
     )
 }

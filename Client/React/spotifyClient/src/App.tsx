@@ -12,8 +12,19 @@ function App() {
 
   const [track, setTrack] = useState(() => tracks[Math.floor(Math.random() * tracks.length)]);
   const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
-  const [now, setNow] = useState(() => new Date());;
+  const [now, setNow] = useState(() => new Date());
 
+
+
+  function incrementReproduction() {
+    const tr = (prev: trackView): trackView => {
+      return {
+        ...prev,
+        totalReproduction: prev.totalReproduction +1,
+    }
+    }
+
+  }
 
   const data = now.toLocaleString('ca-ES');
 
