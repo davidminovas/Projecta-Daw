@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { SongCardProps } from "./Types/songCardProps"
 import like from "../../assets/like.jpg"
 import dislike from "../../assets/dislike.jpg"
+import type { likeView } from "./Types/likeView";
 
 const SongCerd = (props: SongCardProps) => {
 
@@ -10,10 +11,27 @@ const SongCerd = (props: SongCardProps) => {
     function handeleClickPlay(numer: number) {
         const tr = (prev: number) => { return prev + numer }
         setTotalReproduccions(tr);
-        console.log(tr)
     }
 
-    const [isLiked, setIsLiked] = useState(false);;
+    const [isLiked, setIsLiked] = useState<likeView>({
+        totalLikes: 0,
+        like: false
+    });
+
+    function handelClickLike() {
+        setIsLiked(previous => {
+            const like = !previous.like;
+
+            return {
+                like,
+                totalLikes: Math.max(
+                    0,
+                    previous.totalLikes + (like ? 1 : -1)
+                )
+            };
+        });
+    }
+
 
     return (
         <>
@@ -21,11 +39,16 @@ const SongCerd = (props: SongCardProps) => {
             <p>{props.trackInfo.artist}</p>
             <p> duration: {props.trackInfo.duration}</p>
             <p> Total reproducio: {totalReproduction}</p>
-            <img
-                className="song-reaction-image"
-                src={isLiked ? like : dislike}
-                onClick={() => setIsLiked(previous => !previous)}
-            />
+            <p>
+                <img
+                    className="song-reaction-image"
+                    src={isLiked.like ? like : dislike}
+                    onClick={() =>
+                        handelClickLike()
+                    }
+                />
+                {isLiked.totalLikes}
+            </p>
             <p><button onClick={() => handeleClickPlay(1)}>Play 1</button></p>
             <p><button onClick={() => handeleClickPlay(5)}>Play 5</button></p>
             <p><button onClick={() => handeleClickPlay(10)}>Play 10</button></p>
