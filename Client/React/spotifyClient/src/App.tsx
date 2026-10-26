@@ -10,7 +10,16 @@ function App() {
 
 
 
-  const [track, setTrack] = useState(() => tracks[Math.floor(Math.random() * tracks.length)]);
+  const [track, setTrack] = useState<trackView>(
+    {
+      ...tracks[(Math.floor(Math.random() * tracks.length))],
+      totalReproduction: Math.floor(Math.random() * 1000),
+      likes: Math.floor(Math.random() * 100)
+    }
+  );
+    
+    
+
   const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [now, setNow] = useState(() => new Date());
 
@@ -33,6 +42,7 @@ function App() {
   const trackwr: trackView = {
     ...track,
     "totalReproduction": Math.floor(Math.random() * 100000),
+    likes:23,
   }
   return (
     <>
