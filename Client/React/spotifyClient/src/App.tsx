@@ -20,9 +20,10 @@ function App() {
     const tr = (prev: trackView): trackView => {
       return {
         ...prev,
-        totalReproduction: prev.totalReproduction +1,
+        totalReproduction: prev.totalReproduction + 1,
+      }
     }
-    }
+    setTrack(tr);
 
   }
 

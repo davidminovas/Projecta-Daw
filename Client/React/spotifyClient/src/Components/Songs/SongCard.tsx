@@ -6,11 +6,10 @@ import type { likeView } from "./Types/likeView";
 
 const SongCerd = (props: SongCardProps) => {
 
-    let [totalReproduction, setTotalReproduccions] = useState<number>(props.trackInfo.totalReproduction);
+
 
     function handeleClickPlay() {
-        const tr = (prev: number) => { return prev + 1 }
-        setTotalReproduccions(tr);
+
     }
 
     const [isLiked, setIsLiked] = useState<likeView>({
@@ -19,17 +18,7 @@ const SongCerd = (props: SongCardProps) => {
     });
 
     function handelClickLike() {
-        setIsLiked(previous => {
-            const like = !previous.like;
 
-            return {
-                like,
-                totalLikes: Math.max(
-                    0,
-                    previous.totalLikes + (like ? 1 : -1)
-                )
-            };
-        });
     }
 
 
@@ -38,7 +27,7 @@ const SongCerd = (props: SongCardProps) => {
             <h1> {props.trackInfo.tittle}</h1>
             <p>{props.trackInfo.artist}</p>
             <p> duration: {props.trackInfo.duration}</p>
-            <p> Total reproducio: {totalReproduction}</p>
+            <p> Total reproducio: {props.trackInfo.totalReproduction}</p>
             <p>
                 <img
                     className="song-reaction-image"
