@@ -3,18 +3,16 @@ import SongCard from './Components/Songs/SongCard';
 import type { trackView } from './Components/Songs/Types/trackView';
 import { tracks } from './Data/track/tracks';
 import { users } from './Data/user/user';
-import type { Track } from './Model/Track';
+import { useState } from 'react';
 
 
 function App() {
 
 
-  const totalTracks: number = tracks.length;
-  const random: number = Math.floor(Math.random() * totalTracks);
-  const track: Track = tracks[random];
-  const randomUser: number = Math.floor(Math.random() * users.length);
-  const user = users[randomUser];
-  const now = new Date();
+
+  const [track] = useState(() => tracks[Math.floor(Math.random() * tracks.length)]);
+  const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
+  const [now, setNow] = useState(() => new Date());;
 
 
   const data = now.toLocaleString('ca-ES');
@@ -32,6 +30,9 @@ function App() {
         <p>
           Data i hora: {data}
         </p>
+        <button type="button" onClick={() => setNow(new Date())}>
+          Actualitza la data
+        </button>
       </header>
       <SongCard trackInfo={trackwr} />
     </>
