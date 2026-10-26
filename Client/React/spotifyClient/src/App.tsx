@@ -39,12 +39,6 @@ function App() {
   const data = now.toLocaleString('ca-ES');
 
 
-  const trackwr: trackView = {
-    ...track,
-    "totalReproduction": Math.floor(Math.random() * 100000),
-    likes: 23,
-  }
-
   function handleCklickRandom() {
     const tr = (prev: trackView): trackView => {
       return {
@@ -73,7 +67,7 @@ function App() {
           Canvia la cançó
         </button>
       </header>
-      <SongCard trackInfo={trackwr} play={()=>incrementReproduction()} />
+      <SongCard trackInfo={track} play={()=>incrementReproduction()} />
     </>
   )
 }
