@@ -10,6 +10,9 @@ const ReproductionCard = (props: reproductionCardProps) => {
     function disminuirSong() {
         props.disminuir();
     }
+    function stopSong() {
+        props.stop();
+    }
 
 
 
@@ -24,6 +27,7 @@ const ReproductionCard = (props: reproductionCardProps) => {
             <button onClick={() => disminuirSong()}>-</button>
             {props.hasPlayed && <p>play song</p>}{!props.hasPlayed && <p>play not song</p>}
             {props.hasPlayed && <p>{props.reproductionInfo.title}</p>}
+            {props.hasPlayed && <button onClick={() => stopSong()}>Stop</button>}
         </>
     )
 }

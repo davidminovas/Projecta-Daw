@@ -35,7 +35,7 @@ function App() {
 
   const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [now, setNow] = useState(() => new Date());
-  const [hasPlayed, setHasPlayed] = useState(false);
+  let [hasPlayed, setHasPlayed] = useState(false);
 
 
 
@@ -49,7 +49,9 @@ function App() {
     setTrack(tr);
   }
 
-
+  function stopSong() {
+    setHasPlayed(!hasPlayed);
+  }
 
   function incrementVolumSong() {
     const tr = (prev: reproductionView): reproductionView => {
@@ -181,7 +183,7 @@ function App() {
         }));
         setHasPlayed(prev => !prev);
       }} like={() => gestionarLikes()} reset={() => handelClickReset()} />
-      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} />
+      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} stop={() => stopSong()} />
     </>
   )
 }
