@@ -121,6 +121,7 @@ function App() {
 
   function handelClickReset() {
     const tr = (prev: trackView): trackView => {
+      setHasPlayed(!hasPlayed);
       return {
         ...prev,
         totalReproduction: 0,
