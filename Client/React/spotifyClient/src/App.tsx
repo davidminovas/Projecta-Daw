@@ -184,6 +184,7 @@ function App() {
         }));
         setHasPlayed(prev => !prev);
       }} like={() => gestionarLikes()} reset={() => handelClickReset()} />
+      <hr />
       <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} stop={() => stopSong()} />
     </>
   )
