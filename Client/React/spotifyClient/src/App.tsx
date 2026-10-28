@@ -34,6 +34,7 @@ function App() {
 
   const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [now, setNow] = useState(() => new Date());
+  const [hasPlayed, setHasPlayed] = useState(false);
 
 
 
@@ -53,11 +54,12 @@ function App() {
     const tr = (prev: reproductionView): reproductionView => {
       if (prev.volum != 100) {
         return {
-          volum: prev.volum + 1
+          volum: prev.volum + 1,
+
         }
       } else {
         return {
-          volum: 100
+          volum: 100,
         }
       }
     }
@@ -158,8 +160,11 @@ function App() {
           Canvia la cançó
         </button>
       </header>
-      <SongCard trackInfo={track} play={() => incrementReproduction()} like={() => gestionarLikes()} reset={() => handelClickReset()} />
-      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} />
+      <SongCard trackInfo={track} play={() => {
+        incrementReproduction();
+        setHasPlayed(true);
+      }} like={() => gestionarLikes()} reset={() => handelClickReset()} />
+      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} />
     </>
   )
 }
