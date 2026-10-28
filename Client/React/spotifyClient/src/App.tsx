@@ -48,11 +48,17 @@ function App() {
   }
 
 
-  
+
   function incrementVolumSong() {
     const tr = (prev: reproductionView): reproductionView => {
-      return {
-        volum: prev.volum + 1
+      if (prev.volum != 100) {
+        return {
+          volum: prev.volum + 1
+        }
+      } else {
+        return {
+          volum: 100
+        }
       }
     }
     setReproduction(tr);
@@ -60,8 +66,14 @@ function App() {
 
   function disminucioVolumSong() {
     const tr = (prev: reproductionView): reproductionView => {
-      return {
-        volum: prev.volum - 1
+      if (prev.volum != 0) {
+        return {
+          volum: prev.volum - 1
+        }
+      } else {
+        return {
+          volum: 0
+        }
       }
     }
     setReproduction(tr);

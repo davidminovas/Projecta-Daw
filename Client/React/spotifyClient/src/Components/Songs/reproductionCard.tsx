@@ -18,7 +18,7 @@ const ReproductionCard = (props: reproductionCardProps) => {
 
     return (
         <>
-            <button onClick={() => incrementSong()}>+</button>
+            <button  onClick={() => incrementSong()}>+</button>
             <p>{props.reproductionInfo.volum}</p>
             <button onClick={() => disminuirSong()}>-</button>
         </>
