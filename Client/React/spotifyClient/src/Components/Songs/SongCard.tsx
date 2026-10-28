@@ -18,7 +18,7 @@ const SongCerd = (props: SongCardProps) => {
     });
 
     function handelClickLike() {
-
+        props.like();
     }
 
 

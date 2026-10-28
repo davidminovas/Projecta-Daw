@@ -4,6 +4,6 @@ export interface trackView {
     artist: string;
     duration: number;
     totalReproduction: number;
-    likes: number;
+    likes: Like;
 
 }

@@ -6,6 +6,7 @@ export interface SongCardProps {
 
     trackInfo: trackView;
     play: () => void;
+    like: () => void;
 
 
 }
