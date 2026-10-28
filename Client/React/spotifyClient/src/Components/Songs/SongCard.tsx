@@ -15,6 +15,11 @@ const SongCerd = (props: SongCardProps) => {
     function handelClickLike() {
         props.like();
     }
+    function handelClickReset() {
+        props.reset();
+    }
+
+
 
 
     return (
@@ -34,6 +39,7 @@ const SongCerd = (props: SongCardProps) => {
                 {props.trackInfo.likes.totalLikes}
             </p>
             <p><button onClick={() => handeleClickPlay()}>Play</button></p>
+            <p><button onClick={()=> handelClickReset()}>Reset</button></p>
         </>
     )
 }

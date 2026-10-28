@@ -44,6 +44,7 @@ function App() {
   const data = now.toLocaleString('ca-ES');
 
 
+
   function handleCklickRandom() {
     const trackRandom: trackView = {
 
@@ -59,16 +60,30 @@ function App() {
     setTrack(trackRandom);
   };
 
+  function handelClickReset() {
+    const tr = (prev: trackView): trackView => {
+      return {
+        ...prev,
+        totalReproduction: 0,
+        likes: {
+          like: false,
+          totalLikes: 0
+        }
+      }
+    };
+    setTrack(tr);
+  }
+
   function gestionarLikes() {
     const tr = (prev: trackView): trackView => {
 
-      
-      let increment: number= 1;
+
+      let increment: number = 1;
       if (prev.likes.like) {
         increment = -1;
-      
+
       }
-      const likeObj: Like={
+      const likeObj: Like = {
         like: !prev.likes.like,
         totalLikes: prev.likes.totalLikes + increment
       };
@@ -101,7 +116,7 @@ function App() {
           Canvia la cançó
         </button>
       </header>
-      <SongCard trackInfo={track} play={() => incrementReproduction()} like={() => gestionarLikes()} />
+      <SongCard trackInfo={track} play={() => incrementReproduction()} like={() => gestionarLikes()} reset={() => handelClickReset()} />
     </>
   )
 }
