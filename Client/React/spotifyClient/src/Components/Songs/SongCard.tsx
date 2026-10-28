@@ -12,10 +12,6 @@ const SongCerd = (props: SongCardProps) => {
         props.play();
     }
 
-    const [isLiked, setIsLiked] = useState<likeView>({
-        totalLikes: 0,
-        like: false
-    });
 
     function handelClickLike() {
         props.like();

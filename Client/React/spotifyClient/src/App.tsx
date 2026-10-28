@@ -40,14 +40,18 @@ function App() {
 
 
   function handleCklickRandom() {
-    const trackRandom:trackView  {
-      return {
-        ...tracks[(Math.floor(Math.random() * tracks.length))],
-        totalReproduction: Math.floor(Math.random() * 100000),
-        likes: Math.floor(Math.random() * 100000),
+    const trackRandom: trackView = {
+
+      ...tracks[(Math.floor(Math.random() * tracks.length))],
+      totalReproduction: Math.floor(Math.random() * 100000),
+      likes: {
+        like: true,
+        totalLikes: 100
+
       }
+
     }
-    setTrack(tr);
+    setTrack(trackRandom);
   };
 
   function gestionarLikes() {
@@ -79,7 +83,7 @@ function App() {
           Canvia la cançó
         </button>
       </header>
-      <SongCard trackInfo={track} play={()=>incrementReproduction()} like={()=>gestionarLikes()} />
+      <SongCard trackInfo={track} play={() => incrementReproduction()} like={() => gestionarLikes()} />
     </>
   )
 }
