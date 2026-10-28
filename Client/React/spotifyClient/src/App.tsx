@@ -1,4 +1,6 @@
 import './App.css'
+import ReproductionCard from './Components/Songs/reproductionCard';
+import type { reproductionView } from './Components/Songs/reproductionCard/reproductionView';
 import SongCard from './Components/Songs/SongCard';
 import type { Like } from './Components/Songs/Types/like';
 import type { trackView } from './Components/Songs/Types/trackView';
@@ -22,6 +24,11 @@ function App() {
       }
     }
   );
+  const [reproduction, setReproduction] = useState<reproductionView>(
+    {
+      volum: 0,
+    }
+  );
 
 
 
@@ -38,6 +45,15 @@ function App() {
       }
     }
     setTrack(tr);
+
+  }
+  function incrementSong() {
+    const tr = (prev: reproductionView): reproductionView => {
+      return {
+        volum: prev.volum + 1
+      }
+    }
+    setReproduction(tr);
 
   }
 
@@ -117,6 +133,7 @@ function App() {
         </button>
       </header>
       <SongCard trackInfo={track} play={() => incrementReproduction()} like={() => gestionarLikes()} reset={() => handelClickReset()} />
+      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementSong()} />
     </>
   )
 }
