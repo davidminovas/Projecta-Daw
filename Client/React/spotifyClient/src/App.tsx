@@ -14,7 +14,11 @@ function App() {
     {
       ...tracks[(Math.floor(Math.random() * tracks.length))],
       totalReproduction: Math.floor(Math.random() * 1000),
-      likes: Math.floor(Math.random() * 100)
+      likes: {
+        like: true,
+        totalLikes: 100
+
+      }
     }
   );
 
@@ -58,7 +62,11 @@ function App() {
     const tr = (prev: trackView): trackView => {
       return {
         ...prev,
-        likes:
+        likes: {
+          like: false,
+          totalLikes: 0
+
+        }
       }
     }
     setTrack(tr);
