@@ -1,5 +1,6 @@
 import './App.css'
 import SongCard from './Components/Songs/SongCard';
+import type { Like } from './Components/Songs/Types/like';
 import type { trackView } from './Components/Songs/Types/trackView';
 import { tracks } from './Data/track/tracks';
 import { users } from './Data/user/user';
@@ -60,13 +61,22 @@ function App() {
 
   function gestionarLikes() {
     const tr = (prev: trackView): trackView => {
+
+      
+      let increment: number= 1;
+      if (prev.likes.like) {
+        increment = -1;
+      
+      }
+      const likeObj: Like={
+        like: !prev.likes.like,
+        totalLikes: prev.likes.totalLikes + increment
+      };
+
+
       return {
         ...prev,
-        likes: {
-          like: false,
-          totalLikes: 0
-
-        }
+        likes: likeObj
       }
     }
     setTrack(tr);
