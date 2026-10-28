@@ -45,17 +45,31 @@ function App() {
       }
     }
     setTrack(tr);
-
   }
-  function incrementSong() {
+
+
+  
+  function incrementVolumSong() {
     const tr = (prev: reproductionView): reproductionView => {
       return {
         volum: prev.volum + 1
       }
     }
     setReproduction(tr);
+  }
+
+  function disminucioVolumSong() {
+    const tr = (prev: reproductionView): reproductionView => {
+      return {
+        volum: prev.volum - 1
+      }
+    }
+    setReproduction(tr);
 
   }
+
+
+
 
   const data = now.toLocaleString('ca-ES');
 
@@ -133,7 +147,7 @@ function App() {
         </button>
       </header>
       <SongCard trackInfo={track} play={() => incrementReproduction()} like={() => gestionarLikes()} reset={() => handelClickReset()} />
-      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementSong()} />
+      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} />
     </>
   )
 }
