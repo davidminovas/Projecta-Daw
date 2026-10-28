@@ -7,5 +7,6 @@ export interface trackView {
     duration: number;
     totalReproduction: number;
     likes: Like;
+    
 
 }

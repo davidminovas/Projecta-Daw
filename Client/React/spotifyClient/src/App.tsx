@@ -60,6 +60,7 @@ function App() {
       } else {
         return {
           volum: 100,
+
         }
       }
     }
@@ -162,9 +163,9 @@ function App() {
       </header>
       <SongCard trackInfo={track} play={() => {
         incrementReproduction();
-        setHasPlayed(true);
+        setHasPlayed(prev => !prev);
       }} like={() => gestionarLikes()} reset={() => handelClickReset()} />
-      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} />
+      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong() } hasPlayed={hasPlayed} />
     </>
   )
 }
