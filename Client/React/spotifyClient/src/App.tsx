@@ -27,6 +27,7 @@ function App() {
   const [reproduction, setReproduction] = useState<reproductionView>(
     {
       volum: 0,
+      title: track.tittle,
     }
   );
 
@@ -55,11 +56,13 @@ function App() {
       if (prev.volum != 100) {
         return {
           volum: prev.volum + 1,
+          title: prev.title,
 
         }
       } else {
         return {
           volum: 100,
+          title: prev.title
 
         }
       }
@@ -71,11 +74,13 @@ function App() {
     const tr = (prev: reproductionView): reproductionView => {
       if (prev.volum != 0) {
         return {
-          volum: prev.volum - 1
+          volum: prev.volum - 1,
+          title: prev.title,
         }
       } else {
         return {
-          volum: 0
+          volum: 0,
+          title: prev.title
         }
       }
     }
@@ -102,7 +107,14 @@ function App() {
       }
 
     }
+    const tr = (prev: reproductionView): reproductionView => {
+      return {
+        volum: prev.volum,
+        title: prev.title
+      }
+    }
     setTrack(trackRandom);
+    setReproduction(tr);
   };
 
   function handelClickReset() {
@@ -163,9 +175,13 @@ function App() {
       </header>
       <SongCard trackInfo={track} play={() => {
         incrementReproduction();
+        setReproduction(prev => ({
+          ...prev,
+          title: track.tittle,
+        }));
         setHasPlayed(prev => !prev);
       }} like={() => gestionarLikes()} reset={() => handelClickReset()} />
-      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong() } hasPlayed={hasPlayed} />
+      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} />
     </>
   )
 }
