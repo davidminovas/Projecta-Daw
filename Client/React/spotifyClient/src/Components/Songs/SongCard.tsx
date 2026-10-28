@@ -1,8 +1,7 @@
-import { useState } from "react";
 import type { SongCardProps } from "./Types/songCardProps"
 import like from "../../assets/like.jpg"
 import dislike from "../../assets/dislike.jpg"
-import type { likeView } from "./Types/likeView";
+
 
 const SongCerd = (props: SongCardProps) => {
 
@@ -27,12 +26,12 @@ const SongCerd = (props: SongCardProps) => {
             <p>
                 <img
                     className="song-reaction-image"
-                    src={isLiked.like ? like : dislike}
+                    src={props.trackInfo.likes.like ? like : dislike}
                     onClick={() =>
                         handelClickLike()
                     }
                 />
-                {isLiked.totalLikes}
+                {props.trackInfo.likes.totalLikes}
             </p>
             <p><button onClick={() => handeleClickPlay()}>Play</button></p>
         </>
