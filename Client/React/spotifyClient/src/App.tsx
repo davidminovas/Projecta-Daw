@@ -100,7 +100,7 @@ function App() {
 
 
   function handleCklickRandom() {
-    setHasPlayed(!hasPlayed);
+    setHasPlayed(false);
     const trackRandom: trackView = {
 
       ...tracks[(Math.floor(Math.random() * tracks.length))],
@@ -124,7 +124,7 @@ function App() {
 
   function handelClickReset() {
     const tr = (prev: trackView): trackView => {
-      setHasPlayed(!hasPlayed);
+      setHasPlayed(false);
       return {
         ...prev,
         totalReproduction: 0,
@@ -173,6 +173,7 @@ function App() {
               tracks.map(
                 (t: Track) => {
                   return <SongRow
+                    key={t.id}
                     tittle={t.tittle}
                     artist={t.artist}
                     duration={t.duration}
