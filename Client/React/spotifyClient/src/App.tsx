@@ -7,6 +7,8 @@ import type { trackView } from './Components/Songs/Types/trackView';
 import { tracks } from './Data/track/tracks';
 import { users } from './Data/user/user';
 import { useState } from 'react';
+import type { Track } from './Model/Track';
+import SongRow from './Components/Songs/SongRow';
 
 
 function App() {
@@ -161,6 +163,25 @@ function App() {
 
   return (
     <>
+      <main>
+        <table>
+          <thead>
+            <title></title>
+          </thead>
+          <tbody>
+            {
+              tracks.map(
+                (t: Track) => {
+                  return <SongRow
+                    tittle={t.tittle}
+                    artist={t.artist}
+                    duration={t.duration}
+                  />
+                }
+              )
+            }
+          </tbody>
+        </table>
       <header>
         <h1>Spotify</h1>
         <p>Usuari: {user.name}</p>
@@ -186,7 +207,8 @@ function App() {
         setHasPlayed(prev => !prev);
       }} like={() => gestionarLikes()} reset={() => handelClickReset()} />
       <hr />
-      <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} stop={() => stopSong()} />
+        <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} stop={() => stopSong()} />
+      </main>
     </>
   )
 }
