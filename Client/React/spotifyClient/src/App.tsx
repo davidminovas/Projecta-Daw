@@ -7,8 +7,7 @@ import type { trackView } from './Components/Songs/Types/trackView';
 import { tracks } from './Data/track/tracks';
 import { users } from './Data/user/user';
 import { useState } from 'react';
-import type { Track } from './Model/Track';
-import SongRow from './Components/Songs/SongRow';
+import ListSongs from './Components/Songs/listSong';
 
 
 function App() {
@@ -169,18 +168,8 @@ function App() {
             <title></title>
           </thead>
           <tbody>
-            {
-              tracks.map(
-                (t: Track) => {
-                  return <SongRow
-                    key={t.id}
-                    tittle={t.tittle}
-                    artist={t.artist}
-                    duration={t.duration}
-                  />
-                }
-              )
-            }
+            <ListSongs tracks={tracks}/>
+
           </tbody>
         </table>
       <header>
