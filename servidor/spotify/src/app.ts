@@ -9,11 +9,13 @@ import { historyRuter } from "./rutes/historyRutes";
 import { playListTrackRuter } from "./rutes/playListTracksRutes";
 import { albumRuter } from "./rutes/albumRutes";
 import { albumTrackRuter } from "./rutes/albumTrackRutes";
+import cors from "cors";
+import { corsOptions } from "./config/cors";
 
 
 export const app: Express = express();
 app.use(express.json());
-
+app.use(cors(corsOptions));
 app.get("/", (_req: Request, res: Response) => { // _req → petició rebuda però no utilitzada
     return res.json(JSON.stringify(APICONFIG));
 });
