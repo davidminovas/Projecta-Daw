@@ -169,7 +169,6 @@ function App() {
           </thead>
           <tbody>
             <ListSongs tracks={tracks}/>
-
           </tbody>
         </table>
       <header>

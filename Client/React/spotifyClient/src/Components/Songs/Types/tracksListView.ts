@@ -1,6 +1,6 @@
-import type { Like } from "./like";
 
-export interface trackView {
+
+export interface TrackListView {
     id: string;
     tittle: string;
     artist: string;

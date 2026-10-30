@@ -1,6 +1,7 @@
+import type { TrackListView } from "./tracksListView";
 
 
 export interface SongListProps {
-    tarcks:TrackListView[];
+    tracks:TrackListView[];
 
 }
