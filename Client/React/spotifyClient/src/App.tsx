@@ -98,6 +98,7 @@ function App() {
 
 
   function handleCklickRandom() {
+    setHasPlayed(!hasPlayed);
     const trackRandom: trackView = {
 
       ...tracks[(Math.floor(Math.random() * tracks.length))],
