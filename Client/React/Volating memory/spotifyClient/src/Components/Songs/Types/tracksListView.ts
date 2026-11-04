@@ -7,5 +7,4 @@ export interface TrackListView {
     duration: number;
 
 
-
 }

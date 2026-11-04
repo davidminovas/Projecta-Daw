@@ -2,6 +2,6 @@ import type { TrackListView } from "./tracksListView";
 
 
 export interface SongListProps {
-    tracks:TrackListView[];
-
+    tracks: TrackListView[];
+    time: (duration: number) => string;
 }

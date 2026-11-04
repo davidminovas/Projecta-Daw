@@ -13,6 +13,12 @@ import ListSongs from './Components/Songs/listSong';
 function App() {
 
 
+  function timeCorrection(duration: number) {
+    const second = duration % 60;
+    const minut = Math.floor(duration / 60);
+    return `${minut}:${String(second).padStart(2, '0')}`;
+  }
+
 
   const [track, setTrack] = useState<trackView>(
     {
@@ -168,7 +174,7 @@ function App() {
             <title></title>
           </thead>
           <tbody>
-            <ListSongs tracks={tracks}/>
+            <ListSongs tracks={tracks} time={ timeCorrection} />
           </tbody>
         </table>
       <header>
@@ -187,14 +193,14 @@ function App() {
           Canvia la cançó
         </button>
       </header>
-      <SongCard trackInfo={track} play={() => {
-        incrementReproduction();
-        setReproduction(prev => ({
-          ...prev,
-          title: track.tittle,
-        }));
-        setHasPlayed(prev => !prev);
-      }} like={() => gestionarLikes()} reset={() => handelClickReset()} />
+        <SongCard trackInfo={track} play={() => {
+          incrementReproduction();
+          setReproduction(prev => ({
+            ...prev,
+            title: track.tittle,
+          }));
+          setHasPlayed(prev => !prev);
+        }} like={() => gestionarLikes()} reset={() => handelClickReset()} time={() => timeCorrection(track.duration)} />
       <hr />
         <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} stop={() => stopSong()} />
       </main>
