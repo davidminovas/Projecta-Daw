@@ -5,7 +5,7 @@ import SongCard from './Components/Songs/SongCard';
 import type { Like } from './Components/Songs/Types/like';
 import type { trackView } from './Components/Songs/Types/trackView';
 import { users } from './Data/user/user';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ListSongs from './Components/Songs/listSong';
 import type { Track } from './Model/Track';
 
@@ -35,7 +35,10 @@ function App() {
     const listTrack: Track[] = await resposta.json() as Track[];
     setTracks(listTrack)
 }
-
+  useEffect(
+    () => {
+      chargeTrack()
+    }, []);
 
   const [reproduction, setReproduction] = useState<reproductionView>(
     {
@@ -101,12 +104,7 @@ function App() {
 
   }
 
-
-
-
   const data = now.toLocaleString('ca-ES');
-
-
 
   function handleCklickRandom() {
     setHasPlayed(false);
@@ -170,11 +168,12 @@ function App() {
 
   }
 
+
   return (
     <>
       <main>
         {
-          !tracks.length?
+          tracks.length > 0 ?
             <table>
               <thead>
                 <title></title>
@@ -183,9 +182,8 @@ function App() {
                 <ListSongs tracks={tracks} />
               </tbody>
             </table>
-            : <p>
-              <button onClick={chargeTrack}>Carregar Canço</button>
-            </p>
+            : <>
+            </>
         }
 
       <header>
