@@ -1,6 +1,7 @@
+import type { GetTrack } from "../../APIManagement/Tracks/Interfaces/Track"
 import SongRow from "./SongRow"
 import type { SongListProps } from "./Types/songListProps"
-import type { TrackListView } from "./Types/tracksListView"
+
 
 
 const ListSongs = (props: SongListProps ) => {
@@ -10,7 +11,7 @@ const ListSongs = (props: SongListProps ) => {
         <>
             {
                 props.tracks.map(
-                    (t: TrackListView) => {
+                    (t: GetTrack) => {
                         return <SongRow
                             key={t.id}
                             tittle={t.tittle}

@@ -7,13 +7,13 @@ import type { trackView } from './Components/Songs/Types/trackView';
 import { users } from './Data/user/user';
 import { useEffect, useState } from 'react';
 import ListSongs from './Components/Songs/listSong';
-import type { Track } from './Model/Track';
 import { ENV } from './config/env';
+import type { GetTrack } from './APIManagement/Tracks/Interfaces/Track';
 
 
 function App() {
 
-  const [tracks, setTracks] = useState<Track[]>([]);
+  const [tracks, setTracks] = useState<GetTrack[]>([]);
   const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [now, setNow] = useState(() => new Date());
   let [hasPlayed, setHasPlayed] = useState(false);
@@ -33,7 +33,7 @@ function App() {
   async function  chargeTrack() {
   
     const resposta: Response = await fetch(`${ENV.API_BASE_URL}/tracks`);
-    const listTrack: Track[] = await resposta.json() as Track[];
+    const listTrack: GetTrack[] = await resposta.json() as GetTrack[];
     setTracks(listTrack)
 }
   useEffect(
