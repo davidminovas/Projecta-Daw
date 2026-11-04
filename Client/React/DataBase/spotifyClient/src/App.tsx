@@ -8,6 +8,7 @@ import { users } from './Data/user/user';
 import { useEffect, useState } from 'react';
 import ListSongs from './Components/Songs/listSong';
 import type { Track } from './Model/Track';
+import { ENV } from './config/env';
 
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
 
   async function  chargeTrack() {
   
-    const resposta: Response = await fetch("http://localhost:3000/tracks");
+    const resposta: Response = await fetch(`${ENV.API_BASE_URL}/tracks`);
     const listTrack: Track[] = await resposta.json() as Track[];
     setTracks(listTrack)
 }
