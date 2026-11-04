@@ -15,7 +15,7 @@ const ListSongs = (props: SongListProps) => {
                         return <SongRow
                             key={t.id}
                             tittle={t.title}
-                            artist={t.artist}
+                            artist={t.artist_id}
                             duration={t.duration}
                         />
                     }

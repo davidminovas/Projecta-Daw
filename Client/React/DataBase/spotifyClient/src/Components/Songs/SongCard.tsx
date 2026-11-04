@@ -25,7 +25,7 @@ const SongCerd = (props: SongCardProps) => {
     return (
         <>
             <h1> {props.trackInfo.title}</h1>
-            <p>{props.trackInfo.artist}</p>
+            <p>{props.trackInfo.artist_id}</p>
             <p> duration: {props.trackInfo.duration}</p>
             <p> Total reproducio: {props.trackInfo.totalReproduction}</p>
             <p>
