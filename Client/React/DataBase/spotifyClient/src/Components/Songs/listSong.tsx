@@ -4,7 +4,7 @@ import type { SongListProps } from "./Types/songListProps"
 
 
 
-const ListSongs = (props: SongListProps ) => {
+const ListSongs = (props: SongListProps) => {
 
 
     return (
@@ -14,7 +14,7 @@ const ListSongs = (props: SongListProps ) => {
                     (t: GetTrack) => {
                         return <SongRow
                             key={t.id}
-                            tittle={t.tittle}
+                            tittle={t.title}
                             artist={t.artist}
                             duration={t.duration}
                         />

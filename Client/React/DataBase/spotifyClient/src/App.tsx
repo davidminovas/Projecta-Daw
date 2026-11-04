@@ -30,12 +30,12 @@ function App() {
     }
   );
 
-  async function  chargeTrack() {
-  
+  async function chargeTrack() {
+
     const resposta: Response = await fetch(`${ENV.API_BASE_URL}/tracks`);
     const listTrack: GetTrack[] = await resposta.json() as GetTrack[];
     setTracks(listTrack)
-}
+  }
   useEffect(
     () => {
       chargeTrack()
@@ -44,7 +44,7 @@ function App() {
   const [reproduction, setReproduction] = useState<reproductionView>(
     {
       volum: 0,
-      title: track.tittle,
+      title: track.title,
     }
   );
 
@@ -187,31 +187,31 @@ function App() {
             </>
         }
 
-      <header>
-        <h1>Spotify</h1>
-        <p>Usuari: {user.name}</p>
-        <p>
-          Data i hora: {data}
-        </p>
-        <button type="button" onClick={() => setNow(new Date())}>
-          Actualitza la data
-        </button>
-        <button
-          type="button"
-          onClick={handleCklickRandom}
-        >
-          Canvia la cançó
-        </button>
-      </header>
-      <SongCard trackInfo={track} play={() => {
-        incrementReproduction();
-        setReproduction(prev => ({
-          ...prev,
-          title: track.tittle,
-        }));
-        setHasPlayed(prev => !prev);
-      }} like={() => gestionarLikes()} reset={() => handelClickReset()} />
-      <hr />
+        <header>
+          <h1>Spotify</h1>
+          <p>Usuari: {user.name}</p>
+          <p>
+            Data i hora: {data}
+          </p>
+          <button type="button" onClick={() => setNow(new Date())}>
+            Actualitza la data
+          </button>
+          <button
+            type="button"
+            onClick={handleCklickRandom}
+          >
+            Canvia la cançó
+          </button>
+        </header>
+        <SongCard trackInfo={track} play={() => {
+          incrementReproduction();
+          setReproduction(prev => ({
+            ...prev,
+            title: track.title,
+          }));
+          setHasPlayed(prev => !prev);
+        }} like={() => gestionarLikes()} reset={() => handelClickReset()} />
+        <hr />
         <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} stop={() => stopSong()} />
       </main>
     </>

@@ -1,6 +1,6 @@
-export interface GetTrack{
+export interface GetTrack {
     id: string;
-    tittle: string;
+    title: string;
     artist: string;
     duration: number;
 }

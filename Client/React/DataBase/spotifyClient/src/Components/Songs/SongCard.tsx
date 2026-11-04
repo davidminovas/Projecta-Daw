@@ -24,7 +24,7 @@ const SongCerd = (props: SongCardProps) => {
 
     return (
         <>
-            <h1> {props.trackInfo.tittle}</h1>
+            <h1> {props.trackInfo.title}</h1>
             <p>{props.trackInfo.artist}</p>
             <p> duration: {props.trackInfo.duration}</p>
             <p> Total reproducio: {props.trackInfo.totalReproduction}</p>
@@ -39,7 +39,7 @@ const SongCerd = (props: SongCardProps) => {
                 {props.trackInfo.likes.totalLikes}
             </p>
             <p><button onClick={() => handeleClickPlay()}>Play</button></p>
-            <p><button onClick={()=> handelClickReset()}>Reset</button></p>
+            <p><button onClick={() => handelClickReset()}>Reset</button></p>
         </>
     )
 }
