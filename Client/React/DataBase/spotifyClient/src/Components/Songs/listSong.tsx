@@ -16,7 +16,7 @@ const ListSongs = (props: SongListProps) => {
                             key={t.id}
                             tittle={t.title}
                             artist={t.artist}
-                            duration={props.time(t.duration)}
+                            duration={t.duration}
                         />
                     }
                 )

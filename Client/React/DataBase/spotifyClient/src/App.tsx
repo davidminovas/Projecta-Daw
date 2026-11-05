@@ -13,11 +13,20 @@ import type { GetTrack } from './APIManagement/Tracks/Interfaces/Track';
 
 function App() {
 
-  function timeCorrection(duration: number) {
-    const second = duration % 60;
+
+  function timeMinu(duration: number): number {
     const minut = Math.floor(duration / 60);
-    return `${minut}:${String(second).padStart(2, '0')}`;
+    return minut;
   }
+  function timeSecond(duration: number): number {
+    const second = duration % 60;
+    return second;
+  }
+
+
+
+
+
 
   const [tracks, setTracks] = useState<GetTrack[]>([]);
   const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
@@ -37,10 +46,30 @@ function App() {
   );
 
   async function chargeTrack() {
+    const resposta = await fetch(`${ENV.API_BASE_URL}/tracks`);
+    const listTrack: GetTrack[] = await resposta.json();
 
-    const resposta: Response = await fetch(`${ENV.API_BASE_URL}/tracks`);
-    const listTrack: GetTrack[] = await resposta.json() as GetTrack[];
-    setTracks(listTrack)
+    setTracks(listTrack);
+
+    if (listTrack.length === 0) {
+      return;
+    }
+
+    const initialTrack = listTrack[0];
+
+    setTrack({
+      ...initialTrack,
+      totalReproduction: 0,
+      likes: {
+        like: false,
+        totalLikes: 0,
+      },
+    });
+
+    setReproduction(prev => ({
+      ...prev,
+      title: initialTrack.title,
+    }));
   }
   useEffect(
     () => {
@@ -186,7 +215,7 @@ function App() {
                 <title></title>
               </thead>
               <tbody>
-                <ListSongs tracks={tracks} time={timeCorrection} />
+                <ListSongs tracks={tracks} />
               </tbody>
             </table>
             : <>
@@ -216,7 +245,7 @@ function App() {
             title: track.title,
           }));
           setHasPlayed(prev => !prev);
-        }} like={() => gestionarLikes()} reset={() => handelClickReset()} time={() => timeCorrection(track.duration)}/>
+        }} like={() => gestionarLikes()} reset={() => handelClickReset()} second={timeSecond} minut={timeMinu} />
         <hr />
         <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} stop={() => stopSong()} />
       </main>
