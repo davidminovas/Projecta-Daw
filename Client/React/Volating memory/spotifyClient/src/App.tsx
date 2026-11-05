@@ -8,7 +8,8 @@ import { tracks } from './Data/track/tracks';
 import { users } from './Data/user/user';
 import { useState } from 'react';
 import ListSongs from './Components/Songs/listSong';
-
+import ListCard from './Components/llist/listCard';
+import type { listView } from "./Components/llist/listView";
 
 function App() {
 
@@ -43,7 +44,8 @@ function App() {
   const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [now, setNow] = useState(() => new Date());
   let [hasPlayed, setHasPlayed] = useState(false);
-
+  const [history, setHistory] = useState<listView[]>([]);
+  const [playButtonHidden, setPlayButtonHidden] = useState(false);
 
 
   function incrementReproduction() {
@@ -57,7 +59,8 @@ function App() {
   }
 
   function stopSong() {
-    setHasPlayed(!hasPlayed);
+    setHasPlayed(false);
+    setPlayButtonHidden(false);
   }
 
   function incrementVolumSong() {
@@ -106,6 +109,7 @@ function App() {
 
   function handleCklickRandom() {
     setHasPlayed(false);
+    setPlayButtonHidden(false);
     const trackRandom: trackView = {
 
       ...tracks[(Math.floor(Math.random() * tracks.length))],
@@ -174,35 +178,48 @@ function App() {
             <title></title>
           </thead>
           <tbody>
-            <ListSongs tracks={tracks} time={ timeCorrection} />
+            <ListSongs tracks={tracks} time={timeCorrection} />
           </tbody>
         </table>
-      <header>
-        <h1>Spotify</h1>
-        <p>Usuari: {user.name}</p>
-        <p>
-          Data i hora: {data}
-        </p>
-        <button type="button" onClick={() => setNow(new Date())}>
-          Actualitza la data
-        </button>
-        <button
-          type="button"
-          onClick={handleCklickRandom}
-        >
-          Canvia la cançó
-        </button>
-      </header>
-        <SongCard trackInfo={track} play={() => {
-          incrementReproduction();
-          setReproduction(prev => ({
-            ...prev,
-            title: track.tittle,
-          }));
-          setHasPlayed(prev => !prev);
-        }} like={() => gestionarLikes()} reset={() => handelClickReset()} time={() => timeCorrection(track.duration)} />
-      <hr />
+        <header>
+          <h1>Spotify</h1>
+          <p>Usuari: {user.name}</p>
+          <p>
+            Data i hora: {data}
+          </p>
+          <button type="button" onClick={() => setNow(new Date())}>
+            Actualitza la data
+          </button>
+          <button
+            type="button"
+            onClick={handleCklickRandom}
+          >
+            Canvia la cançó
+          </button>
+        </header>
+        <SongCard
+          trackInfo={track}
+          playButtonHidden={playButtonHidden}
+          play={() => {
+            incrementReproduction();
+            setReproduction(prev => ({
+              ...prev,
+              title: track.tittle,
+            }));
+            setHistory(prev => [
+              ...prev,
+              { title: track.tittle, data: new Date() },
+            ]);
+            setHasPlayed(true);
+            setPlayButtonHidden(true);
+          }}
+          like={() => gestionarLikes()}
+          reset={() => handelClickReset()}
+          time={() => timeCorrection(track.duration)}
+        />
+        <hr />
         <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} stop={() => stopSong()} />
+        <ListCard history={history} />
       </main>
     </>
   )

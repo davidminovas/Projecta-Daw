@@ -38,8 +38,10 @@ const SongCerd = (props: SongCardProps) => {
                 />
                 {props.trackInfo.likes.totalLikes}
             </p>
-            <p><button onClick={() => handeleClickPlay()}>Play</button></p>
-            <p><button onClick={()=> handelClickReset()}>Reset</button></p>
+            {!props.playButtonHidden && (
+                <p><button type="button" onClick={handeleClickPlay}>Play</button></p>
+            )}
+            <p><button onClick={() => handelClickReset()}>Reset</button></p>
         </>
     )
 }

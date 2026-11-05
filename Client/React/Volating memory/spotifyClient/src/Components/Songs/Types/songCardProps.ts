@@ -9,6 +9,7 @@ export interface SongCardProps {
     like: () => void;
     reset: () => void;
     time: () => string;
+    playButtonHidden: boolean;
 
 
 
