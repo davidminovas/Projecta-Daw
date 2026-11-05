@@ -13,6 +13,12 @@ import type { GetTrack } from './APIManagement/Tracks/Interfaces/Track';
 
 function App() {
 
+  function timeCorrection(duration: number) {
+    const second = duration % 60;
+    const minut = Math.floor(duration / 60);
+    return `${minut}:${String(second).padStart(2, '0')}`;
+  }
+
   const [tracks, setTracks] = useState<GetTrack[]>([]);
   const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [now, setNow] = useState(() => new Date());
@@ -180,7 +186,7 @@ function App() {
                 <title></title>
               </thead>
               <tbody>
-                <ListSongs tracks={tracks} />
+                <ListSongs tracks={tracks} time={timeCorrection} />
               </tbody>
             </table>
             : <>
@@ -210,7 +216,7 @@ function App() {
             title: track.title,
           }));
           setHasPlayed(prev => !prev);
-        }} like={() => gestionarLikes()} reset={() => handelClickReset()} />
+        }} like={() => gestionarLikes()} reset={() => handelClickReset()} time={() => timeCorrection(track.duration)}/>
         <hr />
         <ReproductionCard reproductionInfo={reproduction} augment={() => incrementVolumSong()} disminuir={() => disminucioVolumSong()} hasPlayed={hasPlayed} stop={() => stopSong()} />
       </main>

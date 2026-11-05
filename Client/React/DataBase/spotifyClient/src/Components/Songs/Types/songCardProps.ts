@@ -8,7 +8,7 @@ export interface SongCardProps {
     play: () => void;
     like: () => void;
     reset: () => void;
-
+    time: () => string;
 
 
 }
