@@ -4,8 +4,10 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { SelectSuccessService } from "../interfaces/error/selectSucessService";
 import { TrackBD } from "../interfaces/track/trackBD";
-import { createTrack, deleteTrack, getAllTracks, getTrackById, substitTrack } from "../serveis/trackService";
+import { addTrackUserHistory } from "../serveis/histroyService";
+import { getAllTracks, getTrackById, createTrack, substitTrack, deleteTrack } from "../serveis/trackService";
 import { Response, Request } from "express";
+
 
 export async function getAllTracksController(_req: Request, res: Response): Promise<Response> {
     const tracks: TrackBD[] = await getAllTracks();
