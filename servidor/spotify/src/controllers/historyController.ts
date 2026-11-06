@@ -3,7 +3,7 @@ import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { ErrorService } from "../interfaces/error/errorService";
 import { HistoryBD } from "../interfaces/history/historyBD";
 import { createHistory, getHistoryById } from "../serveis/histroyService";
-import { Request,Response } from "express"; 
+import { Request, Response } from "express";
 
 export function getHistoryByIdController(req: Request, res: Response): Response {
     const findHistory: HistoryBD | undefined = getHistoryById(req.params.id as string)

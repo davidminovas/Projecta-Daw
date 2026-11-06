@@ -32,7 +32,7 @@ export async function getTrackById(idTrack: string): Promise<SelectSuccessServic
         return {
             success: false,
             code: 404,
-            message:"Track not found"
+            message: "Track not found"
         }
     }
 
@@ -44,12 +44,12 @@ export async function getTrackById(idTrack: string): Promise<SelectSuccessServic
 
 }
 
-export async function createTrack(track: Track):Promise< CreateSuccessService<number> | ErrorService >{
+export async function createTrack(track: Track): Promise<CreateSuccessService | ErrorService> {
 
     if (!isValidTrack(track)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
-   
+
     const title: string = track.title.trim().replace(/\s+/g, " ");
 
     const pool: ConnectionPool = await getConnection();
@@ -64,10 +64,10 @@ export async function createTrack(track: Track):Promise< CreateSuccessService<nu
 
     const result: IResult<number> = await request.query(queryText);
 
-    return { success: true, code: 201, data: result.rowsAffected[0]  }
+    return { success: true, code: 201, data: result.rowsAffected[0] }
 }
 
-export async function substitTrack(track: Track, idTrack: string):Promise< PutSuccessService<number> | ErrorService> {
+export async function substitTrack(track: Track, idTrack: string): Promise<PutSuccessService<number> | ErrorService> {
     if (!isValidTrack(track)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
@@ -85,21 +85,21 @@ export async function substitTrack(track: Track, idTrack: string):Promise< PutSu
     request.input("artist_id", sql.UniqueIdentifier, track.artist);
     request.input("duration", sql.Numeric, track.duration);
     request.input("id", sql.UniqueIdentifier, idTrack);
-    
+
     const result: IResult<number> = await request.query(queryText);
 
-    if (result.rowsAffected[0]===0) {
+    if (result.rowsAffected[0] === 0) {
         return {
             success: false,
             code: 404,
             message: "Track not found"
         }
-}
+    }
 
     return { success: true, code: 200, data: result.rowsAffected[0] }
 }
 
-export async function deleteTrack(idTrack: string): Promise< DeletSuccessService | ErrorService> {
+export async function deleteTrack(idTrack: string): Promise<DeletSuccessService | ErrorService> {
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
@@ -120,5 +120,5 @@ export async function deleteTrack(idTrack: string): Promise< DeletSuccessService
         code: 204,
     }
 
-  
+
 }

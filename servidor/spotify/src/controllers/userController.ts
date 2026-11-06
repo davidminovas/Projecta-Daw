@@ -7,7 +7,7 @@ import { Response, Request } from "express";
 import { createUser, deleteUser, getUserById, substitUser } from "../serveis/userService";
 import { Users } from "../interfaces/data/user/dataUser";
 
-export function getUserByIdController(req: Request, res: Response):Response {
+export function getUserByIdController(req: Request, res: Response): Response {
     const findUser: UserBD | undefined = getUserById(req.params.id as string)
 
     if (findUser) {
@@ -16,7 +16,7 @@ export function getUserByIdController(req: Request, res: Response):Response {
     return res.status(200).json(findUser);
 };
 
-export function postUserByIdController(req: Request, res: Response): Response { 
+export function postUserByIdController(req: Request, res: Response): Response {
     const result: CreateSuccessService<UserBD> | ErrorService = createUser(req.body);
 
     if (!result.success) {

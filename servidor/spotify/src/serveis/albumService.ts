@@ -37,7 +37,7 @@ export async function getAlbumById(idAlbum: string): Promise<SelectSuccessServic
 
 
 
-export async function createAlbum(album: Album): Promise<CreateSuccessService<number> | ErrorService> {
+export async function createAlbum(album: Album): Promise<CreateSuccessService | ErrorService> {
 
     if (!validatorAlbum(album)) {
         return { success: false, code: 400, message: "Invalid data" };
@@ -62,7 +62,7 @@ export async function createAlbum(album: Album): Promise<CreateSuccessService<nu
 
 
 
-export async function substitAlbum(album: Album, idAlbum: string): Promise<PutSuccessService<number> | ErrorService>{
+export async function substitAlbum(album: Album, idAlbum: string): Promise<PutSuccessService<number> | ErrorService> {
 
 
     if (!validatorAlbum(album)) {

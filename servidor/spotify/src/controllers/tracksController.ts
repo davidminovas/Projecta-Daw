@@ -1,4 +1,3 @@
-import { tracks } from "../interfaces/data/track/tracks";
 import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
 import { ErrorService } from "../interfaces/error/errorService";
@@ -7,7 +6,6 @@ import { SelectSuccessService } from "../interfaces/error/selectSucessService";
 import { TrackBD } from "../interfaces/track/trackBD";
 import { createTrack, deleteTrack, getAllTracks, getTrackById, substitTrack } from "../serveis/trackService";
 import { Response, Request } from "express";
-
 
 export async function getAllTracksController(_req: Request, res: Response): Promise<Response> {
     const tracks: TrackBD[] = await getAllTracks();
@@ -23,7 +21,7 @@ export async function getTrackByIdController(req: Request, res: Response): Promi
 };
 
 export async function postTrackByIdController(req: Request, res: Response): Promise<Response> {
-    const result: CreateSuccessService<TrackBD> | ErrorService = await createTrack(req.body);
+    const result: CreateSuccessService | ErrorService = await createTrack(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -54,4 +52,15 @@ export async function deleteTrackByIdController(req: Request, res: Response): Pr
 
 
     return res.status(result.code).send();
+}
+
+export async function postTrackUserHistoryController(req: Request, res: Response): Promise<Response> {
+    const result: CreateSuccessService | ErrorService = await addTrackUserHistory(req.body);
+
+    if (!result.success) {
+        const errorResult = result as ErrorService;
+        return res.status(result.code).json({ message: errorResult.message })
+    }
+
+    return res.status(result.code).json(result)
 }

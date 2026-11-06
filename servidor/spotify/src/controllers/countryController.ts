@@ -17,7 +17,7 @@ export async function getCountryByIdController(req: Request, res: Response): Pro
 };
 
 
-export async function postCountryByIdController(req: Request, res: Response): Promise<Response> { 
+export async function postCountryByIdController(req: Request, res: Response): Promise<Response> {
 
     const result: CreateSuccessService<CountryBD> | ErrorService = await createCountry(req.body);
 

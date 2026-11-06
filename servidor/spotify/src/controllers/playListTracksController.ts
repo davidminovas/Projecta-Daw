@@ -8,7 +8,7 @@ import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
 
 
 
-export function postPlayListTrackByIdController(req: Request, res: Response): Response { 
+export function postPlayListTrackByIdController(req: Request, res: Response): Response {
     const result: CreateSuccessService<PlayListTracksBd> | ErrorService = createPlayListTrack(req.body);
 
     if (!result.success) {

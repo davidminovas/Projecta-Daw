@@ -7,7 +7,7 @@ import { PlayListBd } from "../interfaces/playList/playListBD";
 import { createPlayList, deletePlayList, getPlayListById, substitPlayList } from "../serveis/playListService";
 import { PlayLists } from "../interfaces/data/playList/playLists";
 
-export function getPLByIdController(req: Request, res: Response):Response {
+export function getPLByIdController(req: Request, res: Response): Response {
     const findPlayList: PlayListBd | undefined = getPlayListById(req.params.id as string)
 
     if (findPlayList) {
@@ -16,7 +16,7 @@ export function getPLByIdController(req: Request, res: Response):Response {
     return res.status(200).json(findPlayList);
 };
 
-export function postPLByIdController(req: Request, res: Response): Response { 
+export function postPLByIdController(req: Request, res: Response): Response {
     const result: CreateSuccessService<PlayListBd> | ErrorService = createPlayList(req.body);
 
     if (!result.success) {

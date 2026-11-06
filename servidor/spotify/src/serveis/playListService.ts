@@ -34,8 +34,8 @@ export function getPlayListById(idPlaylist: string): PlayListBd | undefined {
 
 };
 
-export function substitPlayList(pl: PlayList, idPlaylist:string): PutSuccessService<PlayListBd> | ErrorService {
-  
+export function substitPlayList(pl: PlayList, idPlaylist: string): PutSuccessService<PlayListBd> | ErrorService {
+
 
     if (!isValidPlayList(pl)) {
         return { success: false, code: 400, message: "Invalid data" };
@@ -57,13 +57,13 @@ export function substitPlayList(pl: PlayList, idPlaylist:string): PutSuccessServ
     return { success: true, code: 200, index: index, data: updateArtist };
 }
 
-export function deletePlayList(idPlaylist: string): DeletSuccessService | ErrorService{
-  
+export function deletePlayList(idPlaylist: string): DeletSuccessService | ErrorService {
+
     const index: number = PlayLists.findIndex((t: PlayListBd) => { return t.id === idPlaylist; }
     );
     if (index === -1) {
         return { success: false, code: 404, message: "track not found" }
     }
 
-    return { success: true, code: 204, index: index};
+    return { success: true, code: 204, index: index };
 }

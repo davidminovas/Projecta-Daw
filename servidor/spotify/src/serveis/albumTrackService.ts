@@ -34,7 +34,7 @@ export async function getAlbumTrackById(idAlbumTrack: string): Promise<SelectSuc
 
 };
 
-export async function createAlbumTrack(albumTrack: AlbumTrack): Promise<CreateSuccessService<number> | ErrorService> {
+export async function createAlbumTrack(albumTrack: AlbumTrack): Promise<CreateSuccessService | ErrorService> {
 
     if (!validatorAlbumTrack(albumTrack)) {
         return { success: false, code: 400, message: "Invalid data" };
@@ -58,7 +58,7 @@ export async function createAlbumTrack(albumTrack: AlbumTrack): Promise<CreateSu
 
 
 
-export async function substitAlbumTrack(albumTrack: AlbumTrack, idAlbumTrack: string):Promise< PutSuccessService<number> | ErrorService >{
+export async function substitAlbumTrack(albumTrack: AlbumTrack, idAlbumTrack: string): Promise<PutSuccessService<number> | ErrorService> {
 
 
     if (!validatorAlbumTrack(albumTrack)) {

@@ -14,7 +14,7 @@ export function getHistoryById(idHistory: string): HistoryBD | undefined {
 
 };
 
-export function createHistory(history: History): CreateSuccessService<HistoryBD> | ErrorService {
+export function createHistory(history: History): CreateSuccessService | ErrorService {
 
     if (!isValidHistori(history)) {
         return { success: false, code: 400, message: "Invalid data" };
@@ -30,5 +30,5 @@ export function createHistory(history: History): CreateSuccessService<HistoryBD>
 
     Historys.push(historyRecord);
 
-    return { success: true, code: 201, data: historyRecord }
+    return { success: true, code: 201, data: 1 }
 }
