@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import ListSongs from './Components/Songs/listSong';
 import { ENV } from './config/env';
 import type { GetTrack } from './APIManagement/Tracks/Interfaces/Track';
+import type { AddHistory } from './APIManagement/History/Interface/HistoryCreate';
 
 
 function App() {
@@ -89,13 +90,32 @@ function App() {
 
 
 
-  function incrementReproduction() {
+  async function incrementReproduction() {
     const tr = (prev: trackView): trackView => {
       return {
         ...prev,
         totalReproduction: prev.totalReproduction + 1,
       }
     }
+
+    const newHistory: AddHistory = {
+      user: "51D218C1-5256-481A-A641-709221519F98",
+      track: tracks[0].id
+    }
+    const response: Response = await fetch(
+      'http://localhost:3000/tracks/user/history',
+    {
+      method: "POST",
+      headers: {
+        "Content-type":"application/json"
+      },
+      body: JSON.stringify(newHistory),
+      })
+    if (!response.ok) {
+      
+    }
+    
+
     setTrack(tr);
   }
 
