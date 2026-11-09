@@ -8,7 +8,6 @@ const PlaylistCard = ({ playlists }: PlaylistCardProps) => {
             {playlists.map((playlist) => (
                 <article key={playlist.id}>
                     <h3>{playlist.title}</h3>
-                    <p>Usuari: {playlist.user_id}</p>
                 </article>
             ))}
         </section>
