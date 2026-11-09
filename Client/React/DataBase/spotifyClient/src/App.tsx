@@ -10,6 +10,7 @@ import ListSongs from './Components/Songs/listSong';
 import { ENV } from './config/env';
 import type { GetTrack } from './APIManagement/Tracks/Interfaces/Track';
 import type { AddHistory } from './APIManagement/History/Interface/HistoryCreate';
+import HistoryCard from './Components/History/HistoryCard';
 
 
 function App() {
@@ -97,26 +98,26 @@ function App() {
         totalReproduction: prev.totalReproduction + 1,
       }
     }
-
+    setTrack(tr);
     const newHistory: AddHistory = {
       user: "51D218C1-5256-481A-A641-709221519F98",
-      track: tracks[0].id
+      track: tracks[1].id
     }
     const response: Response = await fetch(
       'http://localhost:3000/tracks/user/history',
-    {
-      method: "POST",
-      headers: {
-        "Content-type":"application/json"
-      },
-      body: JSON.stringify(newHistory),
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(newHistory),
       })
     if (!response.ok) {
-      
+      return false;
     }
+    const result = await response.json();
+    console.log(result);
     
-
-    setTrack(tr);
   }
 
   function stopSong() {
@@ -258,6 +259,7 @@ function App() {
             Canvia la cançó
           </button>
         </header>
+        <HistoryCard/>
         <SongCard trackInfo={track} play={() => {
           incrementReproduction();
           setReproduction(prev => ({
