@@ -10,7 +10,7 @@ import ListSongs from './Components/Songs/listSong';
 import { ENV } from './config/env';
 import type { GetTrack } from './APIManagement/Tracks/Interfaces/Track';
 import type { AddHistory } from './APIManagement/History/Interface/HistoryCreate';
-import HistoryCard from './Components/History/HistoryCard';
+import LlistaReproductionCard from './Components/History/llistaReproductionCard';
 
 
 function App() {
@@ -259,7 +259,7 @@ function App() {
             Canvia la cançó
           </button>
         </header>
-        <HistoryCard/>
+        <LlistaReproductionCard/>
         <SongCard trackInfo={track} play={() => {
           incrementReproduction();
           setReproduction(prev => ({
