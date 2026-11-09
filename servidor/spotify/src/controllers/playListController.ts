@@ -4,8 +4,13 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { Response, Request } from "express";
 import { PlayListBd } from "../interfaces/playList/playListBD";
-import { createPlayList, deletePlayList, getPlayListById, substitPlayList } from "../serveis/playListService";
 import { PlayLists } from "../interfaces/data/playList/playLists";
+import { getAllPlaylists } from "../serveis/playListService";
+
+export async function getAllPlaylistController(_req: Request, res: Response): Promise<Response> {
+    const playlists: PlayListBd[] = await getAllPlaylists();
+    return res.status(200).json(playlists);
+}
 
 export function getPLByIdController(req: Request, res: Response): Response {
     const findPlayList: PlayListBd | undefined = getPlayListById(req.params.id as string)
@@ -17,7 +22,7 @@ export function getPLByIdController(req: Request, res: Response): Response {
 };
 
 export function postPLByIdController(req: Request, res: Response): Response {
-    const result: CreateSuccessService<PlayListBd> | ErrorService = createPlayList(req.body);
+    const result: CreateSuccessService | ErrorService = createPlayList(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -53,4 +58,23 @@ export function deletePLByIdController(req: Request, res: Response): Response {
     PlayLists.splice(index, 1)
 
     return res.status(result.code).json(result)
+}
+
+function getPlayListById(arg0: string): PlayListBd | undefined {
+    throw new Error("Function not implemented.");
+}
+
+
+function createPlayList(body: any): CreateSuccessService | ErrorService {
+    throw new Error("Function not implemented.");
+}
+
+
+function substitPlayList(body: any, arg1: string): ErrorService | PutSuccessService<PlayListBd> {
+    throw new Error("Function not implemented.");
+}
+
+
+function deletePlayList(arg0: string): ErrorService | DeletSuccessService {
+    throw new Error("Function not implemented.");
 }

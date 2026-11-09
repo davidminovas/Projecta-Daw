@@ -10,7 +10,8 @@ import ListSongs from './Components/Songs/listSong';
 import { ENV } from './config/env';
 import type { GetTrack } from './APIManagement/Tracks/Interfaces/Track';
 import type { AddHistory } from './APIManagement/History/Interface/HistoryCreate';
-import LlistaReproductionCard from './Components/History/llistaReproductionCard';
+import type { GETPlaylist } from './APIManagement/PlayList/Interface/playList';
+import PlaylistCard from './Components/LlistesReproduccio/PlayListCard';
 
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
 
 
 
-
+  const [playlists, setPlaylist] = useState<GETPlaylist[]>([]);
   const [tracks, setTracks] = useState<GetTrack[]>([]);
   const [user] = useState(() => users[Math.floor(Math.random() * users.length)]);
   const [now, setNow] = useState(() => new Date());
@@ -75,7 +76,8 @@ function App() {
   }
   useEffect(
     () => {
-      chargeTrack()
+      chargeTrack();
+      carregarDadesPlaylist();
     }, []);
 
   const [reproduction, setReproduction] = useState<reproductionView>(
@@ -87,7 +89,12 @@ function App() {
 
 
 
+  async function carregarDadesPlaylist() {
 
+    const resposta: Response = await fetch(`${ENV.API_BASE_URL}/playlists`);
+    const listPlaylist: GETPlaylist[] = await resposta.json() as GETPlaylist[];
+    setPlaylist(listPlaylist);
+  }
 
 
 
@@ -117,7 +124,7 @@ function App() {
     }
     const result = await response.json();
     console.log(result);
-    
+
   }
 
   function stopSong() {
@@ -228,6 +235,7 @@ function App() {
 
   return (
     <>
+      <PlaylistCard playlists={playlists} />
       <main>
         {
           tracks.length > 0 ?
@@ -259,7 +267,6 @@ function App() {
             Canvia la cançó
           </button>
         </header>
-        <LlistaReproductionCard/>
         <SongCard trackInfo={track} play={() => {
           incrementReproduction();
           setReproduction(prev => ({

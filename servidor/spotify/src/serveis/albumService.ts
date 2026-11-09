@@ -1,8 +1,6 @@
 import { randomUUID } from "crypto";
 import { Album } from "../interfaces/album/album";
 import { AlbumBD } from "../interfaces/album/albumBD";
-import { Artist } from "../interfaces/artist/artist";
-import { Albums } from "../interfaces/data/album/albums";
 import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { ErrorService } from "../interfaces/error/errorService";
 import { validatorAlbum } from "../validators/albumValidator";

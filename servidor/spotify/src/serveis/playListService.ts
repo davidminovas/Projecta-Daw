@@ -7,63 +7,178 @@ import { PlayListBd } from "../interfaces/playList/playListBD";
 import { isValidPlayList } from "../validators/playList.validator";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
+import { ConnectionPool, IResult } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql"
+import { SelectSuccessService } from "../interfaces/error/selectSucessService";
+export async function getAllPlaylists(): Promise<PlayListBd[]> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
 
-export function createPlayList(pL: PlayList): CreateSuccessService<PlayListBd> | ErrorService {
+    const queryText: string = `Select *from Playlist`;
+    const result: IResult<PlayListBd> = await request.query(queryText);
+    return result.recordset;
 
-    if (!isValidPlayList(pL)) {
-        return { success: false, code: 400, message: "Invalid data" };
+}
+
+
+export async function getPlaylistById(id: string
+): Promise<SelectSuccessService<PlayListBd> | ErrorService> {
+
+
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+
+    const queryText: string = `Select * from Playlist Where Playlist.id = @id;
+    request.input("id", sql.UniqueIdentifier, id)`;
+
+
+    const result: IResult<PlayListBd> = await request.query(queryText);
+
+
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Playlist not found."
+        }
     }
-    const uuid: string = randomUUID();
 
-    const playListRecord: PlayListBd = {
-        id: uuid,
-        tittle: pL.tittle.trim().replace(/\s+/g, " "),
-        user: pL.user.trim().replace(/\s+/g, " "),
+
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
     };
 
-    PlayLists.push(playListRecord);
 
-    return { success: true, code: 201, data: playListRecord }
+
+
+
+
 }
 
-export function getPlayListById(idPlaylist: string): PlayListBd | undefined {
 
-    return PlayLists.find(
-        (t: PlayListBd) => { return t.id === idPlaylist }
-    );
-
-};
-
-export function substitPlayList(pl: PlayList, idPlaylist: string): PutSuccessService<PlayListBd> | ErrorService {
+export async function createPlaylist(playlist: PlayList): Promise<CreateSuccessService | ErrorService> {
 
 
-    if (!isValidPlayList(pl)) {
-        return { success: false, code: 400, message: "Invalid data" };
+    if (!isValidPlayList(playlist)) {
+        return { success: false, code: 400, message: "fuck you" };
     }
 
-    const index: number = PlayLists.findIndex(
-        (t: PlayListBd) => { return t.id === idPlaylist; }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: "track not found" }
+
+    const title: string = playlist.tittle.trim().replace(/\s+/g, " ");
+
+
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `INSERT INTO Playlist(title,user_id) 
+        VALUES(@title,@user_id)`;
+
+
+    request.input("title", sql.NVarChar, title);
+    request.input("user_id", sql.UniqueIdentifier, playlist.user);
+
+
+    const result: IResult<number> = await request.query(queryText);
+
+
+    return { success: true, data: result.rowsAffected[0], code: 201 };
+
+
+
+
+}
+
+
+export async function putPlaylist(playlist: PlayListBd, id: string | string[]): Promise<PutSuccessService<Response> | ErrorService> {
+    if (!isValidPlayList(playlist)) {
+        return { success: false, code: 400, message: "fuck you" };
     }
 
-    const updateArtist: PlayListBd = {
-        id: idPlaylist,
-        tittle: pl.tittle.trim().replace(/\s+/g, " "),
-        user: pl.user.trim().replace(/\s+/g, " "),
+
+    const title: string = playlist.tittle.trim().replace(/\s+/g, " ");
+
+
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `UPDATE PLAYLIST SET title=@title,user_id=@user_id)
+        WHERE playlist.id=@id `;
+
+
+    request.input("title", sql.NVarChar, title);
+    request.input("user_id", sql.UniqueIdentifier, playlist.user);
+    request.input("id", sql.UniqueIdentifier, id);
+
+
+    const result: IResult<number> = await request.query(queryText);
+
+
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Playlist not found. fuck you"
+        }
+    }
+    return { success: true, data: result.rowsAffected[0], code: 200 };
+}
+
+
+export async function deletePlaylist(id: string | string[]): Promise<DeletSuccessService | ErrorService> {
+
+
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+
+    const queryText: string = `Delete from Playlist Where Playlist.id = @id;
+    request.input("id", sql.UniqueIdentifier, id)`;
+
+
+    const result: IResult<PlayListBd> = await request.query(queryText);
+
+
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Playlist not found."
+        }
+    }
+
+
+    return {
+        success: true,
+        code: 204
     };
-
-    return { success: true, code: 200, index: index, data: updateArtist };
 }
 
-export function deletePlayList(idPlaylist: string): DeletSuccessService | ErrorService {
 
-    const index: number = PlayLists.findIndex((t: PlayListBd) => { return t.id === idPlaylist; }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: "track not found" }
-    }
 
-    return { success: true, code: 204, index: index };
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
