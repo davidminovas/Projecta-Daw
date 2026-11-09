@@ -91,7 +91,7 @@ function App() {
 
   async function carregarDadesPlaylist() {
 
-    const resposta: Response = await fetch(`${ENV.API_BASE_URL}/playlists`);
+    const resposta: Response = await fetch(`${ENV.API_BASE_URL}/playList`);
     const listPlaylist: GETPlaylist[] = await resposta.json() as GETPlaylist[];
     setPlaylist(listPlaylist);
   }
