@@ -7,62 +7,135 @@ import { UserBD } from "../interfaces/user/userBD";
 import { isValidUser } from "../validators/userValidator";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
+import { ConnectionPool, IResult,  } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql"
+import { SelectSuccessService } from "../interfaces/error/selectSucessService";
 
-export function createUser(user: User): CreateSuccessService | ErrorService {
 
+
+export async function getAllUser(): Promise<UserBD[]> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select *from User`;
+    const result: IResult<UserBD> = await request.query(queryText);
+    return result.recordset;
+
+}
+
+export async function getUserById(idUser: string): Promise<SelectSuccessService<UserBD> | ErrorService> {
+
+
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+
+    const queryText: string = `Select * from [User] Where User.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idUser);
+  
+
+
+    const result: IResult<UserBD> = await request.query(queryText);
+
+
+    if (result.recordset.length === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Playlist not found."
+        }
+    }
+
+
+    return {
+        success: true,
+        code: 200,
+        data: result.recordset[0]
+    };
+
+}
+
+
+export async function createPlaylist(user: User): Promise<CreateSuccessService | ErrorService> {
+
+
+    if (!isValidUser(user)) {
+        return { success: false, code: 400, message: "fuck you" };
+    }
+
+
+
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `INSERT INTO User(id,email,country_id) 
+        VALUES(@id,@email,@country_id)`;
+
+
+    request.input("id", sql.UniqueIdentifier, user.id);
+    request.input("email", sql.UniqueIdentifier, user.email);
+    request.input("country_id", sql.UniqueIdentifier, user.country);
+
+    const result: IResult<number> = await request.query(queryText);
+
+
+    return { success: true, data: result.rowsAffected[0], code: 201 };
+
+
+
+
+}
+
+export async function substitUser(user: User, idUser: string): Promise<PutSuccessService<number> | ErrorService> {
     if (!isValidUser(user)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
-    const uuid: string = randomUUID();
 
-    const countryRecord: UserBD = {
-        id: uuid,
-        email: user.email.trim().replace(/\s+/g, " "),
-        country: user.country.trim().replace(/\s+/g, " "),
-    };
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
 
-    Users.push(countryRecord);
+    const queryText: string = `UPDATE [User] SET 
+    id=@id,email=@email,country_id=@country_id
+    where track.id=@id
+    `;
+  
+    request.input("id", sql.UniqueIdentifier, user.id);
+    request.input("email", sql.Numeric, user.email);
+    request.input("country_id", sql.UniqueIdentifier, user.country);
 
-    return { success: true, code: 201, data: 1 }
-}
-export function getUserById(idUsers: string): UserBD | undefined {
+    const result: IResult<number> = await request.query(queryText);
 
-    return Users.find(
-        (t: UserBD) => { return t.id === idUsers }
-    );
-
-};
-
-export function substitUser(user: User, idUser: string): PutSuccessService<UserBD> | ErrorService {
-
-
-    if (!isValidUser(user)) {
-        return { success: false, code: 400, message: "Invalid data" };
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found"
+        }
     }
 
-    const index: number = Users.findIndex(
-        (t: UserBD) => { return t.id === idUser; }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: "track not found" }
-    }
-
-    const updateArtist: UserBD = {
-        id: idUser,
-        email: user.email.trim().replace(/\s+/g, " "),
-        country: user.country.trim().replace(/\s+/g, " "),
-    };
-
-    return { success: true, code: 200,  data: 1 };
+    return { success: true, code: 200, data: result.rowsAffected[0] }
 }
 
-export function deleteUser(idUser: string): DeletSuccessService | ErrorService {
+export async function deleteTrack(idUser: string): Promise<DeletSuccessService | ErrorService> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
 
-    const index: number = Users.findIndex((t: UserBD) => { return t.id === idUser; }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: "track not found" }
+    const queryText: string = `Delete from User Where User.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idUser);
+
+    const result: IResult<UserBD> = await request.query(queryText);
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found"
+        }
     }
 
-    return { success: true, code: 204, message: '1' };
+    return {
+        success: true,
+        code: 204,
+    }
+
+
 }

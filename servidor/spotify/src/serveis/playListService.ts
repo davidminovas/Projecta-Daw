@@ -1,5 +1,3 @@
-import { randomUUID } from "crypto";
-import { PlayLists } from "../interfaces/data/playList/playLists";
 import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PlayList } from "../interfaces/playList/playList";
@@ -22,7 +20,7 @@ export async function getAllPlaylists(): Promise<PlayListBd[]> {
 }
 
 
-export async function getPlaylistById(id: string
+export async function getPlaylistById(idPlayList: string
 ): Promise<SelectSuccessService<PlayListBd> | ErrorService> {
 
 
@@ -30,8 +28,8 @@ export async function getPlaylistById(id: string
     const request: sql.Request = pool.request();
 
 
-    const queryText: string = `Select * from Playlist Where Playlist.id = @id;
-    request.input("id", sql.UniqueIdentifier, id)`;
+    const queryText: string = `Select * from Playlist Where Playlist.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idPlayList);
 
 
     const result: IResult<PlayListBd> = await request.query(queryText);
@@ -51,11 +49,6 @@ export async function getPlaylistById(id: string
         code: 200,
         data: result.recordset[0]
     };
-
-
-
-
-
 
 }
 
@@ -122,7 +115,7 @@ export async function putPlaylist(playlist: PlayListBd, id: string | string[]): 
             message: "Playlist not found. fuck you"
         }
     }
-    return { success: true, data: result.rowsAffected[0], code: 200 };
+    return { success: true, data: result.rowsAffected[0], code: 1 };
 }
 
 

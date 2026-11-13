@@ -5,9 +5,6 @@ import Header from './Components/PageEstrocture/Header/header';
 import { useState } from 'react';
 import { users } from './Data/user/user';
 import Menu from './Components/PageEstrocture/menu/Menu';
-import type { reproductionView } from './Components/Songs/reproductionCard/reproductionView';
-import type { trackView } from './Components/Songs/Types/trackView';
-import { tracks } from './Data/track/tracks';
 import type { User } from './Model/User';
 
 
