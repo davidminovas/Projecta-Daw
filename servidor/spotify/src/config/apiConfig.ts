@@ -19,6 +19,10 @@ export const APICONFIG: ApiConfig = {
         {
             name: "Track(songs)",
             endPoint: "GET /tracks",
+        },
+        {
+            name: "Playlist tracks",
+            endPoint: "GET /playList/:id/tracks",
         }
     ]
 

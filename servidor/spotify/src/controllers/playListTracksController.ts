@@ -2,9 +2,15 @@ import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PlayListTracksBd } from "../interfaces/playListTrack/playListTrackBD";
 import { Response, Request } from "express";
-import { createPlayListTrack, deletePlayListTrack, getAllPlayListTracks } from "../serveis/playListTracksService";
+import { createPlayListTrack, deletePlayListTrack, getAllPlayListTracks, getTracksByPlaylistId } from "../serveis/playListTracksService";
 import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
+import { TrackBD } from "../interfaces/track/trackBD";
 
+export async function getPlaylistTracksController(req: Request, res: Response): Promise<Response> {
+    const playlistId = req.params.id as string;
+    const tracks: TrackBD[] = await getTracksByPlaylistId(playlistId);
+    return res.status(200).json(tracks);
+}
 
 export async function getAllPlayListTrackController(_req: Request, res: Response): Promise<Response> {
     const playlists: PlayListTracksBd[] = await getAllPlayListTracks();
