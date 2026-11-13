@@ -10,7 +10,7 @@ import { getConnection } from "../config/database";
 import sql from "mssql"
 
 
-export async function getAllUser(): Promise<PlayListTracksBd[]> {
+export async function getAllPlayListTracks(): Promise<PlayListTracksBd[]> {
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
@@ -44,7 +44,7 @@ export async function createPlayListTrack(playListTracks: PlayListTrack): Promis
 
 }
 
-export async function deleteTrack(idPlayListTrack: string): Promise<DeletSuccessService | ErrorService> {
+export async function deletePlayListTrack(idPlayListTrack: string): Promise<DeletSuccessService | ErrorService> {
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 

@@ -57,7 +57,7 @@ export async function getUserById(idUser: string): Promise<SelectSuccessService<
 }
 
 
-export async function createPlaylist(user: User): Promise<CreateSuccessService | ErrorService> {
+export async function createUser(user: User): Promise<CreateSuccessService | ErrorService> {
 
 
     if (!isValidUser(user)) {
@@ -116,7 +116,7 @@ export async function substitUser(user: User, idUser: string): Promise<PutSucces
     return { success: true, code: 200, data: result.rowsAffected[0] }
 }
 
-export async function deleteTrack(idUser: string): Promise<DeletSuccessService | ErrorService> {
+export async function deleteUser(idUser: string): Promise<DeletSuccessService | ErrorService> {
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
