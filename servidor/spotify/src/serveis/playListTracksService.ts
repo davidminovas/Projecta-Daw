@@ -5,37 +5,67 @@ import { PlayListTracksBd } from "../interfaces/playListTrack/playListTrackBD";
 import { PlayListTrack } from "../interfaces/playListTrack/playListTracks";
 import { isValidPlayListTrack } from "../validators/playListTrackValidator";
 import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
-import { PlayListTracks } from "../interfaces/data/playListTrack/playListTracks";
-import { PutSuccessService } from "../interfaces/error/putSucessServidee";
+import { ConnectionPool, IResult } from "mssql";
+import { getConnection } from "../config/database";
+import sql from "mssql"
 
-export function getAllPlayListTracks(): PlayListTracksBd[]{
-    return PlayListTracks
+
+export async function getAllUser(): Promise<PlayListTracksBd[]> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+
+    const queryText: string = `Select *from User`;
+    const result: IResult<PlayListTracksBd> = await request.query(queryText);
+    return result.recordset;
+
 }
 
-export function createPlayListTrack(playListTracks: PlayListTrack): PutSuccessService | ErrorService {
+export async function createPlayListTrack(playListTracks: PlayListTrack): Promise<CreateSuccessService | ErrorService> {
+
 
     if (!isValidPlayListTrack(playListTracks)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
-    const uuid: string = randomUUID();
 
-    const playListTracksRecord: PlayListTracksBd = {
-        id: uuid,
-        playList: playListTracks.playList.trim().replace(/\s+/g, " "),
-        track: playListTracks.track.trim().replace(/\s+/g, " "),
 
-    };
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const queryText: string = `INSERT INTO PlaylistTracks(id,playlist_id,track_id) 
+        VALUES(@id,@email,@country_id)`;
 
-    return { success: true, code: 201, data: 1 }
+
+    request.input("id", sql.UniqueIdentifier, playListTracks.id);
+    request.input("playlist_id", sql.UniqueIdentifier, playListTracks.playList);
+    request.input("track_id", sql.UniqueIdentifier, playListTracks.track);
+
+    const result: IResult<number> = await request.query(queryText);
+
+    return { success: true, data: result.rowsAffected[0], code: 201 };
+
 }
 
-export function deletePlayListTrack(idPlayListTrack: string): DeletSuccessService | ErrorService {
+export async function deleteTrack(idPlayListTrack: string): Promise<DeletSuccessService | ErrorService> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
 
-    const index: number = PlayListTracks.findIndex((t: PlayListTracksBd) => { return t.id === idPlayListTrack; }
-    );
-    if (index === -1) {
-        return { success: false, code: 404, message: "track not found" }
+    const queryText: string = `Delete from User Where User.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idPlayListTrack);
+
+    const result: IResult<PlayListTracksBd> = await request.query(queryText);
+    if (result.rowsAffected[0] === 0) {
+        return {
+            success: false,
+            code: 404,
+            message: "Track not found"
+        }
     }
 
-    return { success: true, code: 204};
+    return {
+        success: true,
+        code: 204,
+    }
+
+
 }
+
+
