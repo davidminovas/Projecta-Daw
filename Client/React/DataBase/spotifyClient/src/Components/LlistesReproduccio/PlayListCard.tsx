@@ -1,4 +1,5 @@
-import type { PlaylistCardProps } from "../Types/PlayListCardProps";
+
+import type { PlaylistCardProps } from "./Types/PlayListCardProps";
 
 
 const PlaylistCard = ({ playlists }: PlaylistCardProps) => {
@@ -8,6 +9,7 @@ const PlaylistCard = ({ playlists }: PlaylistCardProps) => {
             {playlists.map((playlist) => (
                 <article key={playlist.id}>
                     <h3>{playlist.title}</h3>
+                    <button >Mostra les cançons</button>
                 </article>
             ))}
         </section>

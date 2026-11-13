@@ -6,8 +6,13 @@ import { PlayListTrack } from "../interfaces/playListTrack/playListTracks";
 import { isValidPlayListTrack } from "../validators/playListTrackValidator";
 import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
 import { PlayListTracks } from "../interfaces/data/playListTrack/playListTracks";
+import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 
-export function createPlayListTrack(playListTracks: PlayListTrack): CreateSuccessService | ErrorService {
+export function getAllPlayListTracks(): PlayListTracksBd[]{
+    return PlayListTracks
+}
+
+export function createPlayListTrack(playListTracks: PlayListTrack): PutSuccessService | ErrorService {
 
     if (!isValidPlayListTrack(playListTracks)) {
         return { success: false, code: 400, message: "Invalid data" };
