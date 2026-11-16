@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { users } from './Data/user/user';
 import Menu from './Components/PageEstrocture/menu/Menu';
 import type { User } from './Model/User';
+import SongManagement from './Pages/admin/SongManagement';
 
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
   const [now, setNow] = useState(() => new Date());
   const data = now.toLocaleString('ca-ES');
 
- 
+
   return (
 
     <BrowserRouter>
@@ -21,11 +22,12 @@ function App() {
         userName={user.name}
         date={data}
         onRefreshDate={() => setNow(new Date())}
-       
+
       />
       <Menu />
       <Routes>
         <Route path="/Play" element={<Play />} />
+        <Route path="/SongManagement" element={<SongManagement />} />
       </Routes>
     </BrowserRouter>
   )
