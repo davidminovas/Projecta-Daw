@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { deleteTrackByIdController, getAllTracksController, getTrackByIdController, postTrackByIdController, postTrackUserHistoryController, putTrackByIdController } from "../controllers/tracksController";
+import { deleteTrackController, getAllTracksController, getTrackByIdController, postTrackController, postTrackUserHistoryController, putTrackController } from "../controllers/tracksController";
 
 export const trackRuter: Router = Router();
 
 trackRuter.get("/", getAllTracksController)
 trackRuter.get("/:id", getTrackByIdController)
-trackRuter.post("/", postTrackByIdController)
-trackRuter.put("/:id", putTrackByIdController)
-trackRuter.delete("/:id", deleteTrackByIdController)
+trackRuter.post("/", postTrackController)
+trackRuter.put("/:id", putTrackController)
+trackRuter.delete("/:id", deleteTrackController)
 
 
 trackRuter.post("/user/history", postTrackUserHistoryController)

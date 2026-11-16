@@ -21,32 +21,32 @@ export function getPLByIdController(req: Request, res: Response): Response {
     return res.status(200).json(findPlayList);
 };
 
-export function postPLByIdController(req: Request, res: Response): Response {
+export function postPLController(req: Request, res: Response): Response {
     const result: CreateSuccessService | ErrorService = createPlayList(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message })
     }
-    PlayLists.push((result as CreateSuccessService<PlayListBd>).data);
+    PlayLists.push((result as CreateSuccessService).data);
     return res.status(result.code).json(result)
 
 }
 
-export function putPLByIdController(req: Request, res: Response): Response {
-    const result: PutSuccessService<PlayListBd> | ErrorService = substitPlayList(req.body, req.params.id as string);
+export function putPLController(req: Request, res: Response): Response {
+    const result: PutSuccessService | ErrorService = substitPlayList(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
-    const index: number = (result as PutSuccessService<PlayListBd>).index;
-    PlayLists[index] = (result as PutSuccessService<PlayListBd>).data;
+    const index: number = (result as PutSuccessService).index;
+    PlayLists[index] = (result as PutSuccessService).data;
 
     return res.status(result.code).json(result)
 }
 
-export function deletePLByIdController(req: Request, res: Response): Response {
+export function deletePLController(req: Request, res: Response): Response {
     const result: DeletSuccessService | ErrorService = deletePlayList(req.params.id as string);
 
     if (!result.success) {
@@ -60,21 +60,4 @@ export function deletePLByIdController(req: Request, res: Response): Response {
     return res.status(result.code).json(result)
 }
 
-function getPlayListById(arg0: string): PlayListBd | undefined {
-    throw new Error("Function not implemented.");
-}
 
-
-function createPlayList(body: any): CreateSuccessService | ErrorService {
-    throw new Error("Function not implemented.");
-}
-
-
-function substitPlayList(body: any, arg1: string): ErrorService | PutSuccessService<PlayListBd> {
-    throw new Error("Function not implemented.");
-}
-
-
-function deletePlayList(arg0: string): ErrorService | DeletSuccessService {
-    throw new Error("Function not implemented.");
-}

@@ -22,7 +22,7 @@ export async function getTrackByIdController(req: Request, res: Response): Promi
     return res.status(findTrack.code).json(findTrack);
 };
 
-export async function postTrackByIdController(req: Request, res: Response): Promise<Response> {
+export async function postTrackController(req: Request, res: Response): Promise<Response> {
     const result: CreateSuccessService | ErrorService = await createTrack(req.body);
 
     if (!result.success) {
@@ -33,7 +33,7 @@ export async function postTrackByIdController(req: Request, res: Response): Prom
     return res.status(result.code).json(result)
 }
 
-export async function putTrackByIdController(req: Request, res: Response): Promise<Response> {
+export async function putTrackController(req: Request, res: Response): Promise<Response> {
     const result: PutSuccessService | ErrorService = await substitTrack(req.body, req.params.id as string);
 
     if (!result.success) {
@@ -44,7 +44,7 @@ export async function putTrackByIdController(req: Request, res: Response): Promi
     return res.status(result.code).json(result)
 }
 
-export async function deleteTrackByIdController(req: Request, res: Response): Promise<Response> {
+export async function deleteTrackController(req: Request, res: Response): Promise<Response> {
     const result: DeletSuccessService | ErrorService = await deleteTrack(req.params.id as string);
 
     if (!result.success) {

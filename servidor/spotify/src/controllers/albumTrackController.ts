@@ -15,7 +15,7 @@ export function getAlbumTrackByIdController(req: Request, res: Response): Respon
     return res.status(200).json(findAlbumTrack);
 };
 
-export function postAlbumTrackByIdController(req: Request, res: Response): Response {
+export function postAlbumTrackController(req: Request, res: Response): Response {
     const result: CreateSuccessService | ErrorService = createAlbumTrack(req.body);
 
     if (!result.success) {
@@ -27,8 +27,8 @@ export function postAlbumTrackByIdController(req: Request, res: Response): Respo
 
 }
 
-export function putAlbumTrackByIdController(req: Request, res: Response): Response {
-    const result: PutSuccessService<AlbumTrackBD> | ErrorService = substitAlbumTrack(req.body, req.params.id as string);
+export function putAlbumTrackController(req: Request, res: Response): Response {
+    const result: PutSuccessService | ErrorService = substitAlbumTrack(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

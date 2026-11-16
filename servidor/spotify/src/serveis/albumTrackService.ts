@@ -1,7 +1,6 @@
-import { randomUUID } from "crypto";
+
 import { AlbumTrack } from "../interfaces/albumTrack/albumTrack";
 import { AlbumTrackBD } from "../interfaces/albumTrack/albumTrackBD";
-import { AlbumTracks } from "../interfaces/data/albumTrack/albumsTracks";
 import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { ErrorService } from "../interfaces/error/errorService";
 import { validatorAlbumTrack } from "../validators/albumTrackValidator";
@@ -56,9 +55,7 @@ export async function createAlbumTrack(albumTrack: AlbumTrack): Promise<CreateSu
 
 }
 
-
-
-export async function substitAlbumTrack(albumTrack: AlbumTrack, idAlbumTrack: string): Promise<PutSuccessService<number> | ErrorService> {
+export async function substitAlbumTrack(albumTrack: AlbumTrack, idAlbumTrack: string): Promise<PutSuccessService | ErrorService> {
 
 
     if (!validatorAlbumTrack(albumTrack)) {

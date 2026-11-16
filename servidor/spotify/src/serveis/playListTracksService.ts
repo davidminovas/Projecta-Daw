@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+
 import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PlayListTracksBd } from "../interfaces/playListTrack/playListTrackBD";
@@ -81,7 +81,7 @@ export async function deletePlayListTrack(idPlayListTrack: string): Promise<Dele
     return {
         success: true,
         code: 204,
-    }
+    } as DeletSuccessService;
 
 
 }

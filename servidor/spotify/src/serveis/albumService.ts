@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+
 import { Album } from "../interfaces/album/album";
 import { AlbumBD } from "../interfaces/album/albumBD";
 import { CreateSuccessService } from "../interfaces/error/createSucessServide";
@@ -33,8 +33,6 @@ export async function getAlbumById(idAlbum: string): Promise<SelectSuccessServic
 
 };
 
-
-
 export async function createAlbum(album: Album): Promise<CreateSuccessService | ErrorService> {
 
     if (!validatorAlbum(album)) {
@@ -58,9 +56,7 @@ export async function createAlbum(album: Album): Promise<CreateSuccessService | 
 
 }
 
-
-
-export async function substitAlbum(album: Album, idAlbum: string): Promise<PutSuccessService<number> | ErrorService> {
+export async function substitAlbum(album: Album, idAlbum: string): Promise<PutSuccessService | ErrorService> {
 
 
     if (!validatorAlbum(album)) {
@@ -95,13 +91,6 @@ export async function substitAlbum(album: Album, idAlbum: string): Promise<PutSu
 
 }
 
-
-
-
-
-
-
-
 export async function deleteAlbum(idAlbum: string): Promise<DeletSuccessService | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();
@@ -122,5 +111,5 @@ export async function deleteAlbum(idAlbum: string): Promise<DeletSuccessService 
     return {
         success: true,
         code: 204,
-    }
+    } as DeletSuccessService;
 }

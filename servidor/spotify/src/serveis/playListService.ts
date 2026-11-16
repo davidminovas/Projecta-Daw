@@ -85,7 +85,7 @@ export async function createPlaylist(playlist: PlayList): Promise<CreateSuccessS
 }
 
 
-export async function putPlaylist(playlist: PlayListBd, id: string | string[]): Promise<PutSuccessService<Response> | ErrorService> {
+export async function putPlaylist(playlist: PlayListBd, id: string | string[]): Promise<PutSuccessService | ErrorService> {
     if (!isValidPlayList(playlist)) {
         return { success: false, code: 400, message: "fuck you" };
     }
@@ -145,7 +145,7 @@ export async function deletePlaylist(id: string | string[]): Promise<DeletSucces
     return {
         success: true,
         code: 204
-    };
+    } as DeletSuccessService;
 }
 
 

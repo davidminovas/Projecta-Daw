@@ -6,7 +6,7 @@ import { isValidLike } from "../validators/likeValidator";
 import { getConnection } from "../config/database";
 import sql from "mssql"
 
-export async function putPlaylist(like: LikeBD, id: string | string[]): Promise<PutSuccessService<Response> | ErrorService> {
+export async function putPlaylist(like: LikeBD, id: string | string[]): Promise<PutSuccessService | ErrorService> {
     if (!isValidLike(like)) {
         return { success: false, code: 400, message: "fuck you" };
     }

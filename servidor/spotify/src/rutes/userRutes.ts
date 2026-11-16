@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { deleteUserByIdController, getUserByIdController, postUserByIdController, putUserByIdController } from "../controllers/userController";
+import { deleteUserController, getUserByIdController, postUserController, putUserController } from "../controllers/userController";
 
 export const userRuter: Router = Router();
 
 
 userRuter.get("/:id", getUserByIdController)
-userRuter.post("/", postUserByIdController)
-userRuter.put("/:id", putUserByIdController)
-userRuter.delete("/:id", deleteUserByIdController)
+userRuter.post("/", postUserController)
+userRuter.put("/:id", putUserController)
+userRuter.delete("/:id", deleteUserController)

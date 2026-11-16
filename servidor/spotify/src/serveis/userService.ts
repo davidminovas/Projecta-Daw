@@ -1,5 +1,3 @@
-import { randomUUID } from "crypto";
-import { Users } from "../interfaces/data/user/dataUser";
 import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { ErrorService } from "../interfaces/error/errorService";
 import { User } from "../interfaces/user/user";
@@ -7,7 +5,7 @@ import { UserBD } from "../interfaces/user/userBD";
 import { isValidUser } from "../validators/userValidator";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
-import { ConnectionPool, IResult,  } from "mssql";
+import { ConnectionPool, IResult, } from "mssql";
 import { getConnection } from "../config/database";
 import sql from "mssql"
 import { SelectSuccessService } from "../interfaces/error/selectSucessService";
@@ -33,7 +31,7 @@ export async function getUserById(idUser: string): Promise<SelectSuccessService<
 
     const queryText: string = `Select * from [User] Where User.id = @id`;
     request.input("id", sql.UniqueIdentifier, idUser);
-  
+
 
 
     const result: IResult<UserBD> = await request.query(queryText);
@@ -86,7 +84,7 @@ export async function createUser(user: User): Promise<CreateSuccessService | Err
 
 }
 
-export async function substitUser(user: User, idUser: string): Promise<PutSuccessService<number> | ErrorService> {
+export async function substitUser(user: User, idUser: string): Promise<PutSuccessService | ErrorService> {
     if (!isValidUser(user)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
@@ -98,7 +96,7 @@ export async function substitUser(user: User, idUser: string): Promise<PutSucces
     id=@id,email=@email,country_id=@country_id
     where track.id=@id
     `;
-  
+
     request.input("id", sql.UniqueIdentifier, user.id);
     request.input("email", sql.Numeric, user.email);
     request.input("country_id", sql.UniqueIdentifier, user.country);
@@ -135,7 +133,6 @@ export async function deleteUser(idUser: string): Promise<DeletSuccessService | 
     return {
         success: true,
         code: 204,
-    }
-
+    } as DeletSuccessService;
 
 }

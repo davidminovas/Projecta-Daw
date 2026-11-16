@@ -17,7 +17,7 @@ export async function getAllPlayListTrackController(_req: Request, res: Response
     return res.status(200).json(playlists);
 }
 
-export async function postPlayListTrackByIdController(req: Request, res: Response): Promise<Response> {
+export async function postPlayListTrackController(req: Request, res: Response): Promise<Response> {
     const result: CreateSuccessService | ErrorService = await createPlayListTrack(req.body);
 
     if (!result.success) {
@@ -28,7 +28,7 @@ export async function postPlayListTrackByIdController(req: Request, res: Respons
 
 }
 
-export async function deletePlayListTrackByIdController(req: Request, res: Response): Promise<Response> {
+export async function deletePlayListTrackController(req: Request, res: Response): Promise<Response> {
     const result: DeletSuccessService | ErrorService = await deletePlayListTrack(req.params.id as string);
 
     if (!result.success) {

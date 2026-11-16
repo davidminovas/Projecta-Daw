@@ -1,10 +1,9 @@
-import { randomUUID } from "crypto";
+
 import { Country } from "../interfaces/country/country";
 import { CountryBD } from "../interfaces/country/countryBD";
 import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { ErrorService } from "../interfaces/error/errorService";
 import { isValidCountry } from "../validators/countryValidator";
-import { Countrys } from "../interfaces/data/country/dataCountrys";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { SelectSuccessService } from "../interfaces/error/selectSucessService";
 import { ConnectionPool, IResult } from "mssql";
@@ -54,7 +53,7 @@ export async function createCountry(country: Country): Promise<CreateSuccessServ
     return { success: true, code: 201, data: result.rowsAffected[0] }
 }
 
-export async function substitCountry(country: Country, idCountry: string): Promise<PutSuccessService<CountryBD> | ErrorService> {
+export async function substitCountry(country: Country, idCountry: string): Promise<PutSuccessService | ErrorService> {
 
 
     if (!isValidCountry(country)) {

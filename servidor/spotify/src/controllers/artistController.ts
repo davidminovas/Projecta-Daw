@@ -23,7 +23,7 @@ export async function getArtistByIdController(req: Request, res: Response): Prom
     return res.status(findTrack.code).json(findTrack);
 }
 
-export async function postArtistByIdController(req: Request, res: Response): Promise<Response> {
+export async function postArtistController(req: Request, res: Response): Promise<Response> {
     const result: CreateSuccessService | ErrorService = await createArtist(req.body);
 
     if (!result.success) {
@@ -35,7 +35,7 @@ export async function postArtistByIdController(req: Request, res: Response): Pro
 
 }
 
-export async function putArtistByIdController(req: Request, res: Response): Promise<Response> {
+export async function putArtistController(req: Request, res: Response): Promise<Response> {
     const result: PutSuccessService | ErrorService = await substitArtist(req.body, req.params.id as string);
 
     if (!result.success) {
@@ -46,7 +46,7 @@ export async function putArtistByIdController(req: Request, res: Response): Prom
     return res.status(result.code).json(result)
 }
 
-export async function deleteArtistByIdController(req: Request, res: Response): Promise<Response> {
+export async function deleteArtistController(req: Request, res: Response): Promise<Response> {
     const result: DeletSuccessService | ErrorService = await deleteArtist(req.params.id as string);
 
     if (!result.success) {

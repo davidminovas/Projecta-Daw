@@ -16,32 +16,32 @@ export function getUserByIdController(req: Request, res: Response): Response {
     return res.status(200).json(findUser);
 };
 
-export function postUserByIdController(req: Request, res: Response): Response {
-    const result: CreateSuccessService<UserBD> | ErrorService = createUser(req.body);
+export function postUserController(req: Request, res: Response): Response {
+    const result: CreateSuccessService | ErrorService = createUser(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message })
     }
-    Users.push((result as CreateSuccessService<UserBD>).data);
+    Users.push((result as CreateSuccessService).data);
     return res.status(result.code).json(result)
 
 }
 
-export function putUserByIdController(req: Request, res: Response): Response {
-    const result: PutSuccessService<UserBD> | ErrorService = substitUser(req.body, req.params.id as string);
+export function putUserController(req: Request, res: Response): Response {
+    const result: PutSuccessService | ErrorService = substitUser(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
-    const index: number = (result as PutSuccessService<UserBD>).index;
-    Users[index] = (result as PutSuccessService<UserBD>).data;
+    const index: number = (result as PutSuccessService).index;
+    Users[index] = (result as PutSuccessService).data;
 
     return res.status(result.code).json(result)
 }
 
-export function deleteUserByIdController(req: Request, res: Response): Response {
+export function deleteUserController(req: Request, res: Response): Response {
     const result: DeletSuccessService | ErrorService = deleteUser(req.params.id as string);
 
     if (!result.success) {

@@ -17,9 +17,9 @@ export async function getCountryByIdController(req: Request, res: Response): Pro
 };
 
 
-export async function postCountryByIdController(req: Request, res: Response): Promise<Response> {
+export async function postCountryController(req: Request, res: Response): Promise<Response> {
 
-    const result: CreateSuccessService<CountryBD> | ErrorService = await createCountry(req.body);
+    const result: CreateSuccessService | ErrorService = await createCountry(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -30,8 +30,8 @@ export async function postCountryByIdController(req: Request, res: Response): Pr
 }
 
 
-export async function putCountryByIdController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService<CountryBD> | ErrorService = await substitCountry(req.body, req.params.id as string);
+export async function putCountryController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService | ErrorService = await substitCountry(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
