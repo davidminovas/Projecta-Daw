@@ -89,13 +89,13 @@ const SongManagement = () => {
                         : <></>
 
                 }
-                <button onClick={addSong}>New</button>
+
             </main>
             {
                 newSong ?
-                 <AddSongForm/>
+                    <AddSongForm refreshSong={chargeTrack} />
 
-                    : <> </>
+                    : <button onClick={addSong}>New</button>
             }
         </>
     )

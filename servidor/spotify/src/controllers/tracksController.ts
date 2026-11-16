@@ -34,7 +34,7 @@ export async function postTrackByIdController(req: Request, res: Response): Prom
 }
 
 export async function putTrackByIdController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService<TrackBD> | ErrorService = await substitTrack(req.body, req.params.id as string);
+    const result: PutSuccessService | ErrorService = await substitTrack(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

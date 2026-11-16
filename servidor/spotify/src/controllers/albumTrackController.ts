@@ -16,13 +16,13 @@ export function getAlbumTrackByIdController(req: Request, res: Response): Respon
 };
 
 export function postAlbumTrackByIdController(req: Request, res: Response): Response {
-    const result: CreateSuccessService<AlbumTrackBD> | ErrorService = createAlbumTrack(req.body);
+    const result: CreateSuccessService | ErrorService = createAlbumTrack(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message })
     }
-    AlbumTracks.push((result as CreateSuccessService<AlbumTrackBD>).data);
+    AlbumTracks.push((result as CreateSuccessService).data);
     return res.status(result.code).json(result)
 
 }

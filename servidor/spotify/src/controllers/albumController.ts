@@ -18,8 +18,8 @@ export async function getAlbumByIdController(req: Request, res: Response): Promi
 };
 
 
-export async function postAlbumByIdController(req: Request, res: Response): Promise<Response> {
-    const result: CreateSuccessService<AlbumBD> | ErrorService = await createAlbum(req.body);
+export async function postAlbumController(req: Request, res: Response): Promise<Response> {
+    const result: CreateSuccessService | ErrorService = await createAlbum(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -32,8 +32,8 @@ export async function postAlbumByIdController(req: Request, res: Response): Prom
 
 
 
-export async function putAlbumByIdController(req: Request, res: Response): Promise<Response> {
-    const result: PutSuccessService<AlbumBD> | ErrorService = await substitAlbum(req.body, req.params.id as string);
+export async function putAlbumController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService | ErrorService = await substitAlbum(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -46,7 +46,7 @@ export async function putAlbumByIdController(req: Request, res: Response): Promi
 
 
 
-export async function deleteAlbumByIdController(req: Request, res: Response): Promise<Response> {
+export async function deleteAlbumController(req: Request, res: Response): Promise<Response> {
     const result: DeletSuccessService | ErrorService = await deleteAlbum(req.params.id as string);
 
     if (!result.success) {

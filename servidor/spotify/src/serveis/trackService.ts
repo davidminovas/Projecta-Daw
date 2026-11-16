@@ -67,7 +67,7 @@ export async function createTrack(track: Track): Promise<CreateSuccessService | 
     return { success: true, code: 201, data: result.rowsAffected[0] }
 }
 
-export async function substitTrack(track: Track, idTrack: string): Promise<PutSuccessService<number> | ErrorService> {
+export async function substitTrack(track: Track, idTrack: string): Promise<PutSuccessService | ErrorService> {
     if (!isValidTrack(track)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
@@ -118,7 +118,7 @@ export async function deleteTrack(idTrack: string): Promise<DeletSuccessService 
     return {
         success: true,
         code: 204,
-    }
+    } as DeletSuccessService;
 
 
 }
