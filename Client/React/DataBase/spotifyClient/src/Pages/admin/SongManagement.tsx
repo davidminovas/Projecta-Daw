@@ -6,11 +6,16 @@ import { ENV } from "../../config/env";
 import type { GETPlaylist } from "../../APIManagement/PlayList/Interface/playList";
 import type { trackView } from "../../Components/Songs/Types/trackView";
 import AddSongForm from "../../Components/Songs/AddSongForm";
+import type { FormState } from "./Types/FormState";
+import type { Track } from "../../Model/Track";
+import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TtrackCreate";
+import { PostTrack } from "../../APIManagement/Tracks/PostTrack";
+import { PutTrack } from "../../APIManagement/Tracks/PutTrack";
 
 const SongManagement = () => {
     const [playlists, setPlaylist] = useState<GETPlaylist[]>([]);
     const [tracks, setTracks] = useState<GetTrack[]>([]);
-    const [newSong, setNewSong] = useState<boolean>(false);
+    const [newSong, setNewSong] = useState<FormState>({ mode: "none" });
     const [track, setTrack] = useState<trackView>(
         {
             ...tracks[(Math.floor(Math.random() * tracks.length))],
@@ -25,12 +30,11 @@ const SongManagement = () => {
     async function chargeTrack() {
         const resposta = await fetch(`${ENV.API_BASE_URL}/tracks`);
         const listTrack: GetTrack[] = await resposta.json();
-
+        console.log(listTrack)
         setTracks(listTrack);
+        setNewSong({ mode: "none" })
 
-        if (listTrack.length === 0) {
-            return;
-        }
+
 
         const initialTrack = listTrack[0];
 
@@ -67,7 +71,25 @@ const SongManagement = () => {
         setPlaylist(listPlaylist);
     }
     function addSong() {
-        setNewSong(!newSong);
+        setNewSong({ mode: "new" });
+    }
+    function edit(t: Track) {
+        setNewSong({
+            mode: "edit",
+            song: t,
+        });
+    }
+    async function save(t: TrackCreate) {
+        await PostTrack(t)
+        await chargeTrack()
+        setNewSong({ mode: "none" })
+    }
+
+    async function update(t: TrackCreate) {
+        const id = newSong.mode == "edit" ? newSong.song.id : "";
+        await PutTrack(t, id);
+        await chargeTrack()
+        setNewSong({ mode: "none" })
     }
     return (
         <>
@@ -82,7 +104,7 @@ const SongManagement = () => {
                                     <title></title>
                                 </thead>
                                 <tbody>
-                                    <ListSongs tracks={tracks} />
+                                    <ListSongs tracks={tracks} edit={edit} />
                                 </tbody>
                             </table>
                         </>
@@ -92,10 +114,11 @@ const SongManagement = () => {
 
             </main>
             {
-                newSong ?
-                    <AddSongForm refreshSong={chargeTrack} />
-
-                    : <button onClick={addSong}>New</button>
+                newSong.mode === "new"
+                    ? <AddSongForm submit={(t) => save(t)} />
+                    : newSong.mode === "edit"
+                        ? <AddSongForm submit={(t) => update(t)} song={newSong.song} />
+                        : <button onClick={addSong}>New</button>
             }
         </>
     )

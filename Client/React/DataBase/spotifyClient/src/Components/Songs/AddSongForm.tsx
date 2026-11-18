@@ -3,10 +3,10 @@ import { ENV } from "../../config/env";
 
 import type { GetArtist } from "../../APIManagement/Artist/interfices/Artist";
 import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TtrackCreate";
-import { PostTrack } from "../../APIManagement/Tracks/PostTrack";
+
 import type { AddSongFromProps } from "./Types/AddSongFormProps";
 
-const AddSongForm = (props:AddSongFromProps) => {
+const AddSongForm = (props: AddSongFromProps) => {
     const [artists, setArtist] = useState<GetArtist[]>([]);
 
     async function chargeArtist() {
@@ -29,9 +29,8 @@ const AddSongForm = (props:AddSongFromProps) => {
             artist: String(dades.get("artist") ?? "").trim(),
             duration: Number(dades.get("duration")),
         }
-        console.log(song)
-        await PostTrack(song);
-        props.refreshSong();
+        await props.submit(song);
+
 
     }
     return (
@@ -43,6 +42,7 @@ const AddSongForm = (props:AddSongFromProps) => {
                         Titol: <input
                             type="text"
                             name="title"
+                            defaultValue={props.song?.tittle}
                             required
                         />
                     </label>
@@ -52,19 +52,26 @@ const AddSongForm = (props:AddSongFromProps) => {
                         Duration: <input
                             type="number"
                             name="duration"
+                            defaultValue={props.song?.duration}
                             required
                         />
                     </label>
                 </p>
                 <p>
                     <label>
-                        Artist: <select name="artist" required>{
-                            artists.map(
-                                (a: GetArtist) => (
-                                    <option key={a.id} value={a.id}>{a.name}</option>
-                                ))
-                        }</select>
-                        <button>Add</button>
+                        Artist:
+                        {
+                            artists.length > 0
+                                ? <select name="artist" defaultValue={props.song?.artist_id} required>{
+                                    artists.map(
+                                        (a: GetArtist) => (
+                                            <option key={a.id} value={a.id}>{a.name}</option>
+                                        ))
+
+                                }</select>
+                                : <></>
+                        }
+                        <button type="button">Add</button>
                     </label>
 
                 </p>

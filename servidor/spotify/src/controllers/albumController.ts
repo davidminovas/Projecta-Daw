@@ -31,7 +31,6 @@ export async function postAlbumController(req: Request, res: Response): Promise<
 
 
 
-
 export async function putAlbumController(req: Request, res: Response): Promise<Response> {
     const result: PutSuccessService | ErrorService = await substitAlbum(req.body, req.params.id as string);
 
