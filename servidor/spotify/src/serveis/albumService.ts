@@ -11,25 +11,36 @@ import { ConnectionPool, IResult } from "mssql";
 import { getConnection } from "../config/database";
 import sql from "mssql";
 
-export async function getAlbumById(idAlbum: string): Promise<SelectSuccessService<AlbumBD> | ErrorService> {
+export async function getAllAlbums(): Promise<AlbumBD[]> {
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
-    const queryText: string = `Select * from ALBUM Where Album.id = @id`;
-    request.input("id", sql.UniqueIdentifier, idAlbum);
-    const result: IResult<AlbumBD> = await request.query(queryText);
-    if (result.recordset.length === 0) {
-        return {
-            success: false,
-            code: 404,
-            message: "Track not found"
-        }
-    }
 
-    return {
-        success: true,
-        code: 200,
-        data: result.recordset[0]
-    }
+    const queryText: string = `Select * from Album`;
+    const result: IResult<AlbumBD> = await request.query(queryText);
+    return result.recordset;
+
+}
+
+export async function getAlbumById(idAlbum: string): Promise<SelectSuccessService<AlbumBD> | ErrorService> {
+       const pool: ConnectionPool = await getConnection();
+        const request: sql.Request = pool.request();
+    
+        const queryText: string = `Select * from Album Where Album.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idAlbum);
+        const result: IResult<AlbumBD> = await request.query(queryText);
+        if (result.recordset.length === 0) {
+            return {
+                success: false,
+                code: 404,
+                message: "Track not found"
+            }
+        }
+    
+        return {
+            success: true,
+            code: 200,
+            data: result.recordset[0]
+        }
 
 };
 
@@ -38,17 +49,18 @@ export async function createAlbum(album: Album): Promise<CreateSuccessService | 
     if (!validatorAlbum(album)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
+
     const title: string = album.title.trim().replace(/\s+/g, " ");
 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Insert INTO ALBUM(title,artist_id,data)
-    VALUES(@title,@artist_id,@data)
+    const queryText: string = `Insert INTO Album(title,artist_id,duration)
+    VALUES(@title,@artist_id,@duration)
     `;
     request.input("title", sql.NVarChar, title);
     request.input("artist_id", sql.UniqueIdentifier, album.artist);
-    request.input("data", sql.Numeric, new Date());
+    request.input("duration", sql.Numeric, album.duration);
 
     const result: IResult<number> = await request.query(queryText);
 
