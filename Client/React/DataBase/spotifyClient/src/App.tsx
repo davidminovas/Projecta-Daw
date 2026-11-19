@@ -28,6 +28,8 @@ function App() {
       <Routes>
         <Route path="/Play" element={<Play />} />
         <Route path="/SongManagement" element={<SongManagement />} />
+        <Route path="/Artist" element={<Artist /> } />
+        <Route path="/Album" />
       </Routes>
     </BrowserRouter>
   )
