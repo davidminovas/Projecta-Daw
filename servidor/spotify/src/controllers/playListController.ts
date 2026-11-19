@@ -5,7 +5,7 @@ import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { Response, Request } from "express";
 import { PlayListBd } from "../interfaces/playList/playListBD";
 import { PlayLists } from "../interfaces/data/playList/playLists";
-import { getAllPlaylists } from "../serveis/playListService";
+import { createPlaylist, getAllPlaylists, getPlaylistById } from "../serveis/playListService";
 
 export async function getAllPlaylistController(_req: Request, res: Response): Promise<Response> {
     const playlists: PlayListBd[] = await getAllPlaylists();
@@ -13,7 +13,7 @@ export async function getAllPlaylistController(_req: Request, res: Response): Pr
 }
 
 export function getPLByIdController(req: Request, res: Response): Response {
-    const findPlayList: PlayListBd | undefined = getPlayListById(req.params.id as string)
+    const findPlayList: PlayListBd | undefined = getPlaylistById(req.params.id as string)
 
     if (findPlayList) {
         return res.status(404).json({ message: 'Track ${idTrack} not found' })
@@ -22,7 +22,7 @@ export function getPLByIdController(req: Request, res: Response): Response {
 };
 
 export function postPLController(req: Request, res: Response): Response {
-    const result: CreateSuccessService | ErrorService = createPlayList(req.body);
+    const result: CreateSuccessService | ErrorService = createPlaylist(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
@@ -34,7 +34,7 @@ export function postPLController(req: Request, res: Response): Response {
 }
 
 export function putPLController(req: Request, res: Response): Response {
-    const result: PutSuccessService | ErrorService = substitPlayList(req.body, req.params.id as string);
+    const result: PutSuccessService | ErrorService = substitPlaylist(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;

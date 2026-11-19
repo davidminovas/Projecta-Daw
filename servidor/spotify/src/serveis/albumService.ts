@@ -55,12 +55,12 @@ export async function createAlbum(album: Album): Promise<CreateSuccessService | 
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Insert INTO Album(title,artist_id,duration)
-    VALUES(@title,@artist_id,@duration)
+    const queryText: string = `Insert INTO Album(title,artist_id,date)
+    VALUES(@title,@artist_id,@date)
     `;
     request.input("title", sql.NVarChar, title);
     request.input("artist_id", sql.UniqueIdentifier, album.artist);
-    request.input("duration", sql.Numeric, album.duration);
+    request.input("date", sql.Numeric, album.data);
 
     const result: IResult<number> = await request.query(queryText);
 

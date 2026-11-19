@@ -14,14 +14,13 @@ export function getHistoryByIdController(req: Request, res: Response): Response 
     return res.status(200).json(findHistory);
 };
 
-export function postHistoryController(req: Request, res: Response): Response {
-    const result: CreateSuccessService | ErrorService = createHistory(req.body);
+export async function postHistoryController(req: Request, res: Response): Promise<Response> {
+    const result: CreateSuccessService | ErrorService = await createHistory(req.body);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message })
     }
-    Historys.push((result as CreateSuccessService).data);
-    return res.status(result.code).json(result)
 
+    return res.status(result.code).json(result)
 }

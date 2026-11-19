@@ -6,14 +6,15 @@ import { UserBD } from "../interfaces/user/userBD";
 import { Response, Request } from "express";
 import { createUser, deleteUser, getUserById, substitUser } from "../serveis/userService";
 import { Users } from "../interfaces/data/user/dataUser";
+import { SelectSuccessService } from "../interfaces/error/selectSucessService";
 
-export function getUserByIdController(req: Request, res: Response): Response {
-    const findUser: UserBD | undefined = getUserById(req.params.id as string)
+export async function getUserByIdController(req: Request, res: Response): Promise<Response> {
+    const findUser: SelectSuccessService<UserBD> | ErrorService = await getUserById(req.params.id as string)
 
-    if (findUser) {
-        return res.status(404).json({ message: 'Track ${idTrack} not found' })
+    if (!findUser.success) {
+        return res.status(findUser.code).json({ message: (findUser as ErrorService).message })
     }
-    return res.status(200).json(findUser);
+    return res.status(findUser.code).json(findUser);
 };
 
 export function postUserController(req: Request, res: Response): Response {

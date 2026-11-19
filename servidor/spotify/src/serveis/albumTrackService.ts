@@ -9,6 +9,7 @@ import { ConnectionPool, IResult } from "mssql";
 import sql from "mssql";
 import { SelectSuccessService } from "../interfaces/error/selectSucessService";
 import { getConnection } from "../config/database";
+import { DeletSuccessService } from "../interfaces/error/deletSuccessServes";
 
 export async function getAlbumTrackById(idAlbumTrack: string): Promise<SelectSuccessService<AlbumTrackBD> | ErrorService> {
     const pool: ConnectionPool = await getConnection();
@@ -55,7 +56,7 @@ export async function createAlbumTrack(albumTrack: AlbumTrack): Promise<CreateSu
 
 }
 
-export async function substitAlbumTrack(albumTrack: AlbumTrack, idAlbumTrack: string): Promise<PutSuccessService | ErrorService> {
+export async function substitAlbumTrack(albumTrack: AlbumTrack): Promise<PutSuccessService | ErrorService> {
 
 
     if (!validatorAlbumTrack(albumTrack)) {
@@ -86,4 +87,21 @@ export async function substitAlbumTrack(albumTrack: AlbumTrack, idAlbumTrack: st
 
     return { success: true, code: 200, data: result.rowsAffected[0] }
 
+}
+
+export async function deleteArtistTrack(idAlbumTrack: string): Promise<DeletSuccessService | ErrorService> {
+
+     const pool: ConnectionPool = await getConnection();
+     const request: sql.Request = pool.request();
+ 
+     const queryText: string = `Delete from Track Where Track.id = @id`;
+    request.input("id", sql.UniqueIdentifier, idAlbumTrack);
+ 
+     const result: IResult<AlbumTrackBD> = await request.query(queryText);
+    if (result.rowsAffected[0] === 0) {
+        return { success: false, code: 404, message: "Artist Track not found" };
+    }
+
+
+    return { success: true, code: 200 } as DeletSuccessService;
 }
