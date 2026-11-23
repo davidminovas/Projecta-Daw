@@ -7,7 +7,7 @@ const Artist = () => {
         <>
             <button>Add</button>
             <button>Update</button>
-            <button>Post</button>
+            <button>Get</button>
             <button>Delete</button>
         </>
     )

@@ -4,9 +4,14 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { UserBD } from "../interfaces/user/userBD";
 import { Response, Request } from "express";
-import { createUser, deleteUser, getUserById, substitUser } from "../serveis/userService";
-import { Users } from "../interfaces/data/user/dataUser";
+import { createUser, deleteUser, getAllUser, getUserById, substitUser } from "../serveis/userService";
+
 import { SelectSuccessService } from "../interfaces/error/selectSucessService";
+
+export async function getAllUserController(_req: Request, res: Response): Promise<Response> {
+    const tracks: UserBD[] = await getAllUser();
+    return res.status(200).json(tracks);
+}
 
 export async function getUserByIdController(req: Request, res: Response): Promise<Response> {
     const findUser: SelectSuccessService<UserBD> | ErrorService = await getUserById(req.params.id as string)
@@ -17,41 +22,37 @@ export async function getUserByIdController(req: Request, res: Response): Promis
     return res.status(findUser.code).json(findUser);
 };
 
-export function postUserController(req: Request, res: Response): Response {
-    const result: CreateSuccessService | ErrorService = createUser(req.body);
+export async function postUserController(req: Request, res: Response): Promise<Response> {
+        const result: CreateSuccessService | ErrorService = await createUser(req.body);
+    
+        if (!result.success) {
+            const errorResult = result as ErrorService;
+            return res.status(result.code).json({ message: errorResult.message })
+        }
+    
+        return res.status(result.code).json(result)
+
+}
+
+export async function putUserController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService | ErrorService = await substitUser(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message })
     }
-    Users.push((result as CreateSuccessService).data);
-    return res.status(result.code).json(result)
 
+    return res.status(result.code).json(result)
 }
 
-export function putUserController(req: Request, res: Response): Response {
-    const result: PutSuccessService | ErrorService = substitUser(req.body, req.params.id as string);
+export async function deleteUserController(req: Request, res: Response): Promise<Response> {
+    const result: DeletSuccessService | ErrorService = await deleteUser(req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
-    const index: number = (result as PutSuccessService).index;
-    Users[index] = (result as PutSuccessService).data;
 
-    return res.status(result.code).json(result)
-}
 
-export function deleteUserController(req: Request, res: Response): Response {
-    const result: DeletSuccessService | ErrorService = deleteUser(req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-    const index: number = (result as DeletSuccessService).index;
-
-    Users.splice(index, 1)
-
-    return res.status(result.code).json(result)
+    return res.status(result.code).send();
 }

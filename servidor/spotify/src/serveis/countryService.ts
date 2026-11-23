@@ -15,7 +15,7 @@ export async function getCountryById(idCountry: string): Promise<SelectSuccessSe
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Select * from Track Where Country.id = @id`;
+    const queryText: string = `Select * from Country Where Country.id = @id`;
     request.input("id", sql.UniqueIdentifier, idCountry);
     const result: IResult<CountryBD> = await request.query(queryText);
     if (result.recordset.length === 0) {

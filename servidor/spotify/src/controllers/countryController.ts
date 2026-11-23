@@ -4,7 +4,6 @@ import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { Response, Request } from "express";
 import { createCountry, getCountryById, substitCountry } from "../serveis/countryService";
-import { Countrys } from "../interfaces/data/country/dataCountrys";
 import { SelectSuccessService } from "../interfaces/error/selectSucessService";
 
 export async function getCountryByIdController(req: Request, res: Response): Promise<Response> {

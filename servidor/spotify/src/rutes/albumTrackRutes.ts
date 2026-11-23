@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { getAlbumTrackByIdController, postAlbumTrackController, putAlbumTrackController } from "../controllers/albumTrackController";
+import { deleteAlbumTrackController, postAlbumTrackController } from "../controllers/albumTrackController";
 export const albumTrackRuter: Router = Router();
-albumTrackRuter.get("/:id", getAlbumTrackByIdController)
 albumTrackRuter.post("/", postAlbumTrackController)
-albumTrackRuter.put("/:id", putAlbumTrackController)
+albumTrackRuter.delete("/:id", deleteAlbumTrackController)

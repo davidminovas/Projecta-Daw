@@ -25,14 +25,14 @@ export async function getArtistById(idArtist: string): Promise<SelectSuccessServ
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Select * from Track Where Track.id = @id`;
+    const queryText: string = `Select * from Artist Where Artist.id = @id`;
     request.input("id", sql.UniqueIdentifier, idArtist);
     const result: IResult<ArtistBD> = await request.query(queryText);
     if (result.recordset.length === 0) {
         return {
             success: false,
             code: 404,
-            message: "Track not found"
+            message: "Artist not found"
         }
     }
 
@@ -67,10 +67,6 @@ export async function createArtist(artist: Artist): Promise<CreateSuccessService
 
 export async function substitArtist(artist: Artist, idArtist: string): Promise<PutSuccessService | ErrorService> {
 
-
-
-
-
     if (!validatorArtist(artist)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
@@ -100,7 +96,7 @@ export async function deleteArtist(idArtist: string): Promise<DeletSuccessServic
      const pool: ConnectionPool = await getConnection();
      const request: sql.Request = pool.request();
  
-     const queryText: string = `Delete from Track Where Track.id = @id`;
+    const queryText: string = `Delete from Artist Where Artist.id = @id`;
      request.input("id", sql.UniqueIdentifier, idArtist);
  
      const result: IResult<ArtistBD> = await request.query(queryText);

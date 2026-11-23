@@ -32,7 +32,7 @@ export async function getAlbumById(idAlbum: string): Promise<SelectSuccessServic
             return {
                 success: false,
                 code: 404,
-                message: "Track not found"
+                message: "Album not found"
             }
         }
     

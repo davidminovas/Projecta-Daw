@@ -5,59 +5,56 @@ import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { Response, Request } from "express";
 import { PlayListBd } from "../interfaces/playList/playListBD";
 import { PlayLists } from "../interfaces/data/playList/playLists";
-import { createPlaylist, getAllPlaylists, getPlaylistById } from "../serveis/playListService";
+import { createPlaylist, deletePlaylist, getAllPlaylists, getPlaylistById, putPlaylist } from "../serveis/playListService";
+import { SelectSuccessService } from "../interfaces/error/selectSucessService";
 
 export async function getAllPlaylistController(_req: Request, res: Response): Promise<Response> {
     const playlists: PlayListBd[] = await getAllPlaylists();
     return res.status(200).json(playlists);
 }
 
-export function getPLByIdController(req: Request, res: Response): Response {
-    const findPlayList: PlayListBd | undefined = getPlaylistById(req.params.id as string)
+export async function getPLByIdController(req: Request, res: Response): Promise<Response> {
+    const findPLB: SelectSuccessService<PlayListBd> | ErrorService = await getPlaylistById(req.params.id as string)
 
-    if (findPlayList) {
-        return res.status(404).json({ message: 'Track ${idTrack} not found' })
+    if (!findPLB.success) {
+        return res.status(findPLB.code).json({ message: (findPLB as ErrorService).message })
     }
-    return res.status(200).json(findPlayList);
+    return res.status(findPLB.code).json(findPLB);
 };
 
-export function postPLController(req: Request, res: Response): Response {
-    const result: CreateSuccessService | ErrorService = createPlaylist(req.body);
+export async function postPLController(req: Request, res: Response): Promise<Response> {
+        const result: CreateSuccessService | ErrorService = await createPlaylist(req.body);
+    
+        if (!result.success) {
+            const errorResult = result as ErrorService;
+            return res.status(result.code).json({ message: errorResult.message })
+        }
+    
+        return res.status(result.code).json(result)
+
+}
+
+export async function putPLController(req: Request, res: Response): Promise<Response> {
+    const result: PutSuccessService | ErrorService = await putPlaylist(req.body, req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message })
     }
-    PlayLists.push((result as CreateSuccessService).data);
-    return res.status(result.code).json(result)
 
+    return res.status(result.code).json(result)
 }
 
-export function putPLController(req: Request, res: Response): Response {
-    const result: PutSuccessService | ErrorService = substitPlaylist(req.body, req.params.id as string);
+export async function deletePLController(req: Request, res: Response): Promise<Response> {
+    const result: DeletSuccessService | ErrorService = await deletePlaylist(req.params.id as string);
 
     if (!result.success) {
         const errorResult = result as ErrorService;
         return res.status(result.code).json({ message: errorResult.message });
     }
-    const index: number = (result as PutSuccessService).index;
-    PlayLists[index] = (result as PutSuccessService).data;
 
-    return res.status(result.code).json(result)
-}
 
-export function deletePLController(req: Request, res: Response): Response {
-    const result: DeletSuccessService | ErrorService = deletePlayList(req.params.id as string);
-
-    if (!result.success) {
-        const errorResult = result as ErrorService;
-        return res.status(result.code).json({ message: errorResult.message });
-    }
-    const index: number = (result as DeletSuccessService).index;
-
-    PlayLists.splice(index, 1)
-
-    return res.status(result.code).json(result)
+    return res.status(result.code).send();
 }
 
 
