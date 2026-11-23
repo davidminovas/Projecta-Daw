@@ -33,7 +33,7 @@ const AddSongForm = (props: AddSongFromProps) => {
     }
     return (
         <>
-            <h1>Afegir canço</h1>
+            <h1>{props.song ? "Modificar cançó" : "Afegir cançó"}</h1>
             <form onSubmit={handelSubmit}>
                 <p>
                     <label>
