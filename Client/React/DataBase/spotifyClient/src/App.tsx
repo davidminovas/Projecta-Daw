@@ -7,6 +7,8 @@ import { users } from './Data/user/user';
 import Menu from './Components/PageEstrocture/menu/Menu';
 import type { User } from './Model/User';
 import SongManagement from './Pages/admin/SongManagement';
+import Artist from './Pages/admin/Artist';
+
 
 
 function App() {
@@ -28,7 +30,7 @@ function App() {
       <Routes>
         <Route path="/Play" element={<Play />} />
         <Route path="/SongManagement" element={<SongManagement />} />
-        <Route path="/Artist" element={<Artist /> } />
+        <Route path="/Artist" element={<Artist />} />
         <Route path="/Album" />
       </Routes>
     </BrowserRouter>
