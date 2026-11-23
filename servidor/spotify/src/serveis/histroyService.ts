@@ -35,9 +35,6 @@ export function createHistory(history: History): CreateSuccessService | ErrorSer
     return { success: true, code: 201, data: 1 }
 }
 
-
-
-
 export async function addTrackUserHistory(historyTrack: History): Promise<CreateSuccessService | ErrorService> {
 
     if (!isValidHistori(historyTrack)) {

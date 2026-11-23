@@ -16,7 +16,7 @@ export async function getAllUser(): Promise<UserBD[]> {
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Select *from User`;
+    const queryText: string = `Select *from [User]`;
     const result: IResult<UserBD> = await request.query(queryText);
     return result.recordset;
 
@@ -41,7 +41,7 @@ export async function getUserById(idUser: string): Promise<SelectSuccessService<
         return {
             success: false,
             code: 404,
-            message: "Playlist not found."
+            message: "User not found."
         }
     }
 
@@ -59,7 +59,7 @@ export async function createUser(user: User): Promise<CreateSuccessService | Err
 
 
     if (!isValidUser(user)) {
-        return { success: false, code: 400, message: "fuck you" };
+        return { success: false, code: 400, message: "Invalid data" };
     }
 
 
@@ -107,7 +107,7 @@ export async function substitUser(user: User, idUser: string): Promise<PutSucces
         return {
             success: false,
             code: 404,
-            message: "Track not found"
+            message: "User not found"
         }
     }
 
@@ -126,7 +126,7 @@ export async function deleteUser(idUser: string): Promise<DeletSuccessService | 
         return {
             success: false,
             code: 404,
-            message: "Track not found"
+            message: "User not found"
         }
     }
 

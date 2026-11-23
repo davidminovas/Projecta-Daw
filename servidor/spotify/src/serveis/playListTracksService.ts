@@ -32,7 +32,7 @@ export async function getAllPlayListTracks(): Promise<PlayListTracksBd[]> {
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Select *from User`;
+    const queryText: string = `Select *from PlaylistTracks`;
     const result: IResult<PlayListTracksBd> = await request.query(queryText);
     return result.recordset;
 
@@ -66,7 +66,7 @@ export async function deletePlayListTrack(idPlayListTrack: string): Promise<Dele
     const pool: ConnectionPool = await getConnection();
     const request: sql.Request = pool.request();
 
-    const queryText: string = `Delete from User Where User.id = @id`;
+    const queryText: string = `Delete from PlaylistTracks Where PlaylistTracks.id = @id`;
     request.input("id", sql.UniqueIdentifier, idPlayListTrack);
 
     const result: IResult<PlayListTracksBd> = await request.query(queryText);
