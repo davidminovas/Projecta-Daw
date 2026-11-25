@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { GetTrack } from "../../APIManagement/Tracks/Interfaces/Track";
+import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TtrackCreate";
 import AddSongForm from "../../Components/Songs/AddSongForm";
 import { ENV } from "../../config/env";
 import type { Track } from "../../Model/Track";
@@ -28,9 +29,23 @@ const Artist = () => {
         }
     }
 
-    async function saveSong() {
+    async function saveSong(song: TrackCreate) {
         try {
             const isEditing = editingSong !== null;
+            const url = isEditing
+                ? `${ENV.API_BASE_URL}/tracks/${editingSong.id}`
+                : `${ENV.API_BASE_URL}/tracks`;
+            const response = await fetch(url, {
+                method: isEditing ? "PUT" : "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(song),
+            });
+
+            if (!response.ok) {
+                throw new Error(isEditing
+                    ? "No s'ha pogut modificar la cançó"
+                    : "No s'ha pogut afegir la cançó");
+            }
 
             setShowForm(false);
             setEditingSong(null);
