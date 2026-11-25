@@ -4,9 +4,12 @@ import AddSongForm from "../../Components/Songs/AddSongForm";
 import { ENV } from "../../config/env";
 import type { Track } from "../../Model/Track";
 
+type ListAction = "edit" | "delete";
+
 const Artist = () => {
     const [showForm, setShowForm] = useState(false);
     const [showTracks, setShowTracks] = useState(false);
+    const [listAction, setListAction] = useState<ListAction>("edit");
     const [tracks, setTracks] = useState<GetTrack[]>([]);
     const [editingSong, setEditingSong] = useState<Track | null>(null);
     const [error, setError] = useState("");
@@ -42,6 +45,21 @@ const Artist = () => {
         }
     }
 
+    async function deleteSong(trackId: string) {
+        if (!window.confirm("Vols eliminar aquesta cançó?")) return;
+
+        try {
+            const response = await fetch(`${ENV.API_BASE_URL}/tracks/${trackId}`, {
+                method: "DELETE",
+            });
+            if (!response.ok) throw new Error("No s'ha pogut eliminar la cançó");
+
+            await loadTracks();
+        } catch (error) {
+            setError(error instanceof Error ? error.message : "Error inesperat");
+        }
+    }
+
     function editSong(track: GetTrack) {
         setEditingSong({
             id: track.id,
@@ -64,7 +82,14 @@ const Artist = () => {
                 setShowForm(true);
                 setError("");
             }}>Add</button>
-            <button type="button" onClick={loadTracks}>Update</button>
+            <button type="button" onClick={() => {
+                setListAction("edit");
+                loadTracks();
+            }}>Update</button>
+            <button type="button" onClick={() => {
+                setListAction("delete");
+                loadTracks();
+            }}>Delete</button>
 
             {error && <p role="alert">{error}</p>}
 
@@ -73,8 +98,11 @@ const Artist = () => {
                     {tracks.map(track => (
                         <li key={track.id}>
                             {track.title} — {track.artist} ({track.duration})
-                            <button type="button" onClick={() => editSong(track)}>
-                                Edit
+                            <button type="button" onClick={() => {
+                                if (listAction === "edit") editSong(track);
+                                else deleteSong(track.id);
+                            }}>
+                                {listAction === "edit" ? "Edit" : "Delete"}
                             </button>
                         </li>
                     ))}
