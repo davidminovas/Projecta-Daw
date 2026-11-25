@@ -5,6 +5,11 @@ import type { GetTrack } from "../../APIManagement/Tracks/Interfaces/Track";
 import ListSongs from "../Songs/listSong";
 import type { PlaylistCardProps } from "./Types/PlayListCardProps";
 
+interface PlaylistTrack {
+    playlist_id: string;
+    track_id: string;
+}
+
 const PlaylistCard = ({ playlists }: PlaylistCardProps) => {
     const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(null);
     const [tracks, setTracks] = useState<GetTrack[]>([]);
@@ -22,14 +27,23 @@ const PlaylistCard = ({ playlists }: PlaylistCardProps) => {
         setError(null);
 
         try {
-            const response = await fetch(
-                `${ENV.API_BASE_URL}/playList/${playlistId}/tracks`
-            );
-            if (!response.ok) {
+            const [relationsResponse, tracksResponse] = await Promise.all([
+                fetch(`${ENV.API_BASE_URL}/playListTracks/${playlistId}`),
+                fetch(`${ENV.API_BASE_URL}/tracks`),
+            ]);
+            if (!relationsResponse.ok || !tracksResponse.ok) {
                 throw new Error("No s'han pogut carregar les cançons.");
             }
 
-            const playlistTracks: GetTrack[] = await response.json();
+            const relations: PlaylistTrack[] = await relationsResponse.json();
+            const allTracks: GetTrack[] = await tracksResponse.json();
+            const trackIds = new Set(
+                relations
+                    .filter(relation => relation.playlist_id.toLowerCase() === playlistId.toLowerCase())
+                    .map(relation => relation.track_id.toLowerCase())
+            );
+            const playlistTracks = allTracks.filter(track => trackIds.has(track.id.toLowerCase()));
+
             setTracks(playlistTracks);
             setSelectedPlaylistId(playlistId);
         } catch (caught: unknown) {

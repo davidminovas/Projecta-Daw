@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.playListTrackRuter = void 0;
+const express_1 = require("express");
+const playListTracksController_1 = require("../controllers/playListTracksController");
+exports.playListTrackRuter = (0, express_1.Router)();
+exports.playListTrackRuter.get("/", playListTracksController_1.getPlaylistTracksController);
+exports.playListTrackRuter.get("/:id", playListTracksController_1.getAllPlayListTrackController);
+exports.playListTrackRuter.post("/", playListTracksController_1.postPlayListTrackController);
+exports.playListTrackRuter.delete("/:id", playListTracksController_1.deletePlayListTrackController);

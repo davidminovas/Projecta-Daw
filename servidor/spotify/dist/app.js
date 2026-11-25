@@ -1,0 +1,34 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.app = void 0;
+const express_1 = __importDefault(require("express"));
+const apiConfig_1 = require("./config/apiConfig");
+const trackRutes_1 = require("./rutes/trackRutes");
+const artistRutes_1 = require("./rutes/artistRutes");
+const countryRutes_1 = require("./rutes/countryRutes");
+const userRutes_1 = require("./rutes/userRutes");
+const playListRutes_1 = require("./rutes/playListRutes");
+const historyRutes_1 = require("./rutes/historyRutes");
+const playListTracksRutes_1 = require("./rutes/playListTracksRutes");
+const albumRutes_1 = require("./rutes/albumRutes");
+const albumTrackRutes_1 = require("./rutes/albumTrackRutes");
+const cors_1 = __importDefault(require("cors"));
+const cors_2 = require("./config/cors");
+exports.app = (0, express_1.default)();
+exports.app.use(express_1.default.json());
+exports.app.get("/", (_req, res) => {
+    return res.json(JSON.stringify(apiConfig_1.APICONFIG));
+});
+exports.app.use((0, cors_1.default)(cors_2.corsOptions));
+exports.app.use("/tracks", trackRutes_1.trackRuter);
+exports.app.use("/artists", artistRutes_1.artistRuter);
+exports.app.use("/countrys", countryRutes_1.countryRuter);
+exports.app.use("/users", userRutes_1.userRuter);
+exports.app.use("/playList", playListRutes_1.playListRuter);
+exports.app.use("/historys", historyRutes_1.historyRuter);
+exports.app.use("/playListTracks", playListTracksRutes_1.playListTrackRuter);
+exports.app.use("/albums", albumRutes_1.albumRuter);
+exports.app.use("/albumsTracks", albumTrackRutes_1.albumTrackRuter);

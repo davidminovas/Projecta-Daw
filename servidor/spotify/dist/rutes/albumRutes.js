@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.albumRuter = void 0;
+const express_1 = require("express");
+const albumController_1 = require("../controllers/albumController");
+exports.albumRuter = (0, express_1.Router)();
+exports.albumRuter.get("/", albumController_1.getAllAlbumController);
+exports.albumRuter.get("/:id", albumController_1.getAlbumByIdController);
+exports.albumRuter.post("/", albumController_1.postAlbumController);
+exports.albumRuter.put("/:id", albumController_1.putAlbumController);
+exports.albumRuter.delete("/:id", albumController_1.deleteAlbumController);
