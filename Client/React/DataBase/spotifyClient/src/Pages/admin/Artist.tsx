@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { GetArtist } from "../../APIManagement/Artist/interfices/Artist";
 import { ENV } from "../../config/env";
+import type { Artist } from "../../Model/Artist";
 
 
 const Artist = () => {
@@ -10,7 +11,7 @@ const Artist = () => {
     const [showTracks, setShowArtist] = useState(false);
     const [listAction, setListAction] = useState<ListAction>("edit");
     const [tracks, setArtist] = useState<GetArtist[]>([]);
-    // const [editingArtist, setEditingArtist] = useState<Artist | null>(null);
+    const [editingArtist, setEditingArtist] = useState<Artist | null>(null);
     const [error, setError] = useState("");
 
 
