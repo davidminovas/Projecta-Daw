@@ -1,16 +1,20 @@
 import { Artist } from "../interfaces/artist/artist";
 import { MAXARTISTA } from "../interfaces/artist/artist.constants";
-import { CountryBD } from "../interfaces/country/countryBD";
-import { Countrys } from "../interfaces/data/country/dataCountrys";
+import { getCountryById } from "../serveis/countryService";
 
 
 
-export function validatorArtist(artist: Artist): boolean {
+export async function validatorArtist(artist: Artist): Promise<boolean> {
     if (!artist) {
         return false;
     }
 
-    if (artist.country === null || artist.artisticName === null || artist.name === null) {
+    if (
+        typeof artist.country !== "string" ||
+        typeof artist.artisticName !== "string" ||
+        typeof artist.name !== "string" ||
+        !/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(artist.country)
+    ) {
         return false;
     }
 
@@ -24,15 +28,7 @@ export function validatorArtist(artist: Artist): boolean {
 
 
 
-    const countriOk: CountryBD | undefined = Countrys.find(
-        (c: CountryBD) => {
-            return c.id === artist.country
-        }
-    );
-
-    if (!countriOk) {
-        return false;
-    }
-    return true;
+    const country = await getCountryById(artist.country);
+    return country.success;
 
 }

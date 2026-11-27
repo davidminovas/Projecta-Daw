@@ -45,7 +45,7 @@ export async function getArtistById(idArtist: string): Promise<SelectSuccessServ
 
 export async function createArtist(artist: Artist): Promise<CreateSuccessService | ErrorService> {
 
-    if (!validatorArtist(artist)) {
+    if (!await validatorArtist(artist)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
 
@@ -67,7 +67,7 @@ export async function createArtist(artist: Artist): Promise<CreateSuccessService
 
 export async function substitArtist(artist: Artist, idArtist: string): Promise<PutSuccessService | ErrorService> {
 
-    if (!validatorArtist(artist)) {
+    if (!await validatorArtist(artist)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
 
