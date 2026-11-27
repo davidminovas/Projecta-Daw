@@ -5,7 +5,7 @@ const Artist = () => {
 
     return (
         <>
-
+hola
         </>
     );
 };

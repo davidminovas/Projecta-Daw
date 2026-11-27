@@ -31,7 +31,7 @@ function App() {
       <Routes>
         <Route path="/Play" element={<Play />} />
         <Route path="/Song" element={<Song />} />
-        <Route path="/Artist">{ <Artist/>}</Route>
+        <Route path="/Artist" element={<Artist />} />
         <Route path="/Album" />
       </Routes>
     </BrowserRouter>
