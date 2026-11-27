@@ -61,7 +61,7 @@ const Artist = () => {
     }
 
     async function deleteSong(trackId: string) {
-        if (!window.confirm("Vols eliminar aquesta cançó?")) return;
+    
 
         try {
             const response = await fetch(`${ENV.API_BASE_URL}/tracks/${trackId}`, {
