@@ -12,6 +12,7 @@ import Artist from './Pages/admin/Artist';
 
 
 
+
 function App() {
   const user: User = users[Math.floor(Math.random() * users.length)];
   const [now, setNow] = useState(() => new Date());

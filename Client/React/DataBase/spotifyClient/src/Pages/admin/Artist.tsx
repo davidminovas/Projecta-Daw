@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { GetArtist } from "../../APIManagement/Artist/interfices/Artist";
 import { ENV } from "../../config/env";
 import type { Artist } from "../../Model/Artist";
+import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TtrackCreate";
 
 
 const Artist = () => {
@@ -29,7 +30,36 @@ const Artist = () => {
         }
     }
 
+    async function saveArtist(song: TrackCreate) {
+        try {
+            const isEditing = editingArtist !== null;
+            const url = isEditing
+                ? `${ENV.API_BASE_URL}/artists/${editingArtist.id}`
+                : `${ENV.API_BASE_URL}/artists`;
+            const response = await fetch(url, {
+                method: isEditing ? "PUT" : "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(song),
+            });
 
+            if (!response.ok) {
+                throw new Error(isEditing
+                    ? "No s'ha pogut modificar l'artista"
+                    : "No s'ha pogut afegir l'artista");
+            }
+
+            setShowForm(false);
+            setEditingArtist(null);
+            setError("");
+            if (isEditing) {
+                await loadArtist();
+            } else {
+                setShowArtist(false);
+            }
+        } catch (error) {
+            setError(error instanceof Error ? error.message : "Error inesperat");
+        }
+    }
 
 
 
@@ -93,6 +123,7 @@ const Artist = () => {
 
                 {showForm && (
                     <>
+                        <AddSongForm song={editingSong ?? undefined} submit={saveArtist} />
                         <button type="button" onClick={() => {
                             setShowForm(false);
                             setEditingArtist(null);
