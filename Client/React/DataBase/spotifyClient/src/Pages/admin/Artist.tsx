@@ -1,12 +1,13 @@
-import { useState } from "react";
+import  { useState } from "react";
 import type { GetArtist } from "../../APIManagement/Artist/interfices/Artist";
+import type { ArtistCreate } from "../../APIManagement/Artist/interfices/ArtistCreate";
+import AddArtistForm from "../../Components/Artists/AddArtistForm";
 import { ENV } from "../../config/env";
 import type { Artist } from "../../Model/Artist";
-import AddArtistForm from "../../Components/Artists/AddArtistForm";
-import type { ArtistCreate } from "../../APIManagement/Artist/interfices/ArtistCreate";
 
 
-const Artist = () => {
+
+const ArtistView = () => {
 
     type ListAction = "edit" | "delete";
     const [showForm, setShowForm] = useState(false);
@@ -77,21 +78,20 @@ const Artist = () => {
 
 
 
+    async function deleteArtist(trackId: string) {
 
 
+        try {
+            const response = await fetch(`${ENV.API_BASE_URL}/tracks/${trackId}`, {
+                method: "DELETE",
+            });
+            if (!response.ok) throw new Error("No s'ha pogut eliminar la cançó");
 
-
-
-
-
-
-
-
-
-
-
-
-
+            await loadArtist();
+        } catch (error) {
+            setError(error instanceof Error ? error.message : "Error inesperat");
+        }
+    }
 
 
     return (
@@ -145,4 +145,4 @@ const Artist = () => {
     );
 };
 
-export default Artist;
+export default ArtistView;
