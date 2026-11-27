@@ -10,6 +10,13 @@ import { ConnectionPool, IResult } from "mssql";
 import { getConnection } from "../config/database";
 import sql from "mssql";
 
+export async function getAllCountries(): Promise<CountryBD[]> {
+    const pool: ConnectionPool = await getConnection();
+    const request: sql.Request = pool.request();
+    const result: IResult<CountryBD> = await request.query(`SELECT * FROM Country`);
+    return result.recordset;
+}
+
 export async function getCountryById(idCountry: string): Promise<SelectSuccessService<CountryBD> | ErrorService> {
 
     const pool: ConnectionPool = await getConnection();

@@ -3,8 +3,13 @@ import { CreateSuccessService } from "../interfaces/error/createSucessServide";
 import { ErrorService } from "../interfaces/error/errorService";
 import { PutSuccessService } from "../interfaces/error/putSucessServidee";
 import { Response, Request } from "express";
-import { createCountry, getCountryById, substitCountry } from "../serveis/countryService";
+import { createCountry, getAllCountries, getCountryById, substitCountry } from "../serveis/countryService";
 import { SelectSuccessService } from "../interfaces/error/selectSucessService";
+
+export async function getAllCountriesController(_req: Request, res: Response): Promise<Response> {
+    const countries: CountryBD[] = await getAllCountries();
+    return res.status(200).json(countries);
+}
 
 export async function getCountryByIdController(req: Request, res: Response): Promise<Response> {
     const findCountry: SelectSuccessService<CountryBD> | ErrorService = await getCountryById(req.params.id as string)
