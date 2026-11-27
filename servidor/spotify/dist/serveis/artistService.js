@@ -37,7 +37,7 @@ async function getArtistById(idArtist) {
     };
 }
 async function createArtist(artist) {
-    if (!(0, artists_validator_1.validatorArtist)(artist)) {
+    if (!await (0, artists_validator_1.validatorArtist)(artist)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
     const pool = await (0, database_1.getConnection)();
@@ -51,7 +51,7 @@ async function createArtist(artist) {
     return { success: true, code: 200, data: result.rowsAffected[0] };
 }
 async function substitArtist(artist, idArtist) {
-    if (!(0, artists_validator_1.validatorArtist)(artist)) {
+    if (!await (0, artists_validator_1.validatorArtist)(artist)) {
         return { success: false, code: 400, message: "Invalid data" };
     }
     const pool = await (0, database_1.getConnection)();

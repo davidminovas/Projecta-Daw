@@ -1,9 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getAllCountriesController = getAllCountriesController;
 exports.getCountryByIdController = getCountryByIdController;
 exports.postCountryController = postCountryController;
 exports.putCountryController = putCountryController;
 const countryService_1 = require("../serveis/countryService");
+async function getAllCountriesController(_req, res) {
+    const countries = await (0, countryService_1.getAllCountries)();
+    return res.status(200).json(countries);
+}
 async function getCountryByIdController(req, res) {
     const findCountry = await (0, countryService_1.getCountryById)(req.params.id);
     if (!findCountry.success) {

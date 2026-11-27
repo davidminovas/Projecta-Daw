@@ -3,12 +3,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getAllCountries = getAllCountries;
 exports.getCountryById = getCountryById;
 exports.createCountry = createCountry;
 exports.substitCountry = substitCountry;
 const countryValidator_1 = require("../validators/countryValidator");
 const database_1 = require("../config/database");
 const mssql_1 = __importDefault(require("mssql"));
+async function getAllCountries() {
+    const pool = await (0, database_1.getConnection)();
+    const request = pool.request();
+    const result = await request.query(`SELECT * FROM Country`);
+    return result.recordset;
+}
 async function getCountryById(idCountry) {
     const pool = await (0, database_1.getConnection)();
     const request = pool.request();

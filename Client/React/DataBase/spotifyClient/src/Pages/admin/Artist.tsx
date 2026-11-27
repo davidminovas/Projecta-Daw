@@ -2,17 +2,17 @@ import { useState } from "react";
 import type { GetArtist } from "../../APIManagement/Artist/interfices/Artist";
 import { ENV } from "../../config/env";
 import type { Artist } from "../../Model/Artist";
-import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TtrackCreate";
 import AddArtistForm from "../../Components/Artists/AddArtistForm";
+import type { ArtistCreate } from "../../APIManagement/Artist/interfices/ArtistCreate";
 
 
 const Artist = () => {
 
     type ListAction = "edit" | "delete";
     const [showForm, setShowForm] = useState(false);
-    const [showTracks, setShowArtist] = useState(false);
+    const [showArtists, setShowArtist] = useState(false);
     const [listAction, setListAction] = useState<ListAction>("edit");
-    const [tracks, setArtist] = useState<GetArtist[]>([]);
+    const [artists, setArtist] = useState<GetArtist[]>([]);
     const [editingArtist, setEditingArtist] = useState<Artist | null>(null);
     const [error, setError] = useState("");
 
@@ -31,7 +31,7 @@ const Artist = () => {
         }
     }
 
-    async function saveArtist(song: TrackCreate) {
+    async function saveArtist(song: ArtistCreate) {
         try {
             const isEditing = editingArtist !== null;
             const url = isEditing
@@ -62,7 +62,17 @@ const Artist = () => {
         }
     }
 
-
+    function editArtist(track: GetArtist) {
+        setEditingArtist({
+            id: track.id,
+            name: track.name,
+            pseudonym: track.pseudonym,
+            country_id: track.country_id
+        });
+        setShowArtist(false);
+        setShowForm(true);
+        setError("");
+    }
 
 
 
@@ -104,11 +114,11 @@ const Artist = () => {
 
             {error && <p role="alert">{error}</p>}
 
-            {showTracks && (
+            {showArtists && (
                 <ul>
-                    {tracks.map(artist => (
+                    {artists.map(artist => (
                         <li key={artist.id}>
-                            {artist.title} — {artist.artist} ({artist.duration})
+                            {artist.name} — {artist.country_id} — {artist.pseudonym}
                             <button type="button" onClick={() => {
                                 if (listAction === "edit") editArtist(artist);
                                 else deleteArtist(artist.id);
@@ -122,7 +132,7 @@ const Artist = () => {
 
             {showForm && (
                 <>
-                    <AddArtistForm song={editingArtist ?? undefined} submit={saveArtist} />
+                    <AddArtistForm artist={editingArtist ?? undefined} submit={saveArtist} />
                     <button type="button" onClick={() => {
                         setShowForm(false);
                         setEditingArtist(null);
