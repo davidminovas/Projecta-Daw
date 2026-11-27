@@ -7,7 +7,7 @@ import type { Track } from "../../Model/Track";
 
 type ListAction = "edit" | "delete";
 
-const Artist = () => {
+const Song = () => {
     const [showForm, setShowForm] = useState(false);
     const [showTracks, setShowTracks] = useState(false);
     const [listAction, setListAction] = useState<ListAction>("edit");
@@ -139,4 +139,4 @@ const Artist = () => {
     );
 };
 
-export default Artist;
+export default Song;
