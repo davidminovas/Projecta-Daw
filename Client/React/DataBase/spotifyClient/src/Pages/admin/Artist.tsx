@@ -3,6 +3,7 @@ import type { GetArtist } from "../../APIManagement/Artist/interfices/Artist";
 import { ENV } from "../../config/env";
 import type { Artist } from "../../Model/Artist";
 import type { TrackCreate } from "../../APIManagement/Tracks/Interfaces/TtrackCreate";
+import AddArtistForm from "../../Components/Artists/AddArtistForm";
 
 
 const Artist = () => {
@@ -85,7 +86,7 @@ const Artist = () => {
 
     return (
         <main>
-            <h1>Song</h1>
+            <h1>Artist</h1>
             <button type="button" onClick={() => {
                 setEditingArtist(null);
                 setShowArtist(false);

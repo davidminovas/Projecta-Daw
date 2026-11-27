@@ -1,5 +1,5 @@
 export interface ArtistCreate {
     name: string;
-    pseudonym: string;
+    artisticName: string;
     country: string;
 }
