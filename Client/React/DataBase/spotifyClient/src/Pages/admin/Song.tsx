@@ -90,7 +90,7 @@ const Song = () => {
 
     return (
         <main>
-            <h1>Artista</h1>
+            <h1>Song</h1>
             <button type="button" onClick={() => {
                 setEditingSong(null);
                 setShowTracks(false);
